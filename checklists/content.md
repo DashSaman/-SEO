@@ -50,5 +50,25 @@
 - [ ] Query mix reviewed after sufficient observation period.
 - [ ] Conversion/lead/revenue quality considered, not traffic only.
 
-## PASS
-Content passes only when intent, accuracy, differentiated value and trust are all satisfied. A green plugin/content score alone is not PASS.
+## PASS criteria
+
+Content passes only when intent, factual accuracy, differentiated value, trust and policy safety all pass. A green plugin/content score alone is never PASS.
+
+## Common failures
+
+- commodity paraphrase with no first-party value;
+- wrong page type for observed intent;
+- fabricated or stale statistics/prices/specifications;
+- AI-generated citations/entities not checked against originals;
+- fake update dates without meaningful revision;
+- thin location/programmatic variants whose only difference is a keyword/place name;
+- traffic growth celebrated despite poor lead/revenue quality.
+
+## Retest
+
+1. Re-run the current target-market SERP intent check and verify page type still matches.
+2. Re-verify every material fact/date/price/source changed during remediation.
+3. Compare before/after page for unique evidence, clarity, internal links and visible authorship/review where applicable.
+4. Re-check rendered mobile/desktop output and crawlable main content.
+5. After a suitable observation window, compare query mix, conversions and quality metrics against the annotated baseline.
+6. Mark result `PASS`, `FAIL` or `MONITOR` with evidence; do not pass on editorial opinion alone.
