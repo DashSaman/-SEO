@@ -1,7 +1,7 @@
 # RANKING_FRAMEWORK.md — Query-Level Competitive Decision System
 
 **Version:** 2026-08-26  
-**Purpose:** decide whether and how a site should compete for a specific query before spending resources.
+**Purpose:** decide whether and how a site should compete for a specific query before spending resources. This is an internal prioritization framework, never a Google scoring model or ranking guarantee.
 
 ## Input record
 
@@ -17,9 +17,11 @@ For every target cluster record:
 - dominant page types;
 - SERP features;
 - key competitors;
-- measured authority/link data if available.
+- measured authority/link data if available;
+- YMYL/high-stakes sensitivity;
+- ecommerce/local/international constraints where applicable.
 
-## Step 1 — Is the query commercially relevant?
+## Step 1 — Commercial relevance
 
 Score:
 
@@ -32,19 +34,10 @@ Do not prioritize a high-volume `0` over a lower-volume `3` solely for traffic.
 
 ## Step 2 — Intent confidence
 
-Inspect current results.
+Inspect current results and classify: informational, commercial investigation, transactional, local, navigational/branded or mixed/ambiguous.
 
-Classify:
-
-- informational;
-- commercial investigation;
-- transactional;
-- local;
-- navigational/branded;
-- mixed/ambiguous.
-
-**High confidence**: results consistently show one page type/job.  
-**Low confidence**: SERP is mixed/volatile; test multiple formats or deprioritize until clearer.
+**High confidence:** results consistently show one page type/job.  
+**Low confidence:** SERP is mixed/volatile; test/observe more or reduce priority.
 
 ## Step 3 — Required page type
 
@@ -94,29 +87,49 @@ Compare target page vs competitive set across:
 
 Rate:
 
-- `+2` we can produce materially better evidence;
-- `+1` modest differentiation;
+- `+2` materially better evidence is realistically possible;
+- `+1` modest defensible differentiation;
 - `0` parity only;
-- `-1` competitors have proprietary evidence we cannot match.
+- `-1` competitors have proprietary evidence/assets we cannot match.
 
-## Step 6 — Brand/entity gap
+### Required differentiator statement
 
-Inspect:
+Before proceeding, write one sentence:
 
-- branded search presence;
-- known/recognized organizations in SERP;
-- reviews/reputation;
-- independent references/media;
-- author/expert credibility;
-- local prominence where applicable.
+`This page deserves attention because it uniquely provides ______ for ______ that the current competitive set does not provide as well.`
 
-A new domain facing government/major marketplaces/top global brands on a trust-sensitive query may need a long authority-building runway even with excellent content.
+If this cannot be filled with a truthful user benefit, the target is not `NOW`.
 
-## Step 7 — Link/authority gap
+## Step 6 — YMYL / high-stakes risk
 
-Only use measured data when a real dataset is available. Record:
+Classify:
 
-- referring domains to ranking page and domain;
+- `LOW`: ordinary low-stakes information/product use;
+- `MEDIUM`: meaningful financial/safety/technical consequence;
+- `HIGH`: health, finance, legal, safety or other life-impacting advice.
+
+For `HIGH`:
+
+- require stronger primary/authoritative sourcing;
+- verify expert/reviewer competence where relevant;
+- disclose limitations/conflicts;
+- avoid unsupported predictions/claims;
+- raise freshness/correction standards;
+- consider whether the business has legitimate expertise to compete.
+
+A commercially attractive high-stakes query can still be `NO-GO` when evidence/expertise is not credible enough.
+
+## Step 7 — Brand/entity gap
+
+Inspect branded search presence, recognized entities in the SERP, reviews/reputation, independent references/media, author/expert credibility and local prominence where applicable.
+
+A new domain facing government/major institutions/global brands on a trust-sensitive query may need a long authority-building runway even with excellent content.
+
+## Step 8 — Link/authority gap
+
+Use measured data only when a real dataset is available. Record:
+
+- referring domains to ranking page/domain;
 - relevance/quality pattern, not only count;
 - earned editorial vs directory/paid/spam patterns;
 - unique linkable assets;
@@ -124,63 +137,55 @@ Only use measured data when a real dataset is available. Record:
 
 Third-party DR/DA are comparative proxies, not Google metrics.
 
-Rate feasibility:
+Feasibility:
 
 - `GREEN`: peer competitors + realistic earned authority path;
-- `AMBER`: substantial gap but assets/brand/PR can close it;
-- `RED`: extraordinary gap/no legitimate acquisition path in required horizon.
+- `AMBER`: substantial gap but assets/brand/PR can plausibly close it;
+- `RED`: extraordinary gap/no legitimate acquisition path in the required horizon.
 
-## Step 8 — Freshness / recency
+## Step 9 — Freshness / recency
 
-Ask:
+Ask whether the query favors recent facts/news/pricing, is evergreen, and what truthful update cadence the business can sustain. Never refresh dates without meaningful changes.
 
-- do results favor recent dates/news/current prices?;
-- is the topic evergreen?;
-- does old content remain stable because fundamentals change slowly?;
-- what update cadence can the business sustain?
-
-Do not change dates without meaningful content updates.
-
-## Step 9 — Local considerations
+## Step 10 — Local considerations
 
 If local intent exists:
 
 - distance cannot be “optimized away” for every searcher;
-- improve relevance and prominence legitimately;
-- GBP accuracy/category/hours/services;
-- real location/service-area evidence;
-- reviews/reputation;
-- local organic page fit;
-- consistent business data.
+- improve relevance/prominence legitimately;
+- verify GBP accuracy/categories/hours/services;
+- require real location/service-area evidence;
+- review reputation and local organic page fit;
+- measure in actual geography.
 
 A query can be feasible in one city and infeasible in another.
 
-## Step 10 — International considerations
+## Step 11 — International considerations
 
-For multilingual/multiregional targets:
+For multilingual/multiregional targets verify dedicated locale URLs, genuine localization, hreflang/canonical alignment, local currency/legal/logistics, local competitors/brand familiarity and accessible locale switching without crawl-blocking redirects.
 
-- dedicated locale URL?;
-- genuinely localized visible language/content?;
-- hreflang reciprocal?;
-- canonical aligned?;
-- local pricing/currency/legal/logistics?;
-- local competitors/brand recognition?;
-- georedirect not blocking crawler/user access?
+## Step 12 — Ecommerce / transactional considerations
 
-## Step 11 — AI citation relevance
+If ecommerce/marketplace intent exists, inspect:
 
-Ask whether AI surfaces materially influence this query class.
+- dominant result is category vs product vs marketplace vs editorial comparison;
+- real inventory/availability depth;
+- variant/facet architecture;
+- price/shipping/returns competitiveness and accuracy;
+- Product/Merchant data consistency where relevant;
+- genuine review/reputation evidence;
+- whether the business can maintain inventory/content freshness;
+- whether a new thin category page would add any user value.
 
-Measure:
+A query with strong category/marketplace intent should not be forced into an informational article merely because article production is easier.
 
-- AI Overviews/AI Mode presence;
-- Bing Copilot citations/grounding queries;
-- ChatGPT/Perplexity/Claude controlled prompts;
-- AI referral/conversion data.
+## Step 13 — AI citation relevance
 
-Do not overvalue citation share where the business outcome is negligible.
+Ask whether AI surfaces materially influence this query class. Measure AI Overviews/AI Mode presence, Bing Copilot citation/grounding data, controlled ChatGPT/Perplexity/Claude observations and AI referral/conversion data where available.
 
-## Step 12 — Competitive scorecard
+Do not overvalue citation presence when it produces little business outcome. Citation ≠ ranking ≠ traffic.
+
+## Step 14 — Competitive scorecard
 
 Score each 0–3:
 
@@ -190,70 +195,73 @@ Score each 0–3:
 | Intent/page-type fit | mismatch | uncertain | reasonable | exact |
 | Technical readiness | blocked | major issues | minor | clean |
 | Content differentiation | commodity | limited | good | unique evidence |
+| YMYL/evidence readiness | unqualified | weak | adequate | strong/not material |
 | Brand/entity trust | weak | emerging | competitive | strong |
 | Authority/link feasibility | red | hard | feasible | advantage |
 | Freshness capability | cannot maintain | weak | adequate | strong |
-| Local/international fit | mismatch | partial | good | exact |
+| Local/international/ecommerce fit | mismatch | partial | good | exact |
 | Measurement quality | none | weak | partial | robust |
 
-This score is an internal prioritization tool, **not a Google score**.
+This score prioritizes work. It is **not a Google score** and does not produce a ranking probability percentage.
 
 ## Decision bands
 
-### `NOW`
+### `NOW` / `GO`
 
-- high business value;
-- page type/intention clear;
-- no Critical technical block;
-- meaningful differentiation possible;
-- authority gap realistically addressable.
+High business value, clear page type, no Critical technical block, credible differentiator and realistically addressable trust/authority gap.
 
-Action: build/upgrade now and measure.
+**Action:** build/upgrade now and measure.
 
-### `BUILD`
+### `BUILD` / `NOT-YET`
 
-Good query but prerequisites missing: brand, authority, data asset, architecture or content depth.
+Good query but prerequisites are missing: brand, authority, data asset, expertise, architecture or content depth.
 
-Action: define prerequisite roadmap and leading indicators.
+**Action:** define prerequisite roadmap and leading indicators.
 
-### `LONG_SHOT`
+### `LONG_SHOT` / `GO-LONG-TERM`
 
 Strategically relevant but dominated by materially stronger entities/assets.
 
-Action: pursue long-tail/adjacent clusters first; create evidence/authority moat before head term.
+**Action:** pursue adjacent/long-tail clusters and build an evidence/authority moat first.
+
+### `LOW-PRIORITY`
+
+Feasible but low business value, weak differentiation or poor opportunity cost relative to other clusters.
+
+**Action:** schedule after higher-value targets or retain for supportive coverage only.
 
 ### `NO-GO`
 
-Wrong intent, no legitimate matching page, negligible business value or unrealistic resource economics.
+Wrong intent, no legitimate matching page, insufficient expertise/evidence, negligible business value or unrealistic resource economics.
 
-Action: stop spending and redirect resources.
+**Action:** stop spending and redirect resources.
 
 ## Common blockers below Top 10
 
-Diagnose in this order:
+Diagnose in dependency order:
 
 1. wrong URL/page type for intent;
 2. not indexed / wrong canonical / rendering issue;
 3. weak architecture/internal discovery;
 4. commodity or incomplete content;
-5. missing first-party evidence/trust;
+5. missing first-party evidence/expertise/trust;
 6. severe authority/reputation gap;
-7. local/international mismatch;
+7. local/international/ecommerce mismatch;
 8. freshness mismatch;
-9. SERP changed since original plan;
-10. competition simply stronger — requiring a better asset/brand strategy, not cosmetic on-page edits.
+9. SERP changed since the original plan;
+10. competition is simply stronger — requiring a better asset/brand strategy, not cosmetic on-page edits.
 
 ## Stop-loss rule
 
 For every major target define before launch:
 
 - observation window appropriate to site/query;
-- minimum impression/indexing evidence;
+- minimum index/impression evidence;
 - business value threshold;
-- maximum content/PR engineering investment;
+- maximum content/PR/engineering investment;
 - conditions for consolidate/retarget/prune.
 
-SEO iteration should be evidence-driven portfolio management, not endless editing because a tool still shows warnings.
+SEO iteration is evidence-driven portfolio management, not endless editing because a tool still shows warnings.
 
 ## Output template
 
@@ -267,19 +275,29 @@ Dominant page type:
 SERP features:
 Current URL/state:
 Technical gate: PASS/FAIL
+YMYL/high-stakes risk: LOW/MEDIUM/HIGH
+Required differentiator:
 Content/evidence gap:
 Brand/entity gap:
 Measured authority gap:
 Freshness requirement:
-Local/international requirement:
+Local requirement:
+International requirement:
+Ecommerce/transactional requirement:
 AI surface relevance:
-Decision: NOW/BUILD/LONG_SHOT/NO-GO
+Decision: GO / NOT-YET / GO-LONG-TERM / LOW-PRIORITY / NO-GO
 Primary blocker:
 Next action:
 Success metric:
 Stop condition:
 ```
 
+## Quality gate
+
+`PASS` when a query decision contains a dated SERP observation, intent/page type, technical state, evidence/differentiator gap, brand/authority gap, YMYL risk, relevant local/international/ecommerce constraints, measurement plan, decision and stop condition.
+
+`FAIL` when a decision is based only on search volume, keyword difficulty, content length, DR/DA, a plugin score or an unsupported “ranking probability.”
+
 ## Final principle
 
-“Can this page rank?” is the wrong first question. Ask: **Can this business produce the page/evidence/entity/authority that this query’s users and current competitive environment require, while remaining technically eligible and policy-safe?**
+“Can this page rank?” is the wrong first question. Ask: **Can this business legitimately produce the page, evidence, entity trust and authority that this query’s users and current competitive environment require, while remaining technically eligible, policy-safe and economically worthwhile?**
