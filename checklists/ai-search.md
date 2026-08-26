@@ -32,5 +32,26 @@
 - [ ] Provider/model/date/language recorded.
 - [ ] Changes annotated; no one-run causal claims.
 
-## PASS
-PASS when intended crawlers can retrieve content, training/search controls are separated, first-party evidence/entity clarity are strong, measurements are provider-specific and no unsupported GEO myth is treated as a ranking factor.
+## PASS criteria
+
+PASS when intended search/retrieval crawlers can access the intended public content, search vs training controls are explicitly separated, evidence/entity facts are accurate, measurement is provider-specific/repeated and no unsupported GEO myth is treated as a ranking factor.
+
+## Common failures
+
+- blocking a training bot and assuming search visibility is also blocked, or vice versa;
+- WAF/CDN silently blocks intended search/retrieval bots despite permissive robots rules;
+- `llms.txt`, FAQ spam or “AI schema” is presented as a Google requirement;
+- one citation is reported as a ranking/authority/traffic win;
+- fake Reddit/review/forum mentions are manufactured for supposed LLM signals;
+- provider/model/date/language is omitted from citation tests;
+- stochastic one-run prompt results are treated as deterministic;
+- Bing citation metrics and ordinary search rank/clicks are merged into one KPI.
+
+## Retest
+
+1. Re-fetch provider-specific robots rules and first-party bot documentation before testing.
+2. Check server/WAF logs for intended bot access and distinguish crawler identity/purpose.
+3. Re-run a fixed prompt/query set multiple times with provider/model/date/language recorded.
+4. Re-check Google/Bing AI reporting and ordinary Search Performance separately where available.
+5. Verify referral analytics and conversions independently from citation counts.
+6. Compare before/after observations without claiming causality unless the design supports it; mark `PASS`/`FAIL`/`MONITOR` with evidence.
