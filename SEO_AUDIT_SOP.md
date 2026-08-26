@@ -1,7 +1,7 @@
 # SEO_AUDIT_SOP.md — Severity-Based Audit and Retest Procedure
 
 **Version:** 2026-08-26  
-**Rule:** diagnose in dependency order. Do not optimize titles/schema/backlinks while availability, crawl, index or canonical blockers remain.
+**Rule:** diagnose in dependency order. Do not optimize titles/schema/backlinks while security, availability, transport, crawl, index, canonical or rendering blockers remain.
 
 ## Severity model
 
@@ -11,44 +11,51 @@
 - `LOW` — cleanup/opportunity; no evidence of material current harm.
 - `INFO` — observation requiring no action unless context changes.
 
-Every issue must contain: **Evidence → Impact → Diagnosis → Remediation → Retest → Owner → Date → Result**.
+Every issue must contain: **Severity → Impact → Evidence → Diagnosis → Fix → Verification → Retest → Result** plus owner/date/deploy context.
 
 ---
 
 ## 1. Security / privacy / unauthorized exposure
 
-**Check**
-- HTTPS/TLS, certificate/redirect integrity;
-- hacked/spam pages/links;
-- staging/dev/admin/private URLs exposed/indexable;
-- secrets/tokens/user data in URLs or rendered source;
-- unexpected WAF rules and bot impersonation.
+**Check:** hacked/spam pages, private/staging/admin exposure, secrets/user data in URLs/source, authentication boundaries, TLS/security anomalies and crawler impersonation.
 
-**CRITICAL examples**: private customer data indexed; hacked pages; production robots exposes nothing confidential but security relies on it.
+**CRITICAL examples:** private customer data indexable; compromised pages; security depending on robots.txt.
 
-**Remediation**: fix access control first. `robots.txt` is not security. Use authentication/authorization/removal processes as required.
+**Fix:** repair access control first. `robots.txt` is not authentication/authorization.
 
-**Retest**: unauthenticated access, Search removal/index state, logs/security scanner.
+**Verification / Retest:** unauthenticated requests, affected URL/index state, logs/security scanner and removal workflows where needed.
 
 ---
 
 ## 2. Site availability
 
-Test homepage + representative critical templates from external network/regions.
+Test homepage plus representative critical templates from an external network/region.
 
-Evidence:
-- DNS;
-- TLS;
-- status;
-- uptime;
-- CDN/origin health;
-- browser render.
+Evidence: uptime, origin/CDN health, browser render and representative endpoint availability.
 
-`CRITICAL`: sustained outage, domain/DNS failure, widespread 5xx.
+`CRITICAL`: sustained outage or widespread 5xx/unreachable service.
 
 ---
 
-## 3. HTTP/status semantics
+## 3. DNS / HTTPS / HTTP transport
+
+Check before interpreting page semantics:
+
+- DNS resolution/A/AAAA/CNAME as applicable;
+- intended hostnames resolve to intended infrastructure;
+- TLS certificate validity/hostname/chain;
+- HTTP→HTTPS and host normalization;
+- CDN/origin routing;
+- HSTS/edge behavior where material;
+- IPv4/IPv6 differences where material.
+
+`CRITICAL/HIGH`: domain fails resolution, certificate breaks production, old/staging host becomes canonical, CDN routes major traffic to wrong origin.
+
+**Verification / Retest:** independent DNS lookup + TLS/HTTP request from representative locations/clients.
+
+---
+
+## 4. HTTP status semantics
 
 Sample and crawl:
 
@@ -58,11 +65,11 @@ Sample and crawl:
 - gone/nonexistent → 404/410;
 - server error → 5xx, not fake 200.
 
-Flag redirect chains/loops and SPA soft-404 behavior.
+Flag redirect chains/loops, soft 404s and SPA “200 for every route”.
 
 ---
 
-## 4. Crawl blocking
+## 5. Crawl blocking
 
 Check:
 
@@ -71,42 +78,34 @@ Check:
 - WAF/CDN/IP/UA rules;
 - auth/cookie/geofence;
 - blocked JS/CSS/API dependencies;
-- provider-specific AI crawlers.
+- provider-specific intended search/retrieval crawlers.
 
-Remember: robots blocking can prevent a crawler from seeing `noindex`; do not treat `Disallow` as a deindex command.
+Remember: robots blocking can prevent a crawler from seeing `noindex`; `Disallow` is not a deindex command.
 
 ---
 
-## 5. Indexation
+## 6. Indexability / indexation
 
 Use:
 
 - GSC Page Indexing;
 - URL Inspection samples;
 - Bing Webmaster URL inspection;
-- sitemap submitted/indexed groups;
-- site: operator only as rough supplementary discovery, not a complete index count.
+- sitemap submitted/indexed cohorts;
+- `site:` only as rough supplementary discovery, not a complete index count.
 
-Classify exclusions:
+Classify exclusions: intentional noindex, duplicate/canonical, crawled/discovered not indexed, soft 404, blocked, error, unknown.
 
-- intentional noindex;
-- duplicate/canonical;
-- crawled/discovered not indexed;
-- soft 404;
-- blocked;
-- error;
-- unknown.
-
-`HIGH`: priority commercial page unexpectedly not indexed.
+`HIGH`: priority commercial page unexpectedly non-indexable/not indexed.
 
 ---
 
-## 6. Canonicalization
+## 7. Canonicalization
 
 For each priority/template sample compare:
 
-- URL requested;
-- HTTP redirect target;
+- requested URL;
+- redirect target;
 - HTML canonical;
 - sitemap URL;
 - internal links;
@@ -117,39 +116,39 @@ Canonical is a preference signal, not an absolute command. Resolve conflicting s
 
 ---
 
-## 7. Redirects
+## 8. Redirects
 
 Check:
 
-- one-hop mapping;
+- one-hop mappings;
 - no mass redirect to homepage/unrelated category;
-- protocol/www/trailing slash consistency;
+- protocol/www/trailing-slash consistency;
 - query preservation only when meaningful;
-- migrated URL mapping;
-- internal links and sitemap updated to final URL.
+- migration mappings;
+- internal links/sitemaps use final URLs.
 
-Keep migration redirects long enough for users/search systems; Google generally recommends retaining them at least a year in site moves.
+Keep site-move redirects sufficiently long; current Google migration guidance is the authority for current retention recommendations.
 
 ---
 
-## 8. Rendering / JavaScript
+## 9. Rendering / JavaScript
 
-For samples compare:
+Compare:
 
 - raw HTML;
 - rendered DOM;
 - Google rendered output where available;
-- JS disabled dependency diagnostic;
 - console/network errors;
-- status/canonical/title/robots before and after hydration.
+- status/canonical/title/robots before and after hydration;
+- direct-request SPA/deep-route behavior.
 
-`HIGH`: primary content/links absent from rendered output or hydration changes index directives incorrectly.
+`HIGH`: primary content/links absent, index directives flip incorrectly, or nonexistent routes return misleading 200 output.
 
 Use `docs/javascript-seo.md`.
 
 ---
 
-## 9. Internal linking
+## 10. Internal linking
 
 Measure:
 
@@ -159,15 +158,14 @@ Measure:
 - broken links;
 - links to redirects;
 - descriptive anchors;
-- pagination links;
-- breadcrumbs;
+- pagination/breadcrumbs;
 - JS click-only navigation.
 
-Prioritize links that improve navigation/context, not artificial exact-match anchor quotas.
+Prioritize user navigation/context, not artificial exact-match anchor quotas.
 
 ---
 
-## 10. Architecture
+## 11. Architecture
 
 Review:
 
@@ -176,136 +174,120 @@ Review:
 - facet/filter policy;
 - internal search/tag archives;
 - category/hub usefulness;
-- URL stability;
-- pagination;
-- separate locale/location architecture.
+- URL stability/pagination;
+- locale/location architecture.
 
 `HIGH`: infinite crawl space, large orphan inventories, conflicting duplicate pathways.
 
 ---
 
-## 11. Duplication / thin URL classes
+## 12. Duplication / thin URL classes
 
-Identify:
+Identify parameters/sorts/sessions, near-identical locations, copied manufacturer descriptions, duplicate tags/categories, legacy variants and pSEO templates with no distinct value.
 
-- parameters/sort/session URLs;
-- near-identical location pages;
-- copied manufacturer descriptions;
-- duplicate tags/categories;
-- printer/AMP/legacy variants;
-- protocol/subdomain duplicates;
-- programmatic templates with no distinct value.
-
-Choose: consolidate, redirect, canonical, noindex, remove or improve — based on user purpose and URL semantics.
+Choose improve, consolidate, redirect, canonical, noindex or remove according to real user purpose and URL semantics.
 
 ---
 
-## 12. Content quality
+## 13. Content quality
 
 For priority pages ask:
 
 - Does it satisfy current intent?
 - Is information accurate/current?
 - What is uniquely useful?
-- Are claims sourced?
+- Are material claims sourced?
 - Is first-hand evidence/methodology shown where relevant?
 - Is authorship/reviewer appropriate?
-- Is page mostly paraphrase/commodity?
-- Are AI-assisted sections verified?
-- Is scale creating low-value pages?
+- Is it commodity paraphrase/filler?
+- Is AI-assisted content verified?
+- Is scale producing low-value pages?
 
 Use people-first guidance and spam-policy boundaries.
 
 ---
 
-## 13. Search intent / SERP fit
+## 14. Search intent / SERP fit
 
-Run dated target-market SERP observation.
+Run a dated target-market SERP observation and compare dominant page type, commercial/informational mix, local/shopping/video/AI features, freshness, brand concentration and result format.
 
-Compare:
-- dominant page type;
-- commercial vs informational mix;
-- local/shopping/video/AI features;
-- freshness;
-- brand concentration;
-- result format.
+`HIGH` strategic issue: trying to rank the wrong page type for a stable observed intent pattern.
 
-`HIGH` strategic issue: trying to rank a service landing page where results consistently demand product/category/comparison content, or vice versa.
+Use `RANKING_FRAMEWORK.md` and `docs/serp-research.md`.
 
 ---
 
-## 14. Structured data
+## 15. Structured data
 
 Check:
 
-- JSON-LD syntax;
-- correct type;
-- visible-content match;
-- Google-supported feature requirements if applicable;
+- syntax/vocabulary;
+- correct semantic type;
+- visible-content truth match;
+- current Google feature requirements if applicable;
 - duplicate/conflicting plugin markup;
-- fake reviews/ratings;
+- reviews/ratings authenticity;
 - product price/availability freshness;
-- entity IDs/sameAs accuracy.
+- entity IDs/`sameAs` accuracy.
 
-Valid schema ≠ guaranteed rich result/rank.
-
----
-
-## 15. Performance / Core Web Vitals
-
-Measure field data first when available:
-
-- LCP target ≤2.5s;
-- INP target <200ms;
-- CLS target <0.1.
-
-Use lab tools for diagnosis. Segment by template/device/region. Fix user-impacting causes: server latency, render-blocking resources, images/fonts, JS main-thread work, layout instability.
-
-Do not treat Lighthouse 100 as an SEO guarantee.
+Valid Schema.org ≠ guaranteed rich result/rank.
 
 ---
 
-## 16. External authority / reputation
+## 16. Performance / Core Web Vitals
+
+Measure field data first when available. Current good thresholds used in this baseline: LCP ≤2.5s, INP <200ms, CLS <0.1.
+
+Use lab tools for diagnosis; segment by template/device/region. Fix real causes such as origin latency, render-blocking resources, images/fonts, main-thread work and layout instability.
+
+A Lighthouse score is not a ranking score.
+
+---
+
+## 17. External authority / reputation
 
 Review:
 
 - relevant earned referring domains;
 - link-spam history/manual actions;
-- unlinked mentions;
+- unlinked/brand mentions;
 - brand SERP;
 - reviews/local reputation;
 - industry/partner citations;
 - original research/linkable assets;
-- fake/PBN/paid followed links.
+- paid/PBN/exchange risk.
 
 Use `docs/links-authority.md` and `docs/entity-brand-reputation.md`.
 
 ---
 
-## 17. Special-case modules
+## 18. Special-case modules
 
-Activate only when relevant:
+Activate only when relevant.
 
 ### Local
-GBP accuracy, categories, hours, NAP, reviews, local page evidence, relevance/distance/prominence interpretation.
+GBP accuracy, categories, hours, NAP, genuine reviews, local proof and geography-aware measurement.
 
 ### International
-Distinct locale URLs, localized visible language, hreflang reciprocity, canonical, georedirect/crawl accessibility.
+Distinct locale URLs, real localization, hreflang reciprocity, same-locale canonicals and accessible locale selection.
 
 ### Ecommerce
-categories/products, variants, facets, merchant feeds, Product schema, out-of-stock lifecycle, pagination.
+categories/products, variants, facets, merchant feeds, Product schema, inventory lifecycle and pagination.
 
 ### Publisher/news
-freshness, dates/bylines, crawl speed, article/video/image eligibility, archive/tag architecture, corrections.
+freshness, dates/bylines/sourcing, discovery latency, article/media eligibility, archive/tag controls and corrections.
+
+### SaaS/B2B/service/marketplace/forum/affiliate
+Use the corresponding `docs/site-types/` playbook and activate its specific risk/measurement gates.
 
 ---
 
-## 18. AI Search / crawler controls
+## 19. AI Search / crawler controls
 
 Inventory intended platforms and inspect:
 
-- Google generative AI control/report;
-- Google-Extended policy separately;
+- Google generative AI Search control/report where available;
+- Google-Extended separately;
 - `OAI-SearchBot` vs `GPTBot`;
 - `Claude-SearchBot` / `Claude-User` / `ClaudeBot`;
 - Perplexity controls;
@@ -313,16 +295,16 @@ Inventory intended platforms and inspect:
 - Applebot/Applebot-Extended;
 - DuckAssistBot.
 
-Check robots plus WAF/CDN logs. Never assume search and training controls are the same.
+Check robots plus WAF/CDN logs. Search, training and user-triggered retrieval controls must not be conflated. Citation metrics are not ordinary ranking metrics.
 
 ---
 
-## 19. Measurement / causality
+## 20. Measurement / causality
 
 Confirm:
 
-- GSC/BWT connected;
-- analytics conversions valid;
+- GSC/BWT/analytics connected where applicable;
+- conversions valid;
 - branded/non-branded separated;
 - releases annotated;
 - AI referrals/citations tracked separately;
@@ -330,7 +312,7 @@ Confirm:
 - dashboards do not merge incompatible metrics;
 - seasonality/algorithm updates/migrations noted.
 
-A fix is not `PASS` because code deployed; it passes only after live retest and relevant search/measurement confirmation.
+A fix is not `PASS` because code deployed; it passes only after live verification/retest and appropriate measurement confirmation.
 
 ---
 
@@ -340,10 +322,11 @@ A fix is not `PASS` because code deployed; it passes only after live retest and 
 ID: SEO-YYYY-NNN
 Severity: CRITICAL/HIGH/MEDIUM/LOW/INFO
 Scope: URLs/templates/host
-Evidence: exact test/output/source
 Impact: user/search/business impact
-Root-cause hypothesis:
-Remediation:
+Evidence: exact test/output/source
+Diagnosis: evidence-backed root cause or bounded hypothesis
+Fix: remediation performed/proposed
+Verification: direct check that the intended change exists
 Owner:
 Deploy/commit:
 Retest procedure:
@@ -352,22 +335,31 @@ Result: PASS/FAIL/MONITOR
 Date:
 ```
 
-# Audit Prioritization Rule
+# Verification vs Retest
 
-Prioritize using:
+- **Verification** asks: did the intended configuration/code/content change actually ship?
+- **Retest** asks: did the original failure condition disappear in live behavior and downstream evidence?
 
-`Priority = severity × affected valuable URLs/users × confidence × reversibility/effort consideration`
+Both are required for Critical/High closure.
 
-Do not “fix” low-confidence minor warnings ahead of a verified index/canonical/revenue blocker.
+# Audit prioritization rule
 
-# Definition of Audit Complete
+Prioritize approximately by:
+
+`Priority = severity × affected valuable URLs/users × evidence confidence × business exposure`, adjusted for reversibility/effort.
+
+Do not fix low-confidence cosmetic tool warnings ahead of a verified crawl/index/revenue blocker.
+
+# Definition of audit complete
 
 An audit is complete only when:
 
-- scope and sample methodology documented;
+- scope and sample methodology are documented;
 - Critical/High issues have owners/actions;
-- false positives removed;
-- every completed fix has live retest evidence;
-- residual risk/backlog explicit;
-- release and measurement annotations recorded;
-- no plugin/tool score is used as the definition of success.
+- false positives are removed;
+- every completed Critical/High fix has verification + live retest evidence;
+- residual risk/monitoring is explicit;
+- release and measurement annotations exist;
+- no plugin/tool score defines success.
+
+**Baseline SOP Quality Gate:** `PASS` when the 20 dependency-ordered stages above are applied in order, issue records use the required evidence fields, and Critical/High closure requires verification plus retest.
