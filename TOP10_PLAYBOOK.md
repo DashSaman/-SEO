@@ -6,378 +6,271 @@
 
 ## Operating loop
 
-**Business → Market → Competitors → Keywords → Intent → Architecture → Technical → Content → Entities → Structured Data → Internal Links → Authority → AI Search → Launch → Validation → Measurement → Iteration**
+**Business → Market → Competitors → Query universe → Intent → Architecture → Technical → Content → Entities → Structured Data → Internal Links → Authority → AI Search → Launch → Validation → Measurement → Iteration**
 
-Every phase has an input, action, quality gate and output. Do not skip to title/meta/schema before business/query feasibility is known.
+Do not skip to title/meta/schema before business/query feasibility is known.
+
+## Mandatory phase record — required for every phase
+
+Every phase below MUST be executed and recorded with these eight fields:
+
+```text
+PHASE:
+INPUTS:
+ACTIONS:
+TOOLS:
+EVIDENCE:
+OUTPUT:
+PASS CRITERIA:
+FAIL CRITERIA:
+NEXT ACTION:
+```
+
+A phase is not complete because work was performed. It is complete only when its **evidence, output and PASS/FAIL result** are recorded and the next dependency is explicit.
+
+### Phase execution matrix
+
+| Phase | Typical tools | Minimum evidence | Required output | Next action after PASS |
+|---|---|---|---|---|
+| 0 Business | analytics/CRM/business data | outcomes, margins, market, baseline | `BUSINESS_SEARCH_BRIEF` | Market/SERP research |
+| 1 Market/SERP | live search, GSC/BWT, measured SERP provider if available | dated locale/device SERP observations | `SERP_MAP` | Feasibility |
+| 2 Feasibility | `RANKING_FRAMEWORK.md`, measured authority data | intent/page type, gaps, economics | prioritized query portfolio | Query→page map |
+| 3 Query mapping | SERP map, keyword/query data | cluster-to-intent evidence | URL/content map | Architecture |
+| 4 Architecture | crawler, diagrams, CMS routes | crawl paths, URL classes, facet rules | architecture/internal-link spec | Technical audit |
+| 5 Technical | `SEO_AUDIT_SOP.md`, crawler, headers, GSC/BWT, logs | before/after status/index/canonical/render evidence | technical gate report | Content brief |
+| 6 Brief | SERP, customer/support data, first-party sources | source/evidence inventory and user job | production content brief | Create content |
+| 7 Content | primary sources, product/data/testing systems | unique evidence, accuracy review | publishable page/content asset | On-page implementation |
+| 8 On-page | rendered HTML, page source, analytics test | title/H1/body/canonical/robots/CTA evidence | implemented page | Entity/trust |
+| 9 Entity/trust | organization records, reviews, profiles | consistent identity/claims | entity/trust map | Structured data |
+| 10 Structured data | Schema.org, Google docs, validators | rendered JSON-LD + validator output | validated semantic markup | Internal discovery |
+| 11 Internal links | crawler/inlink export | orphan/depth/target evidence | internal-link deployment | External authority |
+| 12 Authority | backlink/mention datasets, PR assets | editorial relevance/policy classification | authority/PR roadmap | AI Search readiness |
+| 13 AI Search | provider docs, robots/WAF logs, AI reports | crawler settings + provider-specific baseline | AI visibility baseline | Launch gate |
+| 14 Launch | launch checklist, HTTP/render tests | preflight PASS artifacts | release decision | Post-launch validation |
+| 15 Validation | live crawl, logs, GSC/BWT, analytics | production before/after evidence | validated release | Measurement window |
+| 16 Measurement | GSC/BWT/analytics/CRM/AI reports | dated comparable KPI cohorts | performance review | Iteration decision |
+| 17 Iteration | all prior evidence | diagnosed bottleneck + hypothesis | smallest evidence-backed change | return to affected phase |
+
+If a listed commercial tool/API is unavailable, record the limitation and use an evidence-safe alternative. Never invent data.
 
 ---
 
 ## 0. Business / outcome definition
 
-**Inputs**
-- products/services and margins;
-- target geography/languages;
-- target customer segments;
-- conversion definition;
-- legal/compliance constraints;
-- existing analytics/GSC/BWT/CRM data.
-
-**Actions**
-1. Define primary commercial outcomes: revenue, qualified lead, signup, booking, store visit, etc.
-2. Identify the pages/types that can satisfy those outcomes.
-3. Separate branded, non-branded and support/navigation demand.
-4. Establish a measurement baseline and change log.
-
-**PASS**: every SEO initiative maps to a user/business outcome and target market.  
-**FAIL**: KPI is only “Rank Math/SEO score” or raw traffic with no quality target.  
-**Output**: `BUSINESS_SEARCH_BRIEF`.
-
----
+**Inputs:** products/services/margins, geography/languages, customer segments, conversion definition, legal constraints, analytics/GSC/BWT/CRM data.  
+**Actions:** define commercial outcomes; identify page types that can create them; separate branded/non-branded/support demand; capture baseline/change log.  
+**Tools:** business records, analytics/CRM, GSC/BWT where connected.  
+**Evidence:** actual conversion/revenue/lead definitions and current baseline.  
+**Output:** `BUSINESS_SEARCH_BRIEF`.  
+**PASS:** every SEO initiative maps to a user/business outcome and target market.  
+**FAIL:** KPI is only plugin score/raw traffic with no quality target.  
+**Next:** market/SERP reality.
 
 ## 1. Market and SERP reality
 
-**Inputs**: target country/city/language/device and initial queries.
-
-**Actions**
-- run dated target-market SERP observations;
-- record AI Overview/local pack/shopping/video/PAA/etc.;
-- identify dominant page types and brands;
-- note freshness and localization;
-- use GSC/BWT/paid keyword/backlink data if available.
-
-**PASS**: SERP is measured in the actual market and dominant intent/page type is explicit.  
-**FAIL**: strategy uses a generic keyword-tool score without looking at results.  
-**Output**: `SERP_MAP` + query clusters.
-
----
+**Inputs:** target country/city/language/device and seed queries.  
+**Actions:** run dated SERP observations; record AI/local/shopping/video/PAA features; identify dominant page types/brands; note freshness/localization.  
+**Tools:** live search, `docs/serp-research.md`, GSC/BWT, measured keyword/backlink provider if actually available.  
+**Evidence:** date, market, query, visible result/page type/features.  
+**Output:** `SERP_MAP` + query clusters.  
+**PASS:** actual market measured and intent/page type explicit.  
+**FAIL:** strategy uses a generic difficulty/volume score without looking at results.  
+**Next:** competitive feasibility.
 
 ## 2. Competitive feasibility
 
-For each priority cluster answer:
+**Inputs:** `SERP_MAP`, business value, current site/entity/authority state.  
+**Actions:** assess competitor class, page type legitimacy, unique evidence, authority gap when measured, freshness/location/YMYL/ecommerce constraints and economics.  
+**Tools:** `RANKING_FRAMEWORK.md`, GSC/BWT, measured backlink/authority data when available.  
+**Evidence:** competitor/page-type observations and measured gaps with source/context.  
+**Output:** priority portfolio with `GO / NOT-YET / GO-LONG-TERM / LOW-PRIORITY / NO-GO`.  
+**PASS:** required differentiator and legitimate path exist.  
+**FAIL:** no matching page/evidence/economics or only copied competitor strategy.  
+**Next:** query→intent→page mapping.
 
-- Are results mostly giant brands/government/marketplaces or peers?
-- Is the dominant page type one we can legitimately create?
-- What unique first-party evidence can we add?
-- How large is the authority/referring-domain gap when measurable?
-- Is freshness or location decisive?
-- Is the site technically/indexationally capable?
-- What commercial value justifies the effort?
+## 3. Query → intent → page mapping
 
-Classify:
-
-- `NOW` — feasible with current assets;
-- `BUILD` — feasible after content/authority/entity work;
-- `LONG_SHOT` — dominated by materially stronger entities;
-- `NO-GO` — wrong intent/economics or no legitimate differentiated answer.
-
-**Output**: priority portfolio, not one giant keyword list.
-
----
-
-## 3. Keyword → intent → page mapping
-
-Group variants by the **same user task**, not by exact-match phrase.
-
-Example:
-- `business voip provider`, `business voip service`, `voip for business` may map to one commercial service page if SERP intent aligns;
-- `how does voip work` belongs to an informational guide;
-- `voip provider berlin` may require localized evidence if local intent is real.
-
-Avoid one page per keyword synonym.
-
-**PASS**: one preferred page per distinct intent with no cannibalizing duplicates.  
-**Output**: URL/content map.
-
----
+**Inputs:** prioritized clusters and SERP intent evidence.  
+**Actions:** group variants by same user task; assign one preferred page per distinct intent; identify local/commercial/informational boundaries.  
+**Tools:** SERP map, query data, site inventory/crawler.  
+**Evidence:** SERP page-type consistency and current URL inventory.  
+**Output:** URL/content map.  
+**PASS:** one preferred page per distinct intent with no unnecessary synonym pages/cannibalization.  
+**FAIL:** one page per exact keyword or conflicting URLs target same stable intent.  
+**Next:** architecture.
 
 ## 4. Information architecture
 
-Design:
-
-`Home → Commercial hubs → Services/Categories → Detailed pages → Supporting evidence/guides`
-
-Actions:
-- keep important pages within logical crawl depth;
-- create hub→child and sibling contextual links;
-- expose real `<a href>` links;
-- control facets/filters/search URLs;
-- define breadcrumbs;
-- define canonical URL policy.
-
-**PASS**: every priority page has a logical parent and crawlable internal path.  
-**FAIL**: orphan pages, mega footer keyword clouds, infinite faceted space.
-
----
+**Inputs:** URL/content map, product/service/topic hierarchy.  
+**Actions:** design `Home → Commercial hubs → Services/Categories → Detailed pages → Supporting evidence/guides`; define crawlable links, breadcrumbs, facet/search controls and canonical URL policy.  
+**Tools:** crawler, sitemap/CMS route inventory, architecture diagram.  
+**Evidence:** crawl paths, URL classes, orphan/depth/facet rules.  
+**Output:** architecture/internal-link specification.  
+**PASS:** every priority page has a logical parent and crawlable path; crawl space is finite.  
+**FAIL:** orphans, keyword footer clouds or uncontrolled faceted space.  
+**Next:** technical eligibility gate.
 
 ## 5. Technical eligibility gate
 
-Check in this order:
-
-1. DNS/TLS/site availability;
-2. HTTP status;
-3. robots/WAF access;
-4. `noindex` / X-Robots-Tag;
-5. canonical;
-6. redirects;
-7. rendered critical content/links;
-8. sitemap/internal discovery;
-9. mobile/user experience;
-10. CWV field performance;
-11. structured-data validity;
-12. hreflang/local/product special cases.
-
-Use `SEO_AUDIT_SOP.md` and technical checklists.
-
-**PASS**: preferred URL is crawlable/indexable/canonical, returns correct status, renders intended content and is discoverable.  
-**FAIL**: any Critical blocker exists.  
-**Output**: technical PASS evidence with before/after tests.
-
----
+**Inputs:** architecture, production/staging URLs, current crawl/index state.  
+**Actions:** execute the dependency order in `SEO_AUDIT_SOP.md`: security → availability → DNS/HTTPS/HTTP → status → crawl → indexability → canonical → redirects → rendering → internal links → architecture → duplication → content/intent → structured data → CWV → authority/special modules → AI Search → measurement.  
+**Tools:** crawler, HTTP/header tests, browser rendering, GSC/BWT, logs, validators.  
+**Evidence:** before/after tests for all Critical/High issues.  
+**Output:** technical gate report.  
+**PASS:** preferred URL is available/crawlable/indexable/canonical, returns correct status, renders intended content and is discoverable.  
+**FAIL:** any unresolved Critical blocker.  
+**Next:** content brief.
 
 ## 6. Content brief built from intent and evidence
 
-A content brief should contain:
-
-- primary user job;
-- search stage (learn/compare/buy/troubleshoot/local);
-- required factual claims and sources;
-- unique first-party evidence;
-- questions/objections from SERP/customer/support data;
-- page format;
-- internal links in/out;
-- media/examples/calculators/data;
-- authorship/reviewer requirement;
-- freshness/update owner;
-- conversion action.
-
-Do **not** specify arbitrary keyword density or word count as a ranking formula.
-
----
+**Inputs:** query/page mapping, competitive evidence, first-party/customer/support sources.  
+**Actions:** define user job, search stage, sourced factual claims, unique evidence, objections/questions, format, internal links, media/data, author/reviewer, freshness owner and CTA.  
+**Tools:** current SERP, customer/support/sales data, primary source documents.  
+**Evidence:** source list and user/business requirements.  
+**Output:** production brief.  
+**PASS:** every material section exists for a user/evidence reason.  
+**FAIL:** arbitrary word count/keyword density or competitor-outline cloning drives the brief.  
+**Next:** content creation.
 
 ## 7. Create differentiated content
 
-High-value differentiators include:
-
-- original data/research;
-- real product specifications and availability;
-- worked calculations/examples;
-- first-hand testing methodology;
-- case studies with permission;
-- screenshots/video/diagrams;
-- decision tables;
-- limitations/tradeoffs;
-- transparent pricing/process where appropriate;
-- expert review for high-stakes topics.
-
-**PASS**: page is useful even if search traffic did not exist.  
-**FAIL**: page mostly paraphrases existing top results or is generated to hit phrase variants.
-
----
+**Inputs:** approved brief and source/evidence set.  
+**Actions:** produce original data/research, real product facts, worked examples, first-hand testing/cases, media, decision aids, limitations and expert review as appropriate.  
+**Tools:** product/data/testing systems, editorial workflow, primary sources.  
+**Evidence:** source/methodology records and factual QA.  
+**Output:** publishable page/asset.  
+**PASS:** page is materially useful even if search traffic did not exist.  
+**FAIL:** page mostly paraphrases competitors or exists to hit phrase/location variants.  
+**Next:** on-page implementation.
 
 ## 8. On-page implementation
 
-Validate:
-
-- descriptive concise title aligned with intent;
-- one clear main heading and logical subheadings;
-- visible answer/product/service evidence;
-- descriptive internal anchors;
-- image alt where meaningful;
-- canonical/robots correct;
-- conversion action appropriate;
-- no hidden keyword stuffing;
-- snippets are earned from page content; meta description is presentation input, not ranking guarantee.
-
----
+**Inputs:** approved content + target URL/intent.  
+**Actions:** implement descriptive title/H1, visible evidence, internal anchors, media/alt, canonical/robots, CTA and appropriate snippet metadata.  
+**Tools:** CMS/source/rendered HTML, analytics test, `checklists/on-page.md`.  
+**Evidence:** raw/rendered output and tracking test.  
+**Output:** implemented page.  
+**PASS:** intent/content/technical directives agree.  
+**FAIL:** hidden stuffing, wrong canonical/noindex, mobile content loss or metadata promise mismatch.  
+**Next:** entity/trust layer.
 
 ## 9. Entity and trust layer
 
-Check:
-
-- clear organization/person/product identity;
-- About/contact/support/policies;
-- authentic author/reviewer where relevant;
-- consistent brand/NAP/location data;
-- independent reviews/references;
-- claims/credentials verifiable;
-- `sameAs` only to true same entities;
-- reputation issues addressed operationally.
-
-Use `docs/entity-brand-reputation.md`.
-
----
+**Inputs:** organization/person/product/location facts and reputation sources.  
+**Actions:** verify About/contact/support/policies, authorship/review, brand/NAP, credentials, independent references and reputation issues.  
+**Tools:** `docs/entity-brand-reputation.md`, official organization records, relevant profiles/review platforms.  
+**Evidence:** verifiable same-entity facts and source URLs.  
+**Output:** entity/trust map and corrections.  
+**PASS:** important claims/identities are consistent and verifiable.  
+**FAIL:** fake credentials/reviews/locations or ambiguous entity identity.  
+**Next:** structured data.
 
 ## 10. Structured data
 
-Add only markup that accurately describes visible content and has a clear semantic/search purpose.
+**Inputs:** visible semantic entities and desired supported search features.  
+**Actions:** choose Schema.org type; check engine-specific feature docs; generate JSON-LD; validate syntax/properties; compare visible content; monitor applicable reports.  
+**Tools:** Schema.org, current Google Search docs, Rich Results Test/validators.  
+**Evidence:** rendered markup + validator output + visible-content match.  
+**Output:** validated semantic markup.  
+**PASS:** truthful valid markup; feature requirements satisfied when targeting a feature.  
+**FAIL:** invented ratings/entities or schema count is the KPI.  
+**Next:** internal authority/discovery.
 
-Workflow:
-1. choose Schema.org type;
-2. check engine-supported feature if rich result is desired;
-3. generate JSON-LD;
-4. validate syntax and required/recommended properties;
-5. confirm visible-content match;
-6. monitor Search Console enhancements where available.
+## 11. Internal authority / discovery
 
-**FAIL**: schema contains invented ratings/reviews/entities or is added merely to increase schema count.
-
----
-
-## 11. Internal authority/discovery
-
-For every priority page:
-
-- link from relevant hub/navigation where justified;
-- link from high-traffic supporting guides when contextually useful;
-- create reciprocal conceptual navigation where natural;
-- remove dead/redirected internal targets;
-- use descriptive anchors without spammy repetition;
-- maintain breadcrumbs.
-
-Measure orphan rate, crawl depth and internal-link distribution by template.
-
----
+**Inputs:** architecture and priority URL portfolio.  
+**Actions:** link from relevant hubs/guides, remove redirect/dead targets, use descriptive anchors, maintain breadcrumbs and useful reciprocal conceptual navigation.  
+**Tools:** crawler/inlink export, `checklists/internal-links.md`.  
+**Evidence:** orphan/depth/inlink/target-status before/after.  
+**Output:** deployed internal-link graph.  
+**PASS:** priority pages have crawlable contextual paths through final URLs.  
+**FAIL:** orphans, spam anchors or large links to redirect/noindex paths.  
+**Next:** external authority.
 
 ## 12. External authority / Digital PR
 
-Prioritize:
-
-1. original research/data;
-2. useful tools/resources;
-3. customer/partner/industry evidence;
-4. selective PR/expert commentary;
-5. legitimate citations/directories/local profiles;
-6. unlinked mention reclamation;
-7. relevant resource/broken-link outreach.
-
-Reject PBNs, paid followed ranking links, automated link packages and reputation abuse. See `docs/links-authority.md`.
-
----
+**Inputs:** authority gap and real assets/relationships.  
+**Actions:** prioritize original research/data, tools/resources, partner/customer evidence, selective PR, legitimate directories/profiles and mention reclamation.  
+**Tools:** measured backlink/mention data when available, `docs/links-authority.md`.  
+**Evidence:** source relevance/editorial context/disclosure classification.  
+**Output:** policy-safe authority/PR roadmap.  
+**PASS:** every tactic serves a real audience/relationship and complies with link-spam boundaries.  
+**FAIL:** PBNs, paid followed ranking links, automated packages, fake mentions or reputation abuse.  
+**Next:** AI Search readiness.
 
 ## 13. AI Search readiness
 
-For intended platforms:
-
-- verify crawler/WAF access by provider;
-- separate search crawler from training control;
-- preserve crawlable public facts and source evidence;
-- use clear headings/semantic structure for users, not artificial “AI chunks”;
-- make organization/product/entity facts consistent;
-- record citations/referrals with provider-specific metrics where available;
-- do not create fake Reddit/review/third-party mentions.
-
-Use `docs/ai-search.md` and `docs/geo-myths.md`.
-
----
+**Inputs:** target AI/search providers, public content/entity facts.  
+**Actions:** verify crawler/WAF access; separate search/training/user retrieval controls; preserve source evidence; track provider-specific citations/referrals; reject fake third-party mention tactics.  
+**Tools:** `docs/ai-search.md`, `docs/geo-myths.md`, provider docs, robots/WAF logs, Bing/Google AI reports where available.  
+**Evidence:** provider settings, access logs and dated baseline.  
+**Output:** AI visibility baseline/control matrix.  
+**PASS:** intended retrieval access and measurement are deliberate/provider-specific.  
+**FAIL:** `llms.txt`/schema folklore or one citation is treated as universal ranking proof.  
+**Next:** pre-launch gate.
 
 ## 14. Pre-launch gate
 
-Required evidence:
-
-- HTTP 200 preferred URL;
-- no redirect chain;
-- intended robots/index directives;
-- canonical correct;
-- title/H1/content rendered;
-- critical links have hrefs;
-- structured data valid where used;
-- sitemap contains preferred URL if sitemap-managed;
-- mobile usable;
-- CWV regression checked;
-- analytics/conversion tracking working;
-- no placeholder/test content;
-- legal/privacy requirements satisfied.
-
-Only ship after Critical items PASS.
-
----
+**Inputs:** final release candidate and all prior PASS artifacts.  
+**Actions:** run `checklists/launch.md`: status, robots/index, canonical, rendering, links, schema, sitemap, mobile, performance regression, analytics, placeholder/privacy checks.  
+**Tools:** HTTP/render tests, validators, analytics, crawler.  
+**Evidence:** dated preflight output + release commit/tag + rollback plan.  
+**Output:** `GO` or `NO-GO`.  
+**PASS:** all applicable Critical items pass.  
+**FAIL:** any Critical launch blocker.  
+**Next:** deploy then post-launch validation.
 
 ## 15. Post-launch validation
 
-Immediately/next crawls:
-
-- fetch live URL and compare intended output;
-- inspect server/CDN logs for 4xx/5xx/WAF errors;
-- Search Console URL Inspection/indexing samples;
-- Bing Webmaster/IndexNow where relevant;
-- verify sitemap `lastmod` only when meaningful;
-- compare analytics tracking;
-- annotate release date.
-
-Do not judge ranking success the same day.
-
----
+**Inputs:** live release and pre-launch baseline.  
+**Actions:** execute `checklists/post-launch.md`: live fetch/render, logs, GSC/BWT sampling, sitemap/IndexNow checks, analytics, migration mappings and release annotation.  
+**Tools:** crawler, logs, GSC/BWT, analytics/RUM.  
+**Evidence:** production before/after output.  
+**Output:** validated release + open issue list.  
+**PASS:** live state matches intended release; no unresolved Critical/High regression.  
+**FAIL:** blocker/regression remains.  
+**Next:** measurement window.
 
 ## 16. Measurement framework
 
-Track by page/query cluster:
-
-### Search
-- impressions;
-- clicks;
-- CTR (diagnostic, not direct universal ranking KPI);
-- average position with query/locale caution;
-- indexed/canonical status;
-- conversions/revenue/qualified leads.
-
-### AI
-- Bing AI citations/cited pages/grounding queries where available;
-- Google generative AI report where available;
-- ChatGPT referral sessions (`utm_source=chatgpt.com` where present);
-- controlled repeated prompt/query citation observations;
-- conversions from AI referrals.
-
-### Technical
-- 2xx/3xx/4xx/5xx bot distribution;
-- CWV/RUM;
-- crawl/index errors;
-- schema errors;
-- orphan/crawl-depth metrics.
-
-### Authority
-- relevant referring domains;
-- earned mentions;
-- branded demand;
-- review/reputation quality.
-
----
+**Inputs:** baseline, launch annotation and target query/page cohorts.  
+**Actions:** track search impressions/clicks/query-page/canonical/conversions; AI citations/referrals separately; technical crawl/CWV/schema; relevant authority/reputation.  
+**Tools:** GSC/BWT/analytics/CRM/RUM/rank tracker with locale context/AI reports.  
+**Evidence:** comparable dated cohorts; known anomalies documented.  
+**Output:** performance review.  
+**PASS:** business/search/technical metrics are comparable and not incorrectly merged.  
+**FAIL:** only rank/traffic/citation counts are reported without context/outcome.  
+**Next:** iteration diagnosis.
 
 ## 17. Iteration decision tree
 
+**Inputs:** performance review, current SERP and all prior phase evidence.  
+**Actions:** diagnose low impressions, low CTR, poor conversion, non-indexation or Top-10 plateau against intent, technical state, evidence, authority, internal links, brand, freshness and competitor change. Select the smallest evidence-backed change.  
+**Tools:** current SERP, GSC/BWT/analytics/CRM/logs, audit framework.  
+**Evidence:** explicit bottleneck and bounded hypothesis.  
+**Output:** one prioritized change + success/fail/stop condition.  
+**PASS:** change addresses the diagnosed bottleneck and has measurement/rollback.  
+**FAIL:** random title/content/link edits because a tool still shows warnings.  
+**Next:** return to the affected phase and repeat the loop.
+
+---
+
+## Fast diagnosis patterns
+
 ### Impressions low / page indexed
-Check:
-- query fit and page type;
-- competing authority/brand gap;
-- internal linking;
-- topical evidence/depth;
-- freshness/locality;
-- whether another URL is canonical/ranking.
+Check query/page-type fit, authority/brand gap, internal discovery, evidence/depth, freshness/locality and whether another URL is selected/ranking.
 
 ### Impressions high / CTR low
-Check:
-- title/snippet intent match;
-- SERP features satisfying query;
-- brand trust;
-- wrong position/query mix;
-- outdated price/date/value proposition.
+Check title/snippet intent, SERP features, brand trust, position/query mix and stale pricing/date/value proposition.
 
 ### Traffic high / conversion low
-SEO may be succeeding while business/intent fails. Re-check offer, page intent, UX, proof and conversion action.
+SEO may be creating visits while business/intent fails. Re-check offer, page intent, UX, proof and CTA.
 
 ### Not indexed
-Use technical/index-quality diagnosis, not more backlinks by default.
+Run technical/index-quality diagnosis; do not default to more backlinks.
 
-### Ranking plateau below Top 10
-Re-run target SERP and compare:
-- page type;
-- missing evidence;
-- authority gap;
-- internal authority;
-- brand/entity reputation;
-- freshness;
-- competitor improvements.
-
-Then choose the **smallest evidence-backed change**, deploy, annotate and measure.
+### Plateau below Top 10
+Re-run target SERP and compare page type, missing evidence, authority, internal links, entity reputation, freshness and competitor improvements. Then make the smallest testable change.
 
 ---
 
@@ -388,11 +281,15 @@ A page is `TOP10_READY` when:
 - target query/market is feasible;
 - intent/page type matches current SERP;
 - technical/index/canonical gate passes;
-- content has real differentiated value/evidence;
+- content has real differentiated evidence;
 - entity/trust facts are transparent;
 - internal discovery is strong;
 - external authority plan is policy-safe;
 - AI crawler/search settings are deliberate;
-- measurement and rollback exist.
+- measurement, stop condition and rollback exist.
 
-`TOP10_READY` is **not** the same as “guaranteed Top 10.” It means the controllable inputs are competitive and verified.
+`TOP10_READY` is **not** “guaranteed Top 10.” It means the controllable inputs are competitive and verified according to this operating system.
+
+## Playbook Quality Gate
+
+`PASS` only when every executed phase has the mandatory eight-field record and all upstream Critical/High failures are closed before downstream optimization is declared complete.
