@@ -77,5 +77,26 @@ Escalate immediately when any of the following occurs:
 - high-value pages disappear from index unexpectedly;
 - WAF blocks intended search crawlers at scale.
 
-## PASS
-Post-launch monitoring passes when live output matches intended release state, crawler/index/analytics evidence is healthy, Critical/High regressions are absent or remediated with retest evidence, and search/business outcomes are monitored over a suitable observation window.
+## PASS criteria
+
+PASS when live output matches intended release state, crawler/index/analytics evidence is healthy, Critical/High regressions are absent or fixed with retest evidence, and search/business outcomes are being monitored against an annotated baseline over an appropriate window.
+
+## Common failures
+
+- monitoring only rankings while indexation/conversion errors go unnoticed;
+- assuming an unchanged homepage means all templates are healthy;
+- unannotated launches make before/after diagnosis impossible;
+- delayed WAF/429 or JS regressions appear only after crawler/user load;
+- Search Console exclusions or selected-canonical changes are ignored;
+- local/international measurements use the wrong geography/language;
+- AI citation changes are merged with ordinary search traffic or treated causally;
+- temporary migration volatility causes new destructive changes before root-cause diagnosis.
+
+## Retest
+
+1. Re-run immediate live validation after every Critical/High remediation.
+2. Repeat crawler/index checks after search-engine processing rather than relying only on launch-day output.
+3. Re-crawl priority templates and migration mappings; inspect logs for bot/status/crawl-space regressions.
+4. Compare RUM/CWV, queries, conversions and business metrics to the saved annotated baseline.
+5. Re-run provider-specific AI/search observations with date/language/model context when relevant.
+6. Close an issue only with before/after evidence and explicit `PASS`; otherwise retain `FAIL`/`MONITOR` with owner and next review date.
