@@ -21,5 +21,26 @@
 - [ ] Rich-result loss not automatically interpreted as ranking loss.
 - [ ] Schema count is never a KPI.
 
-## PASS
-Markup passes when it is syntactically valid, semantically truthful, matches visible content and — if a Google feature is desired — meets that feature’s current policy/requirements. Display is never guaranteed.
+## PASS criteria
+
+Markup passes when it is syntactically valid, semantically truthful, matches visible content and — when a Google feature is desired — meets that feature’s current requirements/policies. Search appearance is never guaranteed.
+
+## Common failures
+
+- valid Schema.org type is assumed to be Google rich-result eligible;
+- product price/availability/review values disagree with visible content;
+- plugins/themes emit duplicate/conflicting Organization/Product/Breadcrumb graphs;
+- `sameAs` links to related-but-not-identical entities;
+- reviews/ratings are fabricated or self-serving where policy disallows the use case;
+- JavaScript-generated JSON-LD disappears or changes after hydration;
+- rich-result disappearance is misreported as a ranking penalty;
+- teams maximize schema type/property count instead of semantic accuracy.
+
+## Retest
+
+1. Fetch rendered HTML and capture the final JSON-LD actually delivered.
+2. Validate syntax/vocabulary with an appropriate schema validator.
+3. Run Google Rich Results Test for supported Google features.
+4. Compare every material structured-data value with visible page/source-of-truth data.
+5. Check canonical URL and duplicate markup from plugins/themes.
+6. After deployment, monitor Search Console enhancement reports where available and mark `PASS`/`FAIL` with saved test evidence.
