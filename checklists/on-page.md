@@ -23,5 +23,26 @@
 - [ ] Conversion tracking works.
 - [ ] Before/after title/content changes are annotated for measurement.
 
-## PASS
-PASS requires intent match + truthful useful content + correct technical directives. A plugin’s on-page score is advisory only.
+## PASS criteria
+
+PASS requires intent match, truthful useful content, correct canonical/index directives, crawlable rendered main content and a measurable user/business outcome. Plugin scores are advisory only.
+
+## Common failures
+
+- optimizing a page for a query whose SERP wants another page type;
+- duplicate/boilerplate title/H1 across page classes;
+- metadata promises content the page does not provide;
+- keyword-density targets create unnatural repetition;
+- hidden/interaction-only critical content;
+- schema describes reviews/products/entities that are not visible/true;
+- mobile rendering drops important copy/links;
+- title/content changes are shipped without a baseline or annotation.
+
+## Retest
+
+1. Fetch raw and rendered HTML and verify title, H1, canonical, robots and critical body content.
+2. Re-run target-query intent observation and confirm the page type is still appropriate.
+3. Validate internal/external links and structured data where present.
+4. Test mobile output and CTA/conversion tracking.
+5. Compare before/after page snapshot and annotate deploy date.
+6. Mark `PASS` only when all applicable High/Critical on-page issues are resolved; otherwise `FAIL`/`MONITOR`.
