@@ -36,5 +36,26 @@
 - [ ] Redirects retained long enough; Google generally recommends at least one year for site moves.
 - [ ] No old domain/assets shut down prematurely.
 
-## PASS
-Migration passes when mapped priority URLs resolve one hop to equivalent new pages, new pages are indexable/canonical/discoverable, bot/user errors are controlled and search/business trends are monitored against baseline. Temporary volatility is expected; do not reverse good mappings solely from a few days of data.
+## PASS criteria
+
+Migration passes when mapped priority URLs resolve one hop to equivalent new pages, new pages are indexable/canonical/discoverable, internal links/sitemaps/hreflang use final URLs, user/bot errors are controlled and search/business trends are monitored against a saved baseline.
+
+## Common failures
+
+- blanket redirecting old URLs to homepage or unrelated categories;
+- staging `noindex`/robots rules reach production;
+- redirect chains, loops or unmapped high-value URLs;
+- canonicals/sitemaps/internal links still reference old URLs;
+- hreflang points across old/new URL sets inconsistently;
+- DNS/TLS/CDN changes are mixed with migration without rollback evidence;
+- old domain/redirect infrastructure is shut down too early;
+- normal short-term volatility triggers destructive rollback without diagnosing mappings/indexing.
+
+## Retest
+
+1. Re-run the complete old→new mapping list and record status/final URL/hops.
+2. Crawl the new site and confirm canonical/internal-link/sitemap/hreflang consistency.
+3. Sample raw/rendered output and GSC/Bing URL inspection on highest-value templates.
+4. Inspect logs plus 404/5xx/loop reports after launch.
+5. Compare traffic/query/conversion metrics against the saved pre-launch baseline with annotations.
+6. Mark `PASS` only when Critical/High mapping/indexation errors are resolved; otherwise `FAIL`/`MONITOR` with owner and rollback decision.
