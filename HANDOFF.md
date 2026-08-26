@@ -1,97 +1,102 @@
 # HANDOFF.md — Live Continuation State
 
-> **Purpose:** A brand-new chat/agent must be able to continue the research from this file without reconstructing prior conversation history.
+> **Purpose:** A brand-new chat/agent must be able to continue from this file without reconstructing prior conversation history.
 
 **Updated:** 2026-08-26  
 **Repository:** `DashSaman/-SEO`  
-**Default branch:** `main`
+**Default branch:** `main`  
+**Repository status:** ACTIVE / NOT FINAL  
+**Current validated baseline progress:** 71%
 
 ## CURRENT_STAGE
 
-`STAGE-1/OFFICIAL-FOUNDATIONS` — official search-engine, protocol and AI crawler research is in progress. Repository scaffold is complete.
+`STAGE-4/5/6 — OPEN-SOURCE VALIDATION + SERP/PRACTITIONER OBSERVATION + OPERATIONAL PLAYBOOK BUILD`
 
-## LAST_COMPLETED_SOURCE
+Official foundations are substantially complete. The critical path is now to convert the evidence base into validated tool recommendations, dated SERP observations, implementation playbooks/checklists, the visual dashboard, and the final adversarial Quality Gate.
 
-`STD-INDEXNOW-001` — IndexNow official documentation and FAQ reviewed for change-notification semantics and implementation boundaries.
+## CURRENT_TASK
 
-## LAST_COMPLETED_ACTION
+Build the missing operational corpus starting with `docs/open-source-seo.md`, then the SERP/practitioner evidence layer and high-impact missing topic documents.
 
-Created the core repository operating contract (`AGENTS.md`) after initializing the evidence-first project README.
+## LAST_COMPLETED_TASK
+
+Reconciled stale coordination state after later research commits: `SOURCES.md` now records completed 2026 Google/Bing/Search Console/Schema/Baidu/DuckDuckGo/Apple research and the known GitHub/tool landscape; `PROGRESS.md` was corrected from stale 44% to evidence-backed 71%.
+
+## LAST_SOURCE_REVIEWED
+
+Latest first-party/reconciled set includes Google Search Console generative AI controls/reporting/counting/anomalies, Microsoft Bing AI Performance, Baidu Search Resource Platform, DuckDuckGo crawler/source documentation, and Applebot/Applebot-Extended.
+
+## LAST_COMMIT
+
+`54d60116526ed17c19decfbe706a2c3a66614a3c` — `docs: reconcile research progress after completed foundation work`
+
+## FILES_CHANGED_IN_RECONCILIATION
+
+- `SOURCES.md`
+- `PROGRESS.md`
+- `HANDOFF.md`
 
 ## ACTIVE_WORK
 
 | Workstream | Agent/session | Status | Started | Target files |
 |---|---|---|---|---|
-| Official Google/Bing/protocol/AI foundations | primary-research-agent-2026-08-26 | ACTIVE | 2026-08-26 | `SOURCES.md`, `docs/google-seo.md`, `docs/bing-indexnow.md`, `docs/technical-seo.md`, `docs/ai-search.md` |
-| GitHub open-source landscape | primary-research-agent-2026-08-26 | ACTIVE | 2026-08-26 | `docs/open-source-seo.md` |
-| SERP/practitioner layer | primary-research-agent-2026-08-26 | QUEUED | 2026-08-26 | `docs/serp-research.md` |
+| Coordination/source reconciliation | primary-research-agent-2026-08-26 | COMPLETE | 2026-08-26 | `SOURCES.md`, `PROGRESS.md`, `HANDOFF.md` |
+| GitHub open-source validation | primary-research-agent-2026-08-26 | ACTIVE | 2026-08-26 | `docs/open-source-seo.md`, `SOURCES.md` |
+| SERP/practitioner layer | primary-research-agent-2026-08-26 | QUEUED | 2026-08-26 | `docs/serp-research.md`, `SOURCES.md` |
+| Operational playbooks/checklists | primary-research-agent-2026-08-26 | QUEUED | 2026-08-26 | root playbooks, `docs/*.md`, `docs/site-types/*`, `checklists/*` |
+| Dashboard/final validation | primary-research-agent-2026-08-26 | QUEUED | 2026-08-26 | `docs/index.html`, `FINAL_VALIDATION.md` |
 
-## VERIFIED RESEARCH ALREADY AVAILABLE TO CONTINUING AGENTS
+## VERIFIED RESEARCH STATE
 
-### Google
-- Search Essentials, SEO Starter Guide, helpful/people-first content guidance and developer SEO guidance reviewed.
-- Google 2026 generative-AI SEO guide reviewed: foundational SEO remains relevant; Google Search does not require `llms.txt`, special AI markup, artificial content chunking, AI-only rewrites or inauthentic mentions for AI Overviews/AI Mode.
-- Canonicalization documentation reviewed; canonical selection uses multiple signals and is not merely a single tag rule.
-- Current 2026 Search documentation update log reviewed, including generative-AI guidance and recent rich-result/documentation changes.
-- Google-Extended official crawler documentation reviewed: it is a robots.txt product token, not a separate HTTP user-agent string; it controls certain Gemini training/grounding uses and does not affect Google Search inclusion/ranking.
+### Google / Search Console
+- Search Essentials, Starter Guide, people-first content, canonicalization, crawling, migrations, JavaScript SEO, crawl budget, structured data, CWV/page experience, spam policies, local, international, ecommerce, image/video and current documentation updates have baseline first-party coverage.
+- 2026 Google generative Search guidance is reviewed: ordinary SEO foundations remain applicable; special `llms.txt`, AI-only schema, artificial chunking and inauthentic mentions are not required for Google Search generative features.
+- Search generative AI control, Generative AI performance report, AI impression/click/position counting rules and Aug 13–17 2026 logging anomaly are recorded.
+- Google-Extended training/grounding control is separate from Search inclusion/ranking.
 
-### Bing
-- Bing Webmaster Tools guidance reviewed.
-- Bing 2025 sitemap guidance reviewed: accurate `lastmod` is meaningful; Bing states `changefreq` and `priority` are ignored.
-- Bing duplicate-content/AI-search guidance reviewed.
-- Bing Webmaster blog indicates an AI Performance feature in public preview (2026) for AI citation visibility; re-check exact product documentation before production claims.
+### Bing / Microsoft
+- BWT fundamentals, sitemap/IndexNow guidance and duplicate-content guidance reviewed.
+- Current AI Performance reporting is verified: citations/cited pages/grounding queries/trends are visibility diagnostics and are not authority/ranking/traffic/causality metrics.
 
-### Regional engines
-- Yandex Webmaster structure/indexing/recommendation material reviewed.
-- Naver Search Advisor SEO, robots and markup guidance reviewed; Naver documents `Yeti` and supports robots controls.
-- Baidu/current additional regional-engine verification is still queued; do not invent guidance.
+### Standards / other engines
+- RFC 9309, Sitemaps.org, Schema.org and IndexNow reviewed.
+- Yandex, Naver, Baidu, DuckDuckGo and Applebot have current first-party baseline coverage.
 
-### Standards / protocols
-- IETF RFC 9309 Robots Exclusion Protocol reviewed. Robots rules control crawler access and are not authorization/security.
-- Sitemaps.org protocol reviewed: standard sitemap size/count boundaries and index-file model recorded for synthesis.
-- IndexNow official documentation/FAQ reviewed: change notification is not an indexing/ranking guarantee.
-- Schema.org official source verification still queued before final structured-data synthesis.
+### AI providers
+- OpenAI: `OAI-SearchBot` search discovery and `GPTBot` training control separated; WAF/CDN and referral measurement documented.
+- Anthropic: `ClaudeBot`, `Claude-User`, `Claude-SearchBot` separated.
+- Perplexity robots behavior reviewed.
+- DuckDuckGo and Apple AI/search crawler distinctions logged.
 
-### AI systems
-- OpenAI publisher/developer crawler guidance reviewed: `OAI-SearchBot` is relevant to ChatGPT search discovery; training control (`GPTBot`) is a separate concern.
-- Anthropic official April 7, 2026 guidance reviewed: `ClaudeBot`, `Claude-User`, `Claude-SearchBot` have distinct purposes; all honor robots.txt; Claude-SearchBot affects search indexing/visibility.
-- Perplexity official robots guidance reviewed; respects robots controls with documented limits/metadata behavior.
-- Community crawler lists may be catalogued but must not override first-party bot documentation.
+### Existing durable docs
+Current `docs/` includes Google, Bing/IndexNow, other engines, technical SEO, content quality, structured data, AI Search, local, international, ecommerce, media and measurement references.
 
-### GitHub landscape discovered
-Initial repository discovery has identified candidates including:
-- `bmpi-dev/awesome-seo`
-- `serpapi/awesome-seo-tools`
-- `teles/awesome-seo`
-- `marcobiedermann/search-engine-optimization`
-- `amplifying-ai/awesome-generative-engine-optimization`
-- `best-of-ai/awesome-ai-seo`
-- `johnmurch/awesome-seo-scripts`
-- `guptadeepak/awesome-programmatic-seo`
-- `puneetindersingh/open-seo-crawler`
-- `spronta/crawlie`
+## UNRESOLVED CONFLICTS / CAUTIONS
 
-These are **discovered, not yet all verified/endorsed**. Inspect README/activity/license and validate claims before cataloguing as recommended tools.
+- Community GEO/AEO claims often overstate `llms.txt`, schema, content chunking or citation tactics; resolve against provider-first documentation.
+- Tool README claims are implementation/vendor claims, not ranking evidence.
+- Some sitemap libraries emit `changefreq`/`priority`; Bing explicitly says it ignores those fields.
+- Dynamic rendering/Rendertron guidance is legacy and must not be promoted as a current default architecture.
+- Exact Google Top-10 rankings cannot be fabricated: connected Ahrefs SERP endpoint returned `Insufficient plan`; representative web-search observations must be dated and scoped.
 
-## NEXT_ACTIONS — exact order
+## EXACT_NEXT_TASK
 
-1. Create/update `SOURCES.md` with every official source already reviewed and evidence class/status.
-2. Verify Schema.org official implementation source and current Google Core Web Vitals/Search guidance.
-3. Write `docs/google-seo.md` and `docs/technical-seo.md` from verified sources.
-4. Write `docs/bing-indexnow.md` and `docs/ai-search.md`.
-5. Inspect high-value GitHub candidates individually (README, maintenance/activity, scope) and write `docs/open-source-seo.md`.
-6. Run measured SERP research for representative SEO topic classes; distinguish observed rankings from recommendations.
-7. Expand regional engines (Baidu and additional engines where current first-party docs can be verified).
-8. Write practical checklists and myth/risk sections.
-9. Create/update `docs/index.html` progress dashboard and reconcile weighted completion in `PROGRESS.md`.
-10. Run final cross-source conflict/freshness review.
+Create `docs/open-source-seo.md` after validating high-value repositories for activity, archive status, license, scope, implementation value, risks, official-doc conflicts and verdict (`RECOMMENDED`, `USEFUL`, `SPECIALIZED`, `EXPERIMENTAL`, `STALE`, `AVOID`). Update `SOURCES.md`, `PROGRESS.md` and this file after the milestone.
+
+## NEXT_5_TASKS
+
+1. Complete `docs/open-source-seo.md` with a validated core catalogue.
+2. Complete `docs/serp-research.md` with dated/context-scoped representative search observations and practitioner evidence.
+3. Add `docs/geo-myths.md`, `docs/links-authority.md`, `docs/programmatic-seo.md`, `docs/javascript-seo.md`, and `docs/crawl-budget-log-analysis.md`.
+4. Add operational root playbooks, site-type playbooks and requested checklists.
+5. Build `docs/index.html`, run repository-wide adversarial/dead-link/TODO/conflict review, create `FINAL_VALIDATION.md`, and only then decide whether 100% is justified.
 
 ## BLOCKERS / LIMITATIONS
 
-- The web is unbounded: “all SEO information” cannot be exhaustively completed in one pass. The repository is therefore designed as a continuously auditable reference with explicit coverage/backlog rather than falsely claiming completeness.
-- Search rankings vary by date, country, device, language and personalization. SERP observations must include measurement context.
-- Some AI visibility behavior is proprietary and changes quickly; only documented controls and measurable observations should be presented as facts.
-- GitHub Pages serving is not assumed enabled. The static dashboard file can be built in `docs/index.html`; repository-native `PROGRESS.md` is always immediately usable.
+- The public web is unbounded. `100%` means completion of the repository's defined baseline plus the Final Quality Gate, not exhaustive reading of every SEO page ever published.
+- Search rankings vary by country, device, language, time and personalization.
+- Proprietary ranking systems cannot be fully inferred from public sources; unsupported hidden-factor claims are prohibited.
+- GitHub Pages is not assumed enabled; `docs/index.html` can be Pages-ready without being claimed live.
 
 ## CONTINUATION_INSTRUCTIONS FOR A NEW CHAT/AGENT
 
@@ -101,10 +106,10 @@ Read in this order:
 2. this file
 3. `PROGRESS.md`
 4. `SOURCES.md`
-5. only then the relevant `docs/*.md`
+5. relevant `docs/*.md`
 
-Then claim one non-conflicting workstream in `ACTIVE_WORK`, perform the next incomplete source/stage, and **before ending your turn** update `SOURCES.md`, `PROGRESS.md` and this file. Never report “done” unless the repository state reflects the work.
+Then execute `EXACT_NEXT_TASK` unless another active agent has claimed it. Before ending, re-fetch and update `SOURCES.md`, `PROGRESS.md` and this file. Never report `100% COMPLETE` unless `FINAL_VALIDATION.md` has passed and repository state reflects the result.
 
 ## CONCURRENT WORK RULE
 
-If another agent wants to work simultaneously, choose a separate workstream/document. Do not make parallel edits to `SOURCES.md`, `PROGRESS.md` or `HANDOFF.md` without first re-fetching the latest version; these are shared coordination files and must be updated sequentially to avoid lost changes.
+Avoid parallel writes to `SOURCES.md`, `PROGRESS.md` or `HANDOFF.md`. Always re-fetch the latest SHA before a shared-file update. Separate agents should claim separate target documents/workstreams.
