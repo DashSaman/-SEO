@@ -24,7 +24,7 @@ Baseline rules:
 - Use ordinary crawlable HTML links (`<a href="...">`) for important discovery paths.
 - Maintain a logical site architecture and internal links so important pages are not isolated.
 - Submit/maintain XML sitemaps for discoverability, especially on large/new/media-heavy sites.
-- Make content usable on mobile and avoid rendering setups that hide critical content from the rendered HTML.
+- Make content usable on mobile and avoid rendering setups that hide critical content from rendered HTML.
 
 A sitemap is a discovery aid, **not** an indexing guarantee.
 
@@ -50,7 +50,7 @@ Google may select a representative canonical URL from duplicates. Useful signals
 - sitemap inclusion;
 - HTTPS preference and other consistency signals.
 
-Best practice is to align signals rather than sending contradictory instructions. A canonical tag alone should not be described as a guaranteed command.
+Best practice is to align signals rather than send contradictory instructions. A canonical tag alone should not be described as a guaranteed command.
 
 ### Canonical consistency checklist
 
@@ -161,15 +161,15 @@ See [`structured-data.md`](structured-data.md).
 
 Primary source: [Optimizing for generative AI features on Google Search](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
 
-Google’s 2026 position is unusually clear: **SEO is still the foundation** because its generative Search experiences rely on core Search ranking/quality systems and Search-index retrieval.
+Google’s 2026 position is clear: **SEO is still the foundation** because generative Search experiences rely on core Search ranking/quality systems and Search-index retrieval.
 
 Google discusses mechanisms such as:
 
 - retrieval-augmented generation / grounding from Search-index sources;
 - query fan-out into related sub-queries;
-- prominent clickable supporting links.
+- clickable supporting links.
 
-### What Google says you do NOT need for its generative Search
+### What Google says you do NOT need for generative Search
 
 - a special `llms.txt` file;
 - special “AI schema”;
@@ -178,7 +178,7 @@ Google discusses mechanisms such as:
 - a page for every query-fan-out variant;
 - inauthentic mentions engineered only to influence AI answers.
 
-Google says `llms.txt` neither helps nor harms Google Search visibility because Google Search ignores it as a special mechanism. Other services may have different behavior, so this is a **Google-specific** conclusion.
+Google says `llms.txt` neither helps nor harms Google Search visibility because Google Search ignores it as a special mechanism. Other services may behave differently; this is a **Google-specific** conclusion.
 
 ### What still helps
 
@@ -188,9 +188,67 @@ Google says `llms.txt` neither helps nor harms Google Search visibility because 
 - useful local/product/image/video content where relevant;
 - strong overall user experience;
 - correct Search controls;
-- measurement in Search Console as Google exposes relevant reporting.
+- measurement in Search Console.
 
-## 12. Google-Extended is NOT Googlebot ranking control
+## 12. NEW: Search generative AI control in Search Console
+
+Official source: [Search generative AI control](https://support.google.com/webmasters/answer/16908024)
+
+Google is rolling out a property-level control to a subset of Search Console users for participation in:
+
+- AI Overviews;
+- AI Mode;
+- generative AI features in Google Discover.
+
+The documented options are:
+
+- **Include** — default; content/links remain eligible for these features.
+- **Exclude** — content/links cannot appear or ground responses in the covered features, so the property receives no impressions/traffic from them.
+- **Inherit from parent** — child properties follow the closest configured parent until overridden.
+
+Important boundaries:
+
+- this control is **not** used as a ranking/inclusion signal in other parts of Search;
+- it does **not** control AI model training;
+- `Google-Extended` is the separate documented training-related control;
+- `noindex` is the broader control for removing a page from Google Search;
+- availability is being rolled out gradually;
+- changes generally take a few days to propagate.
+
+Therefore a modern Google audit should record this setting before interpreting a lack of AI visibility.
+
+## 13. NEW: Generative AI performance reporting
+
+Official source: [Generative AI performance report (Search)](https://support.google.com/webmasters/answer/16984139)
+
+Google is also gradually rolling out a first-party report for organic impressions from generative-AI Search features, currently including **AI Overviews** and **AI Mode**.
+
+Current report dimensions include:
+
+- Pages;
+- Countries;
+- Dates;
+- Devices.
+
+Important interpretation notes:
+
+- not all properties have access yet;
+- low impression volume may also prevent the report from appearing;
+- page data is generally assigned to canonical URLs;
+- normal Search Console aggregation/row limitations apply;
+- current data can be preliminary;
+- Search Labs experiments are excluded.
+
+Google’s current counting documentation also says:
+
+- a click to an external page in AI Mode counts as a click;
+- AI Mode follow-up questions are treated as new queries;
+- links in an AI Overview share the AI Overview’s Search position;
+- an AI Overview link must be scrolled/expanded into view to count as an impression.
+
+Do not interpret Search Console AI “position” as if it were always equivalent to a classic blue-link rank.
+
+## 14. Google-Extended is NOT the Search-AI visibility control
 
 Source: [Google common crawlers — Google-Extended](https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers)
 
@@ -200,21 +258,24 @@ Important distinctions:
 - It does **not** have a separate HTTP user-agent string.
 - Google documents it as a control for specified uses of crawled content involving future Gemini model training and grounding in Gemini/Vertex contexts.
 - Google explicitly says it does **not** affect inclusion in Google Search and is not a Google Search ranking signal.
+- The new Search Console **Search generative AI control** is the documented control for participation in covered Search AI features.
 
-Therefore never tell a publisher that blocking/allowing Google-Extended is required to rank in Google Search.
+Therefore never tell a publisher that blocking/allowing Google-Extended is required to rank or appear in ordinary Google Search.
 
-## 13. 2026 Google-specific changes worth monitoring
+## 15. 2026 Google-specific changes worth monitoring
 
 Use the official update log rather than memorizing a static list. Relevant changes already observed during this research include:
 
 - May 15, 2026: dedicated generative-AI optimization guidance added.
+- 2026: Search Console began rolling out Search generative AI participation controls and a dedicated generative-AI performance report.
 - May 27, 2026: Preferred Sources availability expanded to AI Mode/AI Overviews.
-- 2026 structured-data/rich-result documentation continues to evolve; old SEO checklists can become stale quickly.
-- Search Console is expanding visibility/measurement across newer Search surfaces and eligible platform properties.
+- July 29, 2026: guidance added for analyzing social/video platform content in Search Console.
+- August 20, 2026: Preferred Sources documentation added a custom interactive button.
+- structured-data/rich-result documentation continues to change; static checklists go stale quickly.
 
 Source: [Google Search documentation updates](https://developers.google.com/search/updates)
 
-## 14. Migration/change management
+## 16. Migration/change management
 
 Source: [Site moves with URL changes](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)
 
@@ -231,7 +292,7 @@ For redesigns/domain/URL migrations:
 
 Large migrations should be treated as SEO releases with rollback/monitoring plans, not a cosmetic deployment.
 
-## 15. Google SEO anti-patterns
+## 17. Google SEO anti-patterns
 
 Do not recommend:
 
@@ -246,7 +307,7 @@ Do not recommend:
 
 Always compare tactics against the current Search Essentials spam policies.
 
-## 16. Audit order for Google
+## 18. Audit order for Google
 
 A practical remediation priority:
 
@@ -260,6 +321,7 @@ A practical remediation priority:
 8. **structured-data/search appearance issues**
 9. **CWV/performance/UX bottlenecks**
 10. **authority/entity/off-site competitive gaps**
-11. **AI/search-surface measurement and iteration**
+11. **AI/Search Console participation + measurement**
+12. **iteration based on business outcomes**
 
-This order is intentionally dependency-aware: there is little value polishing schema or copy on pages that cannot be crawled/indexed correctly.
+This order is dependency-aware: there is little value polishing schema or copy on pages that cannot be crawled/indexed correctly.
