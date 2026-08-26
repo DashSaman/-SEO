@@ -39,5 +39,26 @@
 - [ ] Monitoring alerts active for 5xx/availability.
 - [ ] Search/analytics baseline saved.
 
-## GO decision
-Launch only when all Critical items pass. Medium/Low known issues must be documented with owner/date rather than silently ignored.
+## PASS / GO criteria
+
+`GO` only when every applicable Critical item is verified on production or a production-equivalent environment and no known issue can block availability, crawlability, indexability, canonicalization, rendering or measurement. Medium/Low issues must have an owner and target date.
+
+## Common failures
+
+- staging `noindex`/robots rules copied to production;
+- canonical host/protocol still points to staging/old domain;
+- sitemap contains redirects/noindex/test URLs;
+- production WAF blocks bots not blocked in staging;
+- analytics/consent prevents conversion measurement;
+- SPA routes or assets fail only on direct production requests;
+- rollback/migration mapping is not available during incident response;
+- launch declared successful from homepage-only testing.
+
+## Retest
+
+1. Immediately after release, externally fetch priority URLs, robots, sitemap and critical assets.
+2. Verify raw/rendered canonical, robots, title, body content and links on each key template.
+3. Test conversion/analytics events and mobile critical flows.
+4. Re-run redirects/migration mappings where applicable and check 4xx/5xx/loop alerts.
+5. Compare lab/RUM regressions and crawler/WAF logs to baseline.
+6. Record `GO/PASS`, `NO-GO/FAIL` or `MONITOR` with timestamp, release commit and saved evidence.
