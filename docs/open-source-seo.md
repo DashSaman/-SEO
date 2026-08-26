@@ -1,269 +1,345 @@
 # Open-Source SEO Tooling — Evidence-Safe Catalogue
 
 **Reviewed:** 2026-08-26  
-**Rule:** A useful repository is an implementation/tooling source, not proof of a search-engine ranking factor.
+**Evidence class:** `COMMUNITY / IMPLEMENTATION`  
+**Rule:** a useful repository is an implementation/tooling source, **not** proof of a search-engine ranking factor.
 
 ## Verdict scale
 
-- `RECOMMENDED` — strong, current tool for its stated job; production use still requires normal engineering review.
+- `RECOMMENDED` — strong, current tool for its stated job; production use still requires ordinary engineering review.
 - `USEFUL` — practical for many teams, with important scope/caveats.
-- `SPECIALIZED` — good for a narrow workflow or stack.
-- `EXPERIMENTAL` — promising but maturity/evidence/maintenance needs caution.
+- `SPECIALIZED` — good for a narrow workflow or framework.
+- `EXPERIMENTAL` — promising, but maturity/evidence/maintenance needs caution.
 - `STALE` — historical/archived/outdated for current default use.
-- `AVOID` — unsuitable or misleading for the defined evidence-first workflow.
+- `AVOID` — unsuitable or materially misleading for this evidence-first workflow.
 
 ## Evaluation method
 
-For important candidates we checked repository status, archive flag, activity/push recency where available, README/scope, license where exposed by GitHub, and whether marketing claims conflict with current official Google/Bing/provider documentation. Popularity is not an evidence class.
-
-## Core recommended tooling
-
-### GoogleChrome/lighthouse — `RECOMMENDED`
-
-- Repository: https://github.com/GoogleChrome/lighthouse
-- Purpose/category: automated web audits, performance metrics and best-practice diagnostics.
-- Activity: active; GitHub reported a push on **2026-08-26** during review.
-- Archived: no.
-- License: Apache-2.0.
-- Strengths: reproducible lab diagnostics; broad ecosystem support; highly useful release gate for performance/accessibility/technical regressions.
-- Weaknesses: lab conditions are not the same as field user data; the SEO audit subset is not a complete SEO audit.
-- Operational concern: CI thresholds can create false certainty if teams optimize the score instead of user/search outcomes.
-- Official-doc conflict: none as a diagnostic tool. **A Lighthouse score is not a Google ranking score.** Google’s own Search guidance says good page experience does not guarantee ranking.
-- Recommended use: pre/post-release diagnostics combined with CrUX/Search Console/real-user metrics and crawl/index tests.
-
-### GoogleChrome/web-vitals — `RECOMMENDED`
-
-- Repository: https://github.com/GoogleChrome/web-vitals
-- Purpose/category: client library for measuring Web Vitals.
-- Activity: active; GitHub reported push **2026-08-25**.
-- Archived: no.
-- License: Apache-2.0.
-- Strengths: focused implementation of field-side metrics; good RUM instrumentation primitive.
-- Weaknesses: measurement library, not an optimizer; requires telemetry/backend interpretation.
-- Recommended use: production RUM for LCP/INP/CLS and release-change annotations.
-- Caveat: good CWV helps page experience but is not a standalone ranking guarantee.
-
-### eliasdabbas/advertools — `RECOMMENDED`
-
-- Repository: https://github.com/eliasdabbas/advertools
-- Purpose/category: Python marketing/SEO analysis toolkit.
-- Activity: active; GitHub reported last push **2026-06-30** at review.
-- Archived: no.
-- License: MIT.
-- Features: crawling, robots/sitemap parsing, log/URL/data analysis, SERP-import workflows and general marketing analysis.
-- Strengths: scriptable, data-frame-friendly, excellent for reproducible audits and log/sitemap processing.
-- Weaknesses: requires Python/data competence; crawler behavior is not identical to Googlebot.
-- Recommended use: reproducible technical audits, URL inventories, robots/sitemap validation and data pipelines.
-
-### Yoast/wordpress-seo — `RECOMMENDED` for WordPress implementation
-
-- Repository: https://github.com/Yoast/wordpress-seo
-- Purpose/category: source/dev repository for Yoast SEO for WordPress.
-- Activity: highly active; GitHub reported push **2026-08-26**.
-- Archived: no.
-- License metadata: GitHub exposes `NOASSERTION/Other`; inspect project licensing before redistribution or derivative distribution.
-- Strengths: mature WordPress metadata, canonical, XML sitemap, schema and editorial implementation ecosystem.
-- Weaknesses: plugin heuristics/readability/keyword scores are proxies, not search-engine scores.
-- Recommended use: WordPress implementation when its generated canonical/schema/sitemap output has been tested against the site’s architecture.
-- Official-doc conflict: treat plugin scores as editorial assistance only; Google does not rank by Yoast/Rank Math scores.
+For the core catalogue we checked, as available:
+
+1. repository identity and purpose;
+2. archive flag;
+3. last meaningful code push visible from GitHub metadata;
+4. maintenance/activity signal;
+5. license metadata exposed by GitHub;
+6. README/product scope;
+7. operational/security concerns;
+8. claims that need first-party verification;
+9. conflicts with current Google/Bing/provider guidance;
+10. a bounded recommended use and verdict.
+
+`updated_at` alone is not treated as code activity because stars/issues can update repository metadata without a code change. Popularity/star count is never an evidence class.
+
+## Core validation matrix
+
+| Repository | Category | Archived? | Last code push observed | License metadata | Maintenance signal | Verdict |
+|---|---|---:|---|---|---|---|
+| `GoogleChrome/lighthouse` | web/performance audit | No | 2026-08-26 | Apache-2.0 | highly active | `RECOMMENDED` |
+| `GoogleChrome/web-vitals` | RUM / Web Vitals | No | 2026-08-25 | Apache-2.0 | highly active | `RECOMMENDED` |
+| `Yoast/wordpress-seo` | WordPress SEO implementation | No | 2026-08-26 | GitHub: Other/NOASSERTION | highly active | `RECOMMENDED` |
+| `eliasdabbas/advertools` | Python SEO/data analysis | No | 2026-06-30 | MIT | active | `RECOMMENDED` |
+| `towfiqi/serpbear` | rank tracking | No | 2026-05-14 | MIT | active/recent | `USEFUL` |
+| `iamvishnusankar/next-sitemap` | Next.js sitemap/robots | No | 2026-05-13 | MIT | active/recent | `RECOMMENDED` (narrow) |
+| `garmeeh/next-seo` | Next.js structured data/meta helpers | No | 2026-07-29 | MIT | active | `USEFUL` |
+| `harlan-zw/nuxt-seo` | Nuxt technical SEO suite | No | 2026-08-20 | MIT | highly active | `USEFUL` |
+| `harlan-zw/unlighthouse` | site-scale Lighthouse | No | 2026-08-14 | MIT | highly active | `SPECIALIZED` |
+| `jekyll/jekyll-seo-tag` | Jekyll metadata | No | 2026-05-08 | MIT | maintained | `SPECIALIZED` |
+| `spatie/laravel-sitemap` | Laravel sitemap | No | 2026-08-07 | MIT | active | `SPECIALIZED` |
+| `spatie/schema-org` | PHP Schema.org builder | No | 2026-08-07 | MIT | active | `SPECIALIZED` |
+| `sethblack/python-seo-analyzer` | lightweight site analyzer | No | 2026-07-27 | GitHub: Other/NOASSERTION | active/recent | `USEFUL` |
+| `karust/openserp` | self-hosted SERP API | No | 2026-07-22 | MIT | active | `SPECIALIZED` |
+| `puneetindersingh/open-seo-crawler` | technical SEO crawler | No | 2026-08-04 | MIT | new/active | `EXPERIMENTAL` |
+| `spronta/crawlie` | SEO/GEO crawler | No | 2026-07-18 | GitHub: Other/NOASSERTION | very new/active | `EXPERIMENTAL` |
+| `nobodyscode/ai-crawlers` | AI crawler list | No | 2026-07-16 | none exposed | very new/minimal | `EXPERIMENTAL` |
+| `bmpi-dev/awesome-seo` | resource catalogue | No | 2026-08-23 | MIT | active | `USEFUL` |
+| `serpapi/awesome-seo-tools` | tool catalogue | No | 2026-02-24 | none exposed | maintained catalogue | `USEFUL` |
+| `amplifying-ai/awesome-generative-engine-optimization` | GEO resource catalogue | No | 2026-04-14 | none exposed | recent | `USEFUL` |
+| `best-of-ai/awesome-ai-seo` | AI SEO catalogue | No | 2026-07-27 | MIT | active | `USEFUL` |
+| `GoogleChrome/rendertron` | dynamic rendering | **Yes** | 2022-10-06 | Apache-2.0 | archived | `STALE` |
+| `eyecatchup/SEOstats` | historic SEO metrics API library | **Yes** | 2022-06-15 | MIT | archived | `STALE` |
+| `nuxt/vue-meta` | legacy Vue metadata | **Yes** | 2025-09-25 | GitHub: Other/NOASSERTION | archived | `STALE` |
+
+**Date rule:** the dates above are repository push metadata observed on 2026-08-26. A future adopter must re-check current status before production adoption.
+
+---
+
+# Detailed evaluations
+
+## GoogleChrome/lighthouse — `RECOMMENDED`
+
+**Repository:** https://github.com/GoogleChrome/lighthouse  
+**Purpose:** automated web audits, performance metrics and best-practice diagnostics.  
+**Strengths:** reproducible lab diagnostics; excellent regression gate; broad ecosystem support.  
+**Weaknesses:** lab data is not field user data; the SEO audit subset is not a complete SEO audit.  
+**Security/operational concern:** CI score thresholds can create false certainty and may encourage teams to optimize the score instead of real user/search outcomes.  
+**Claim caution:** Lighthouse scores are diagnostic scores, not Google ranking scores.  
+**Official-doc conflict:** none when used as diagnostics; Google Search guidance explicitly does not equate perfect page experience with guaranteed ranking.  
+**Recommended use:** pre/post-release diagnostics together with CrUX/Search Console/RUM and crawl/index tests.
+
+## GoogleChrome/web-vitals — `RECOMMENDED`
+
+**Repository:** https://github.com/GoogleChrome/web-vitals  
+**Purpose:** client-side Web Vitals measurement.  
+**Features:** production collection primitives for LCP, INP and CLS.  
+**Strengths:** focused, first-party implementation useful for RUM.  
+**Weaknesses:** it measures; it does not fix performance or interpret business impact.  
+**Operational concern:** sampling, SPA navigation and analytics pipelines must be implemented correctly.  
+**Recommended use:** field measurement segmented by template/device/release.  
+**Claim caution:** good CWV is not a standalone ranking guarantee.
+
+## Yoast/wordpress-seo — `RECOMMENDED` for WordPress implementation
+
+**Repository:** https://github.com/Yoast/wordpress-seo  
+**Purpose:** WordPress SEO metadata, canonical, XML sitemap, schema and editorial implementation.  
+**Strengths:** mature WordPress integration and active development.  
+**Weaknesses:** plugin keyword/readability scores are editorial heuristics; defaults can conflict with custom architecture/plugins.  
+**Security/operational concern:** test generated canonical/schema/robots/sitemap output after plugin/theme changes and avoid duplicate schema/SEO plugins.  
+**License caution:** GitHub metadata exposes `Other/NOASSERTION`; inspect the project’s actual licensing terms before redistribution/derivative distribution.  
+**Official-doc conflict:** Google does not use Yoast/Rank Math scores as ranking scores.  
+**Recommended use:** implementation layer, not ranking oracle.
+
+## eliasdabbas/advertools — `RECOMMENDED`
+
+**Repository:** https://github.com/eliasdabbas/advertools  
+**Purpose:** Python marketing/SEO data toolkit.  
+**Features:** crawler workflows, robots/sitemap parsing, log/URL/data analysis and SERP-data processing.  
+**Strengths:** reproducible, scriptable, data-frame-friendly technical analysis.  
+**Weaknesses:** requires Python/data skills; its crawler is not Googlebot.  
+**Operational concern:** use responsible crawl rates and validate parser assumptions.  
+**Recommended use:** inventories, sitemap/robots checks, log analysis and reproducible audit pipelines.
+
+## towfiqi/serpbear — `USEFUL`
+
+**Purpose:** self-hosted rank tracking.  
+**Strengths:** historical keyword monitoring and Search Console/integration options.  
+**Weaknesses:** upstream scraping/API providers and integrations can break.  
+**Operational concern:** explicitly set country/location/device and respect provider terms/rate limits.  
+**Claim caution:** one tracked SERP is not universal rank truth.  
+**Recommended use:** controlled rank monitoring with dated measurement context.
+
+## iamvishnusankar/next-sitemap — `RECOMMENDED` for a narrow function
+
+**Purpose:** Next.js sitemap and robots generation.  
+**Strengths:** sitemap splitting/indexes and framework-friendly automation.  
+**Weaknesses:** generated defaults cannot decide which URLs deserve indexation/canonical status.  
+**Official nuance:** it can emit `changefreq`/`priority`; Bing explicitly says it ignores those fields.  
+**Recommended use:** generate intentionally filtered canonical URL sets, then validate live XML/robots output.
+
+## garmeeh/next-seo — `USEFUL`
+
+**Purpose:** Next.js structured-data and SEO helpers.  
+**Activity/license:** active in 2026; MIT.  
+**Strengths:** convenient JSON-LD/schema composition.  
+**Weaknesses:** framework-native Next.js metadata APIs may be preferable for ordinary metadata; README/promotional statements are not search evidence.  
+**Operational concern:** validate rendered output, duplicate tags and Google feature requirements.  
+**Recommended use:** implementation convenience, especially structured data.
+
+## harlan-zw/nuxt-seo — `USEFUL`
+
+**Purpose:** integrated Nuxt robots/sitemap/schema/social/SEO module ecosystem.  
+**Activity/license:** highly active in 2026; MIT.  
+**Strengths:** cohesive framework integration.  
+**Weaknesses/claim caution:** broad “AEO/AI SEO” marketing terminology can imply more than current provider evidence proves.  
+**Official-doc conflict rule:** provider/Google/Bing documentation wins over module marketing language.  
+**Recommended use:** implementation layer after rendered-output validation.
+
+## harlan-zw/unlighthouse — `SPECIALIZED`
+
+**Purpose:** run Lighthouse at site scale.  
+**Activity/license:** active in 2026; MIT.  
+**Strengths:** fast regression triage across URL classes.  
+**Weaknesses:** large numbers of lab scores can encourage false precision.  
+**Operational concern:** control crawl concurrency and sample by template/traffic class.  
+**Recommended use:** regression discovery, not a ranking dashboard.
 
-## Measurement / rank tracking
+## jekyll/jekyll-seo-tag — `SPECIALIZED`
+
+**Purpose:** metadata/JSON-LD/Open Graph support for Jekyll.  
+**Activity/license:** maintained in 2026; MIT.  
+**Strengths:** stable, narrow static-site integration.  
+**Weakness:** cannot substitute for architecture/content/crawl decisions.  
+**Recommended use:** Jekyll sites followed by rendered-output validation.
 
-### towfiqi/serpbear — `USEFUL`
+## spatie/laravel-sitemap — `SPECIALIZED`
 
-- Repository: https://github.com/towfiqi/serpbear
-- Purpose: self-hosted search-position tracking.
-- Activity: unarchived; GitHub reported push **2026-05-14**.
-- License: MIT.
-- Strengths: self-hosted dashboard, keyword/history tracking, Search Console integration and multiple collection-provider options.
-- Weaknesses: README/integrations may outlive third-party scraping/API compatibility; SERP providers can change frequently.
-- Operational concerns: respect search-provider terms and rate limits; avoid interpreting one location/device snapshot as a universal rank.
-- Recommended use: controlled, configured rank monitoring with explicit locale/device/query context.
+**Purpose:** Laravel sitemap creation/crawling.  
+**Activity/license:** active in 2026; MIT.  
+**Strengths:** mature framework integration.  
+**Weakness:** sitemap generation does not decide indexability or canonical quality.  
+**Operational concern:** filter parameters/internal search/private/duplicate URLs before output.  
+**Recommended use:** controlled sitemap generation.
 
-### karust/openserp — `EXPERIMENTAL`
+## spatie/schema-org — `SPECIALIZED`
 
-- Repository: https://github.com/karust/openserp
-- Purpose: SERP collection/scraping-oriented tooling.
-- Strengths: can support controlled measurement research.
-- Risks: search-page markup, anti-bot systems, terms, localization and personalization make scraping brittle.
-- Recommended use: research/test environments only after current maintenance, license and provider-compliance review.
+**Purpose:** PHP Schema.org fluent builder / JSON-LD generator.  
+**Activity/license:** active in 2026; MIT.  
+**Strengths:** broad vocabulary implementation.  
+**Critical caveat:** Schema.org vocabulary is broader than Google rich-result support. Valid Schema.org does not imply a Google Search feature.  
+**Recommended use:** semantic implementation after selecting accurate visible entities and engine-supported requirements when rich results are desired.
 
-## Framework / CMS implementation helpers
+## sethblack/python-seo-analyzer — `USEFUL`
 
-### iamvishnusankar/next-sitemap — `RECOMMENDED` for its narrow function
+**Purpose:** lightweight site structure/technical analysis.  
+**Activity:** recent 2026 push; unarchived.  
+**License caution:** GitHub metadata exposes Other/NOASSERTION.  
+**Strengths:** simple supplementary crawl checks.  
+**Weaknesses:** hardcoded heuristics/word-count warnings can age and should not define SEO success.  
+**Recommended use:** secondary audit signal, never sole production crawler or ranking diagnosis.
 
-- Repository: https://github.com/iamvishnusankar/next-sitemap
-- Purpose: Next.js sitemap and robots generation for static/dynamic/server-rendered pages.
-- Activity: unarchived; GitHub reported push **2026-05-13**.
-- License: MIT.
-- Strengths: sitemap splitting/indexes, robots generation and framework integration.
-- Weaknesses: generated defaults still require architecture review; including a URL in a sitemap does not make it indexable or canonical.
-- Important engine nuance: the library can emit fields such as `changefreq` and `priority`; Bing explicitly says it ignores those sitemap fields. Do not treat them as ranking controls.
+## karust/openserp — `SPECIALIZED`
 
-### garmeeh/next-seo — `USEFUL`
+**Purpose:** self-hosted browser-rendered SERP API across multiple engines.  
+**Activity/license:** active 2026; MIT.  
+**Strengths:** controlled research and measurement infrastructure.  
+**Weaknesses:** search markup, anti-bot behavior, localization and provider behavior change frequently.  
+**Security/operational concerns:** protect proxy credentials; control concurrency; comply with applicable provider terms and law.  
+**Recommended use:** research/monitoring where the operator accepts collection/compliance maintenance burden.  
+**Evidence caution:** results remain date/location/device dependent.
 
-- Repository: https://github.com/garmeeh/next-seo
-- Purpose: Next.js SEO/structured-data components.
-- Strengths: convenient structured-data composition.
-- Weaknesses/caution: current Next.js metadata APIs may be preferable for standard metadata; README/promotional claims are not search evidence.
-- Recommended use: use for implementation convenience after validating rendered HTML and Google-supported rich-result requirements.
+## puneetindersingh/open-seo-crawler — `EXPERIMENTAL`
 
-### harlan-zw/nuxt-seo — `USEFUL`
+**Purpose:** self-hosted technical SEO crawler.  
+**Activity/license:** created 2026-04-23; active push 2026-08-04; MIT.  
+**Strengths:** current development, CMS-aware positioning, exports.  
+**Weaknesses:** young project with limited long-term production history.  
+**Operational concern:** first run on staging/small sample; verify concurrency/resource use and findings with a second source/logs.  
+**Recommended use:** exploratory/secondary crawler until production maturity is demonstrated.
 
-- Repository: https://github.com/harlan-zw/nuxt-seo
-- Purpose: Nuxt SEO module ecosystem covering robots, sitemap, schema, social/OG and related tooling.
-- Strengths: integrated framework experience.
-- Weaknesses: broad “AEO/AI SEO” marketing language can be stronger than current first-party evidence.
-- Recommended use: implementation layer; validate each claim/output against Google/Bing/provider docs.
+## spronta/crawlie — `EXPERIMENTAL`
 
-### harlan-zw/unlighthouse — `SPECIALIZED`
+**Purpose:** Rust technical SEO/GEO crawler for humans/agents.  
+**Activity:** created 2026-06-18; recent 2026 development; unarchived.  
+**License caution:** GitHub metadata exposes Other/NOASSERTION.  
+**Strengths:** modern crawler/agent focus.  
+**Weaknesses:** extremely young; “GEO” positioning must not be treated as proof of provider-specific citation optimization.  
+**Recommended use:** test/secondary crawler only until maturity, licensing and edge cases are better established.
 
-- Repository: https://github.com/harlan-zw/unlighthouse
-- Purpose: site-scale Lighthouse crawling/reporting.
-- Recommended use: regression triage across many URLs; sample templates and important traffic classes rather than chasing a global score.
+## nobodyscode/ai-crawlers — `EXPERIMENTAL`
 
-### jekyll/jekyll-seo-tag — `SPECIALIZED`
+**Purpose:** machine-readable list of AI crawler user agents and robots examples.  
+**Activity:** created/pushed 2026-07-16; repository is minimal; no license exposed.  
+**Strength:** useful discovery lead.  
+**Weakness:** very new, tiny, no independent authority and no guarantee that entries remain current.  
+**Operational risk:** a stale/mistyped bot token can accidentally block intended search/retrieval traffic.  
+**Recommended use:** inventory lead **only**; verify every crawler/token/IP/control against the provider’s current first-party documentation before modifying robots/WAF.
 
-- Repository: https://github.com/jekyll/jekyll-seo-tag
-- Purpose: Jekyll metadata helper.
-- Recommended use: static Jekyll projects, followed by rendered-output validation.
+---
 
-### spatie/laravel-sitemap — `SPECIALIZED`
+# Curated resource catalogues
 
-- Repository: https://github.com/spatie/laravel-sitemap
-- Purpose: Laravel sitemap generation/crawling.
-- Caveat: sitemap generation does not decide canonical/indexability quality; filter URLs intentionally.
+## bmpi-dev/awesome-seo — `USEFUL`
 
-### spatie/schema-org — `SPECIALIZED`
+**Activity/license:** active push 2026-08-23; MIT; unarchived.  
+**Purpose:** broad SEO resource discovery.  
+**Strengths:** wide source/tool/community map.  
+**Weaknesses:** mixed-quality ecosystem and material that can include aggressive/black-hat discussions.  
+**Recommended use:** discovery only; follow each claim to primary evidence.
 
-- Repository: https://github.com/spatie/schema-org
-- Purpose: PHP Schema.org builder.
-- Caveat: Schema.org vocabulary support is broader than Google rich-result support. A valid type is not automatically a Search feature.
+## serpapi/awesome-seo-tools — `USEFUL`
 
-## Crawling / auditing
+**Activity:** unarchived; last observed code push 2026-02-24. No license exposed by GitHub.  
+**Purpose:** SEO tool catalogue.  
+**Weakness:** inclusion is not endorsement and does not validate each tool’s claims/security/maintenance.  
+**Recommended use:** tool discovery.
 
-### sethblack/python-seo-analyzer — `USEFUL`
+## teles/awesome-seo — `SPECIALIZED`
 
-- Repository: https://github.com/sethblack/python-seo-analyzer
-- Purpose: on-site SEO analysis.
-- Recommended use: lightweight supplementary audit, not the sole production crawler.
-- Caveat: re-check maintenance and rules before relying on any hardcoded SEO heuristic.
+**Purpose:** general SEO resource catalogue.  
+**Use:** discovery/history.  
+**Caution:** re-check freshness and primary evidence before adopting advice.
 
-### puneetindersingh/open-seo-crawler — `EXPERIMENTAL`
+## marcobiedermann/search-engine-optimization — `USEFUL`
 
-- Repository: https://github.com/puneetindersingh/open-seo-crawler
-- Purpose: open technical SEO crawler.
-- Recommended use: evaluate in non-destructive test crawl first; compare output with server logs and a second crawler.
-- Pending caution: deeper release/security review is needed before production-critical use.
+**Purpose:** SEO checklist/reference implementation.  
+**Use:** checklist inspiration.  
+**Conflict rule:** current Google/Bing/provider documentation wins.
 
-### spronta/crawlie — `EXPERIMENTAL`
+## johnmurch/awesome-seo-scripts — `USEFUL`
 
-- Repository: https://github.com/spronta/crawlie
-- Purpose: crawling/SEO analysis tooling.
-- Recommended use: exploratory/secondary crawler until maintenance, scale behavior and edge cases are verified in the target environment.
+**Purpose:** SEO automation/script discovery.  
+**Security concern:** inspect code/dependencies/credentials, outbound network access and rate limits before execution.
 
-## Resource catalogues — useful discovery, not authority
+## guptadeepak/awesome-programmatic-seo — `USEFUL`
 
-### bmpi-dev/awesome-seo — `USEFUL`
+**Purpose:** programmatic SEO resources.  
+**Critical official boundary:** scale is not a quality exemption; Google’s scaled-content-abuse policy applies regardless of whether pages are generated with AI, scripts or humans.  
+**Recommended use:** ideas/data architecture, filtered through `docs/programmatic-seo.md` quality gates.
 
-- Repository: https://github.com/bmpi-dev/awesome-seo
-- Purpose: curated SEO resource map.
-- Strength: broad discovery surface.
-- Weakness: mixed-quality ecosystem; includes communities/resources that may discuss black-hat tactics.
-- Rule: follow links as leads, then verify claims against current first-party sources.
+---
 
-### serpapi/awesome-seo-tools — `USEFUL`
+# AI / GEO catalogues
 
-- Repository: https://github.com/serpapi/awesome-seo-tools
-- Purpose: broad SEO tools catalogue.
-- Rule: tool inclusion is not endorsement and says nothing about ranking-factor truth.
+## amplifying-ai/awesome-generative-engine-optimization — `USEFUL`
 
-### teles/awesome-seo — `SPECIALIZED`
+**Activity:** unarchived; last observed push 2026-04-14; no license exposed by GitHub.  
+**Purpose:** GEO research/guides/tools discovery.  
+**Strength:** centralizes a fast-moving literature/tool space.  
+**Weakness:** papers, vendor content and anecdotes have different evidentiary weight.  
+**Recommended use:** discovery; evaluate experimental methodology and provider-specific documentation independently.
 
-- Repository: https://github.com/teles/awesome-seo
-- Purpose: general SEO resource list.
-- Use: discovery/history; verify freshness before following advice.
+## best-of-ai/awesome-ai-seo — `USEFUL`
 
-### marcobiedermann/search-engine-optimization — `USEFUL`
+**Activity/license:** active 2026; MIT; unarchived.  
+**Purpose:** AI marketing/SEO tool and resource catalogue.  
+**Weakness:** fast-moving category with marketing-driven claims.  
+**Recommended use:** discovery only; do not infer citation/ranking benefit from tool inclusion.
 
-- Repository: https://github.com/marcobiedermann/search-engine-optimization
-- Purpose: SEO checklist/reference.
-- Use: checklist inspiration; current Google/Bing documentation wins on conflicts.
+---
 
-### johnmurch/awesome-seo-scripts — `USEFUL`
+# Legacy / archived tools
 
-- Repository: https://github.com/johnmurch/awesome-seo-scripts
-- Purpose: SEO automation/script discovery.
-- Security rule: review source, dependencies, credentials/access and rate limits before execution.
+## GoogleChrome/rendertron — `STALE`
 
-### guptadeepak/awesome-programmatic-seo — `USEFUL`
+**Purpose:** Headless Chrome dynamic-rendering solution.  
+**Archived:** yes.  
+**Last push:** 2022-10-06.  
+**License:** Apache-2.0.  
+**Why stale:** Google now describes dynamic rendering as a workaround, not a recommended long-term solution. Prefer server-side/static rendering or reliable client rendering where appropriate and test what crawlers/users actually receive.
 
-- Repository: https://github.com/guptadeepak/awesome-programmatic-seo
-- Purpose: programmatic SEO resource catalogue.
-- Critical caveat: scale is not a quality exemption. Google’s scaled-content-abuse policy applies regardless of whether pages were generated by AI, scripts or humans.
+## eyecatchup/SEOstats — `STALE`
 
-## AI/GEO catalogues
+**Purpose:** historic PHP SEO metrics/API aggregation.  
+**Archived:** yes.  
+**Last push:** 2022-06-15.  
+**License:** MIT.  
+**Risk:** third-party metrics/endpoints age rapidly; do not use as current evidence.
 
-### amplifying-ai/awesome-generative-engine-optimization — `USEFUL`
+## nuxt/vue-meta — `STALE`
 
-- Repository: https://github.com/amplifying-ai/awesome-generative-engine-optimization
-- Purpose: GEO papers/resources/tools discovery.
-- Rule: separate papers with explicit experiments from vendor claims and anecdotes. Provider-specific crawler/Search controls outrank community advice.
+**Purpose:** legacy Vue metadata management with SSR support.  
+**Archived:** yes.  
+**Last push observed:** 2025-09-25.  
+**License metadata:** Other/NOASSERTION.  
+**Recommended use:** existing legacy projects only; use current Nuxt/framework-native approaches for new projects.
 
-### best-of-ai/awesome-ai-seo — `USEFUL`
+---
 
-- Repository: https://github.com/best-of-ai/awesome-ai-seo
-- Purpose: AI SEO/GEO tool and resource discovery.
-- Caveat: fast-moving category with marketing-driven claims. Never infer that a listed tactic improves ChatGPT/Google/Claude citations without measured/provider evidence.
+# Official-document conflict rules discovered during validation
 
-### nobodyscode/ai-crawlers — `USEFUL`
+1. **Lighthouse/Web Vitals:** useful measurement ≠ Google ranking score.
+2. **Sitemap generators:** a generated sitemap entry ≠ indexability/canonical/rank; Bing ignores sitemap `changefreq` and `priority`.
+3. **Schema builders:** Schema.org validity ≠ Google rich-result eligibility or ranking.
+4. **AI/GEO modules/catalogues:** “AEO/GEO optimization” claims require provider/measurement evidence; no universal special AI schema or content pattern is established.
+5. **Dynamic rendering:** Rendertron/dynamic rendering is legacy workaround guidance, not current default architecture.
+6. **SERP scrapers/rank trackers:** observed result ≠ universal rank; country/device/time/context must be captured.
+7. **Crawler lists:** provider-first bot documentation wins over community user-agent lists.
+8. **Plugin/editor scores:** Yoast/Rank Math-style scores are not search-engine ranking scores.
 
-- Repository: https://github.com/nobodyscode/ai-crawlers
-- Purpose: AI crawler catalogue.
-- Strong use: inventory/detection lead.
-- Production rule: verify every user-agent/token/IP/control against the relevant provider’s current first-party documentation before editing robots/WAF rules.
-
-## Legacy / archived tools
-
-### GoogleChrome/rendertron — `STALE`
-
-- Repository: https://github.com/GoogleChrome/rendertron
-- Purpose: Headless Chrome dynamic-rendering solution.
-- Archived: **yes**.
-- Last push reported by GitHub: **2022-10-06**.
-- License: Apache-2.0.
-- Verdict reason: useful historical context, but not a current default JavaScript SEO architecture. Prefer SSR/SSG/server-compatible rendering or robust client rendering and test what bots/users receive.
-
-### eyecatchup/SEOstats — `STALE`
-
-- Repository: https://github.com/eyecatchup/SEOstats
-- Purpose: historical SEO metrics/API aggregation library.
-- Status: archived/legacy in the reviewed landscape.
-- Risk: old third-party endpoints and metrics age badly; not suitable as a current evidence source.
-
-### nuxt/vue-meta — `STALE`
-
-- Repository: https://github.com/nuxt/vue-meta
-- Purpose: historic Vue/Nuxt metadata management.
-- Use: legacy projects only; prefer current framework-native/Nuxt SEO implementation for new systems.
-
-## What this catalogue deliberately refuses to do
-
-- No repository gets `RECOMMENDED` merely because it has many stars.
-- No README claim becomes a ranking factor.
-- No crawler is assumed to behave exactly like Googlebot/Bingbot/OAI-SearchBot.
-- No SERP scraper result is treated as global rank truth.
-- No “AI SEO” file, schema, paragraph pattern or crawler list is treated as universally required.
-
-## Production selection checklist
+# Production selection checklist
 
 Before adopting any repository:
 
-1. verify it is not archived/abandoned;
-2. inspect license and dependency/security posture;
-3. review last meaningful release/commit, not just repository `updated_at`;
+1. re-check archive status and latest meaningful release/commit;
+2. inspect the real license file and redistribution obligations, not only GitHub metadata;
+3. review dependency/security posture and network/credential access;
 4. test on staging/sampled URLs;
 5. inspect rendered output and HTTP behavior;
-6. compare claims with `SOURCES.md` first-party entries;
-7. capture a before/after measurement and rollback path;
-8. never make destructive crawl/index/robots/canonical changes from tool defaults alone.
+6. compare search-related claims with `SOURCES.md` first-party entries;
+7. capture before/after measurement and rollback path;
+8. control crawler/rank-tracker rate limits and provider compliance;
+9. never make destructive robots/index/canonical changes from tool defaults alone;
+10. re-evaluate the tool periodically because framework/search APIs change.
+
+# Final catalogue verdict
+
+**PASS for baseline open-source research:** the required core, framework, crawler, SERP, AI/GEO catalogue and legacy examples have been individually classified and key metadata/risks documented. This catalogue remains a maintained implementation reference; it deliberately does not turn repository popularity or README claims into ranking evidence.
