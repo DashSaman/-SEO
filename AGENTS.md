@@ -7,144 +7,228 @@ This file is mandatory reading for every AI agent or human researcher working in
 
 ## Mission
 
-Build and maintain an evidence-first SEO reference covering classic search, AI-assisted search, technical implementation, content quality, discoverability, structured data, measurement and open-source tooling. The repository must remain resumable and safe for parallel work.
+Build and maintain an evidence-first SEO/AEO/GEO/AI Search operating system covering classic search, AI-assisted search, technical implementation, content quality, discoverability, structured data, authority, measurement and open-source tooling. The repository must remain resumable, auditable and safe for parallel work.
 
-## Mandatory source hierarchy
+## Non-negotiable rules
 
-1. **Official engine/vendor documentation** — Google Search Central, Bing Webmaster, Yandex Webmaster, Naver Search Advisor, OpenAI, Anthropic, Perplexity, etc.
-2. **Standards/protocol owners** — IETF RFCs, Sitemaps.org, Schema.org, IndexNow.
-3. **Measured data** — Search Console/Bing Webmaster/SERP measurements/credible datasets.
-4. **Established practitioner research** — only when methodology and date can be evaluated.
-5. **GitHub/community material** — implementation/tooling inspiration; never automatically treated as ranking truth.
+> **No source → no factual claim.**  
+> **No synthesis → source not complete.**  
+> **No coordination update → milestone not complete.**
 
-If sources conflict, record the conflict and prefer the most current applicable first-party source unless there is strong reproducible evidence that product behavior differs.
+Also:
+
+- never fabricate an exact search rank, backlink count, traffic number or AI citation metric;
+- never promote a community/GitHub statement to an official search-engine rule;
+- never present vendor marketing copy as established product behavior without appropriate evidence;
+- never turn correlation/observation into causation;
+- never keep mutable search/crawler guidance as current without a review date/freshness check;
+- never declare a task `PASS` merely because code/content was deployed — verify and retest live behavior;
+- never promise Page 1/Top 10 rankings.
+
+## Mandatory evidence hierarchy
+
+1. **OFFICIAL** — current first-party engine/provider docs: Google, Bing/Microsoft, OpenAI, Anthropic, Perplexity, Apple, Baidu, Yandex, Naver, DuckDuckGo, etc.
+2. **STANDARD** — IETF/RFC, Sitemaps.org, Schema.org, IndexNow, W3C/WHATWG where relevant.
+3. **MEASURED** — GSC/BWT/logs/SERP measurements/credible datasets with context.
+4. **RESEARCH** — peer-reviewed research or transparent preprints with inspectable methodology.
+5. **PRACTITIONER** — established practitioner/vendor research where date/methodology/limits can be evaluated.
+6. **COMMUNITY** — GitHub, Reddit, forums and community catalogues/tooling.
+
+If sources conflict, record the conflict. Prefer the most current applicable first-party/standard source unless strong reproducible measurement shows actual product behavior differs. In that case document both product documentation and observed behavior; do not silently replace one with the other.
+
+## Evidence labels for writing
+
+Every meaningful claim must map to one of:
+
+- `FACT-OFFICIAL`
+- `FACT-STANDARD`
+- `MEASURED` / `OBSERVED`
+- `RESEARCH`
+- `PRACTITIONER`
+- `COMMUNITY`
+- `INFERENCE`
+- `HYPOTHESIS`
+
+An `INFERENCE`/`HYPOTHESIS` must be visibly framed as such when it materially affects a recommendation.
+
+## Required workflow for EVERY work unit
+
+A work unit can be one source, one GitHub repository evaluation, one SERP batch, one topic document, one checklist or one validation batch. Complete these in order:
+
+1. **Source research** — identify publisher/provider, URL/repository, date/activity and exact scope.
+2. **Evidence classification** — assign OFFICIAL/STANDARD/MEASURED/RESEARCH/PRACTITIONER/COMMUNITY and status.
+3. **Synthesis** — record what the evidence means, what it does not prove and any conflict/limitation.
+4. **`SOURCES.md` update** — add/update evidence ledger row(s) when factual research changed.
+5. **Topic/output update** — modify the relevant `docs/`, root playbook or `checklists/` file.
+6. **`PROGRESS.md` update** — only when real stage completion/evidence counts changed; never inflate.
+7. **`HANDOFF.md` update** — record current task, last completed task/source/commit context, files changed, conflicts/blockers and exact next task.
+8. **Commit** — descriptive, bounded commit message.
+
+**A work unit is not complete until its evidence has been synthesized and continuation state is preserved.** For micro-edits in a single tightly coupled milestone, coordination files may be updated at the milestone boundary rather than after every single contents-API commit, but they must reflect the complete milestone before the agent stops or reports completion.
 
 ## Required workflow for EVERY source
 
-1. Read `HANDOFF.md` and confirm the source/topic is not already actively claimed by another agent.
-2. Research the source and determine:
-   - publisher/owner;
-   - source class (official / standard / measured / practitioner / community);
-   - publication/update date when available;
-   - exact scope of the claim;
-   - what the source **does not** prove.
-3. Add/update the source in `SOURCES.md` with status `VERIFIED`, `PARTIAL`, `SUPERSEDED`, `CONFLICT`, or `BACKLOG`.
-4. Synthesize findings into the appropriate `docs/*.md` file. Do not copy lengthy text.
-5. Update `PROGRESS.md` if a task, stage, or source count changed.
-6. Update `HANDOFF.md`:
-   - `LAST_COMPLETED_SOURCE`
-   - `LAST_COMPLETED_ACTION`
-   - `ACTIVE_WORK`
-   - `NEXT_ACTIONS`
-   - timestamp
-7. Commit with a descriptive message.
+Determine:
 
-**A source is not considered completed until steps 3–6 are done.**
+- publisher/owner;
+- evidence class;
+- publication/update/review date when available;
+- exact scope of the claim;
+- applicable market/product/version;
+- what the source **does not** prove;
+- whether it supersedes/conflicts with older guidance.
+
+Use `SOURCES.md` statuses:
+
+- `VERIFIED`
+- `PARTIAL`
+- `DISCOVERED`
+- `SUPERSEDED`
+- `CONFLICT`
+- `BACKLOG`
+
+A source row without synthesis in a durable topic document is not enough for production-reference readiness.
 
 ## Required workflow for EVERY stage
 
 At stage completion:
 
-- verify all new claims have source entries;
-- run a consistency pass against newer official guidance;
-- mark stage status in `PROGRESS.md`;
-- record unresolved questions explicitly;
-- update the dashboard (`docs/index.html`);
-- set the exact next stage in `HANDOFF.md`.
+- verify new factual claims have appropriate evidence rows;
+- run a consistency/freshness pass against current official guidance;
+- verify no Critical/High unresolved baseline gap remains for that stage;
+- update `PROGRESS.md` weighted completion;
+- update `docs/index.html` dashboard;
+- update `HANDOFF.md` with the exact next task;
+- commit with a descriptive stage message.
 
 ## Parallel-agent protocol
 
-`HANDOFF.md` contains an `ACTIVE_WORK` table. Before starting:
+Before starting shared work:
 
-- claim one unclaimed workstream with agent/session label and timestamp;
-- avoid editing the same document concurrently unless coordinated;
-- if an active claim looks abandoned, do not silently take it over: mark it `STALE-CLAIM-TAKEOVER` with the prior label preserved;
-- merge research by source IDs, not by overwriting another agent's ledger entries;
-- update the handoff after every meaningful commit.
+- read `HANDOFF.md` and latest commit history;
+- claim/identify a non-conflicting workstream;
+- do not overwrite shared coordination files from stale SHAs;
+- before modifying `SOURCES.md`, `PROGRESS.md`, `HANDOFF.md`, `AGENTS.md` or dashboard, re-fetch the current file/SHA;
+- if taking over an apparently abandoned claim, preserve the prior claim and mark the takeover rather than silently erasing history;
+- merge evidence by source ID, not by deleting another agent’s valid research.
 
-Recommended workstreams that can run independently:
+Independent workstreams can include Google, Bing/IndexNow, regional engines, web standards, AI crawlers, GitHub tooling, SERP/practitioner research, local/entity, ecommerce/international/media, measurement and validation.
 
-- Google Search / Google AI Search
-- Bing / IndexNow
-- Yandex / Naver / Baidu / regional engines
-- Web protocols: robots/sitemaps/schema
-- AI crawlers / AI answer engines
-- GitHub/open-source tools
-- SERP/practitioner research
-- Local/entity/reputation SEO
-- Ecommerce/international/news/video/image SEO
-- Measurement/monitoring
+## SERP measurement rules
 
-## Evidence-writing rules
+Search rankings are market/time/device dependent.
 
-Every important statement should be tagged mentally as one of:
+- Always record query, date, engine and geography when known; device when material.
+- If a provider capable of exact positions is unavailable, write `OBSERVED-WEB-SEARCH` or equivalent — never invent `#1`, Top 3 or Top 10 positions.
+- Third-party DR/DA/traffic estimates are provider metrics/proxies, not Google metrics.
+- Current prominent results can reveal intent/page type/format; they do not prove why a page ranks.
+- Re-measure real client commercial queries in the actual target market before implementation.
 
-- **FACT-OFFICIAL** — directly supported by official docs.
-- **FACT-STANDARD** — specified by a standard/protocol.
-- **OBSERVED** — measured in SERPs/tools; may change by query/location/time.
-- **INFERENCE** — reasoned implication from evidence; clearly label it.
-- **HYPOTHESIS** — requires testing.
+## Practitioner / vendor rules
 
-Never write an `OBSERVED`, `INFERENCE`, or `HYPOTHESIS` as a hidden Google/Bing ranking factor.
+Practitioner sources are valuable for workflow, examples and measured hypotheses, but:
+
+- identify ownership/affiliation when material;
+- distinguish case-study result from universal rule;
+- preserve methodology/date/market limits;
+- cross-check spam-policy-sensitive advice against current engine documentation;
+- never convert a tool/vendor’s proprietary score into a search-engine score.
+
+## GitHub / community rules
+
+For important repositories record purpose, archive state, maintenance/activity, license metadata/file, last meaningful update, features, strengths, weaknesses, operational/security concerns, claim cautions, official-doc conflicts, recommended use and verdict.
+
+Allowed verdicts:
+
+- `RECOMMENDED`
+- `USEFUL`
+- `SPECIALIZED`
+- `EXPERIMENTAL`
+- `STALE`
+- `AVOID`
+
+Stars/forks/popularity never raise evidence class.
 
 ## Freshness rules
 
-SEO documentation changes frequently. For mutable vendor behavior:
+SEO/search/AI documentation changes frequently.
 
-- record `Reviewed: YYYY-MM-DD`;
-- prefer sources updated in the last 18 months when alternatives exist;
-- for current crawler identities, AI visibility controls, rich-result eligibility, Search Console features and spam policies, always re-check official documentation before changing production guidance;
-- preserve obsolete guidance only when useful historically and label it `SUPERSEDED`.
+- record `Reviewed: YYYY-MM-DD` on mutable durable documents/sources;
+- re-check crawler identity, robots controls, AI Search controls/reporting, rich-result eligibility, spam policies and Webmaster/Search Console product features before production changes;
+- prefer current first-party material when older guidance conflicts;
+- preserve useful historical advice only as `SUPERSEDED`/legacy;
+- archive status or repository `updated_at` is not enough — inspect meaningful push/release/maintenance data when evaluating code.
 
-## Safety / quality guardrails
+## Safety / policy guardrails
 
 Do not recommend or operationalize:
 
-- paid-link schemes intended to manipulate rankings;
-- PBN/link-farm automation;
-- cloaking or search-engine-specific deceptive output;
-- doorway pages;
-- mass-generated low-value pages for query capture;
-- fake user reviews, fake forum mentions or fabricated citations;
+- paid-link/PBN/link-farm schemes for ranking manipulation;
+- cloaking/deceptive crawler-specific output;
+- doorway/location synonym page factories;
+- mass low-value scaled content for query capture;
+- fake reviews, fake Reddit/forum mentions or fabricated citations;
 - hacked-site/link injection;
-- evasion of spam enforcement.
+- fake first-hand tests/experts/customers/data;
+- evasion of spam/manual-action enforcement.
 
-Discuss these only as risks/spam-policy concepts when needed.
+Discuss such tactics only to identify/remove risk.
 
-## Technical correctness rules
+## Technical correctness locks
 
-- `robots.txt` controls crawler access; it is **not** authentication and is not a reliable method for hiding secrets.
-- `noindex` and crawl blocking are different controls; if a bot cannot crawl a page it may not see the page-level meta directive.
-- canonical signals are generally hints/preferences, not a guarantee that a chosen URL will be selected by every engine.
-- a sitemap aids discovery; it does not guarantee indexing.
-- IndexNow notifies participating search engines about URL changes; notification does not guarantee crawl/index/rank.
-- structured data can enable/clarify supported search features but is not a generic ranking guarantee.
-- Core Web Vitals/page experience are part of overall quality/UX considerations; do not reduce SEO to a Lighthouse score.
-- Google’s 2026 guidance says no special AI markup or `llms.txt` is required for Google Search generative features.
+- `robots.txt` controls crawler access preferences; it is not security/authentication.
+- `noindex` and crawl blocking are separate controls; a blocked bot may not see page-level noindex.
+- canonical signals are generally preferences/hints, not an absolute guarantee across engines.
+- sitemap inclusion helps discovery; it does not guarantee crawl/index/rank.
+- IndexNow notifies participating engines of changes; it does not guarantee crawl/index/rank.
+- structured data can describe entities/enable supported features; schema count is not a ranking KPI and rich-result display is not guaranteed.
+- current Core Web Vitals are useful UX/search diagnostics; Lighthouse/Web Vitals scores are not Google ranking scores.
+- Google’s current 2026 generative Search guidance does not require special AI schema, `llms.txt`, artificial chunking or manufactured mentions.
+- search crawlers, training crawlers and user-triggered retrieval bots must be treated separately when providers document separate controls.
+- AI citation ≠ ranking ≠ authority ≠ traffic ≠ conversion.
+- dynamic rendering is a legacy/workaround pattern, not the preferred default architecture in current Google JavaScript guidance.
+- disavow is not a routine third-party “toxicity cleanup” workflow; current Google guidance controls when it is appropriate.
 
 ## Copyright / quotation rule
 
-Summarize. Keep quotations very short and necessary. Link to the primary source. Do not republish articles, documentation pages, proprietary datasets, or repository content wholesale.
+Synthesize. Keep quotations short and necessary. Link to primary sources. Do not republish documentation/articles/proprietary datasets/repository content wholesale.
 
 ## File responsibilities
 
-- `README.md` — stable entry point and philosophy.
+- `README.md` — stable entry point/navigation/philosophy.
 - `AGENTS.md` — this operating contract.
-- `HANDOFF.md` — exact current execution state; optimized for a brand-new chat/agent.
-- `PROGRESS.md` — human progress dashboard and weighted stage calculation.
-- `SOURCES.md` — append/update source ledger.
-- `docs/*.md` — durable research synthesis.
-- `docs/index.html` — visual progress dashboard; update on stage changes.
+- `HANDOFF.md` — exact live continuation state.
+- `PROGRESS.md` — weighted research/quality progress.
+- `SOURCES.md` — master evidence ledger.
+- `TOP10_PLAYBOOK.md` — end-to-end execution operating system.
+- `SEO_AUDIT_SOP.md` — dependency/severity/retest audit procedure.
+- `RANKING_FRAMEWORK.md` — query feasibility/prioritization framework.
+- `docs/*.md` — durable topic synthesis.
+- `docs/site-types/*.md` — site-type playbooks.
+- `checklists/*.md` — auditable deployment/validation gates.
+- `docs/index.html` — static GitHub-Pages-compatible dashboard.
+- `FINAL_VALIDATION.md` — final adversarial quality-gate record when baseline is finalized.
 
-## Definition of done for a claim
+## Definition of done for a factual claim
 
-A claim is production-reference ready only when it has:
+Production-reference ready only when it has:
 
-1. a named source,
-2. a URL,
-3. a review date,
-4. a clear evidence class,
-5. scope/caveat if necessary,
-6. synthesis in the relevant reference file.
+1. named source/repository/dataset;
+2. URL or stable identifier;
+3. review/observation date;
+4. evidence class;
+5. scope/caveat and what it does not prove when needed;
+6. synthesis in relevant durable documentation.
 
-If any of these are missing, treat the claim as incomplete.
+## Definition of done for a milestone
+
+A milestone is complete only when:
+
+- required artifacts exist and are substantive;
+- factual claims are evidence-classified;
+- Critical/High gaps are fixed or explicitly block completion;
+- before/after verification/retest exists for implementation gates;
+- source/progress/handoff/dashboard state is reconciled;
+- a descriptive commit records the milestone.
+
+Only `FINAL_VALIDATION.md` can authorize `PROJECT STATUS: 100% COMPLETE`, and only when every defined baseline gate is `PASS`, Critical findings = 0 and High findings = 0.
