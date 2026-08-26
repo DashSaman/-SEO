@@ -41,5 +41,25 @@
 - [ ] Assisted conversions tracked.
 - [ ] Ranking movement not attributed causally to one link without evidence.
 
-## PASS
-PASS when link work is editorial/user justified, policy-safe, transparent and measured beyond raw link count.
+## PASS criteria
+
+PASS when acquisition is editorial/user justified, policy-safe, transparent, based on a legitimate asset/relationship and measured beyond raw link count. No unresolved paid-link/PBN/link-exchange pattern may remain in a PASS state.
+
+## Common failures
+
+- buying followed links or placements primarily for ranking;
+- copying a competitor backlink list without classifying spam/paid/irrelevant links;
+- anchor-text quotas and repeated exact-match outreach;
+- using third-party toxicity scores as automatic disavow instructions;
+- “digital PR” claims built on fabricated data or unverifiable methodology;
+- sponsored/affiliate relationships without proper disclosure/qualification;
+- reporting one ranking change as caused by one new link.
+
+## Retest
+
+1. Reclassify newly acquired/removed links and mentions by editorial/partner/directory/sponsored/spam context.
+2. Verify destination status/canonical and that the cited asset still contains the promised evidence.
+3. Inspect disclosure/`rel` treatment for paid/sponsored relationships where applicable.
+4. Re-check manual actions/link-history before any disavow change and retain backup/evidence.
+5. Compare referring domains, referral traffic, brand mentions and conversions over an appropriate window.
+6. Mark `PASS`/`FAIL` based on policy/risk and evidence, not raw backlink count or DR/DA movement.
