@@ -35,5 +35,25 @@
 - [ ] Bot logs/crawl data checked after large navigation changes.
 - [ ] Ranking/conversion changes annotated, without claiming causal certainty from link count alone.
 
-## PASS
-PASS when internal links improve navigation/context/discovery, priority pages are reachable through stable preferred URLs and link architecture does not create duplicate/infinite crawl spaces.
+## PASS criteria
+
+PASS when priority pages are reachable through stable preferred URLs, architecture reflects real user relationships, broken/redirected/internal duplicate paths are controlled and no link pattern exists primarily to manipulate rankings.
+
+## Common failures
+
+- priority landing pages have no crawlable parent/contextual link;
+- JS buttons navigate without real `href` links;
+- internal links point through chains/old migration URLs;
+- sitewide exact-match footer/tag blocks create spammy anchors;
+- pagination/facets create effectively infinite crawl spaces;
+- canonicalized/noindex URLs continue receiving most internal prominence;
+- automated related-content blocks link semantically unrelated pages.
+
+## Retest
+
+1. Re-crawl the affected section and export inlinks/outlinks, status targets, canonical targets and crawl depth.
+2. Confirm priority orphan count is zero or intentionally documented.
+3. Verify sampled links in rendered HTML as real `<a href>` URLs.
+4. Confirm no priority internal links terminate on 3xx/4xx/5xx.
+5. Compare before/after depth/inlink distribution and inspect logs after major navigation changes.
+6. Mark `PASS` only after live crawl evidence confirms the intended graph; otherwise `FAIL`/`MONITOR`.
