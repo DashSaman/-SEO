@@ -71,3 +71,26 @@ Use with `SEO_AUDIT_SOP.md` and `docs/technical-seo.md`.
 - [ ] Live after state captured.
 - [ ] Critical/High fixes explicitly `PASS` after retest.
 - [ ] Rollback path known.
+
+## PASS criteria
+
+`PASS` only when every applicable Critical/High item above has live evidence, priority URLs are available/crawlable/indexable as intended, canonical/rendered output is correct, and no unresolved blocker can invalidate downstream SEO work.
+
+## Common failures
+
+- staging `noindex` or robots rules shipped to production;
+- WAF/CDN returns 403/429 to bots while browser tests look normal;
+- sitemap lists redirects/noindex/non-canonical URLs;
+- canonical changes after JavaScript hydration;
+- click handlers replace crawlable links;
+- redirect chains or soft 404s hide migration problems;
+- Lighthouse score is treated as proof of search readiness.
+
+## Retest
+
+1. Re-fetch representative priority URLs from an external client and record DNS/TLS/status/headers.
+2. Re-fetch `/robots.txt`, rendered HTML and raw HTML; compare robots/canonical/title/critical links.
+3. Re-crawl affected templates and confirm no new orphan/redirect/4xx classes.
+4. Revalidate sitemap contents and structured data where affected.
+5. Sample Search Console/Bing URL status after recrawl/index processing when relevant.
+6. Attach before/after output and mark each remediated Critical/High issue `PASS` or `FAIL`.
