@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-11 — Verify Docker and reboot/autostart behavior
-EXACT_NEXT_TASK: Configure non-root Docker access for the `amirreza` user, then shut down and relaunch WSL and verify Docker returns active automatically before any Phase 2 service is deployed.
+EXACT_NEXT_TASK: Fully exit Ubuntu, run `wsl --shutdown` from Windows PowerShell, relaunch `Ubuntu-24.04`, then verify the `amirreza` session has the `docker` group, Docker is `active`, and `docker run --rm hello-world` works without `sudo`.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -37,7 +37,7 @@ EXACT_NEXT_TASK: Configure non-root Docker access for the `amirreza` user, then 
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
 - [x] P1-WSL-10 Install Docker Engine + Compose
-- [~] P1-WSL-11 Verify Docker and reboot/autostart behavior — runtime verified; non-root + WSL restart/autostart test remains
+- [~] P1-WSL-11 Verify Docker and reboot/autostart behavior — runtime and group change completed; WSL restart/autostart + non-root verification remains
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
 ## Later phases
@@ -216,7 +216,15 @@ ACTUAL_RESULT:
 - Docker daemon state returned `active`.
 - `hello-world` image was pulled successfully and container output included `Hello from Docker!`.
 CONCLUSION: Docker CLI, Compose Plugin, daemon, outbound registry access, image pull and container execution are all verified healthy.
-NEXT_OPERATOR_ACTION: Add `amirreza` to the `docker` group for operator convenience, then fully shut down WSL and relaunch Ubuntu to verify Docker starts automatically without manual service intervention.
+
+### P1-WSL-11B — Non-root Docker operator setup
+STATUS: ACTION_COMPLETE_RELOGIN_VERIFICATION_PENDING
+DATE: 2026-09-21
+COMMAND: `sudo usermod -aG docker $USER`
+EVIDENCE: Operator screenshot shows the command returned to the shell prompt with no error.
+ACTUAL_RESULT: `amirreza` was added to the `docker` group; group membership must be verified after a fresh Linux login/session.
+SECURITY_NOTE: Membership in the `docker` group is effectively privileged/root-equivalent on this host. It is acceptable for this single-owner pilot but must not be handed directly to untrusted users in the future multi-tenant product.
+NEXT_OPERATOR_ACTION: Exit Ubuntu, shut down WSL completely, relaunch Ubuntu, then verify `groups`, `systemctl is-active docker`, and `docker run --rm hello-world` without `sudo`.
 
 ## Documentation assets
 - `README.fa.md` / `README.md` — bilingual repository entry points
