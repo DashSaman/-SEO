@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP
 CURRENT_PHASE: 0
-CURRENT_TASK: P0-05
-EXACT_NEXT_TASK: P0-06
+CURRENT_TASK: P0-06
+EXACT_NEXT_TASK: Phase 1 planning after bootstrap PR merge
 
 ## State rules
 - [x] Never repeat a verified completed task unless its verification later fails or an intentional upgrade is approved.
@@ -19,7 +19,7 @@ EXACT_NEXT_TASK: P0-06
 - [x] P0-02 Move existing SEO corpus to `SEO-REFERENCE-V1/`
 - [x] P0-03 Create bilingual root docs and canonical execution ledger
 - [x] P0-04 Create Growth OS documentation skeleton
-- [ ] P0-05 Validate tree, links, and secret hygiene
+- [x] P0-05 Validate tree, links, and secret hygiene
 - [ ] P0-06 Open bootstrap PR and complete review
 
 ## Later phases
@@ -89,13 +89,27 @@ STATUS: VERIFIED_COMPLETE
 PURPOSE: Give every future architecture, installation, operation, incident, experiment, benchmark, compliance record and site-specific artifact a stable documented home.
 ACTIONS: Created `growth-os/` map plus architecture, installation, operations, troubleshooting, product, experiments, benchmarks, compliance and sites indexes; created isolated MyTel and Tehran Network pilot indexes.
 EXPECTED_RESULT: Every planned directory is represented by a tracked README; operator documentation contract is recorded; per-site isolation rules are explicit; no empty Git directory is assumed.
-ACTUAL_RESULT: 12 tracked README documents prepared, including dedicated MyTel Growth Mode and Tehran Network Build/Site Factory pilot records. Operator docs require purpose, selection reason, version, prerequisites, installation, configuration, ports, secret variable names only, verification, operation, updates, backup/restore, rollback, failures, removal, upstream repo and license.
-VERIFICATION: Growth OS tree object contains a tracked README for every planned directory and both site pilot subdirectories; no credentials are included.
-ROLLBACK: Remove `growth-os/` and restore `AGENT.md` from the P0-03 commit.
+ACTUAL_RESULT: 12 tracked README documents created, including dedicated MyTel Growth Mode and Tehran Network Build/Site Factory pilot records. Operator docs require purpose, selection reason, version, prerequisites, installation, configuration, ports, secret variable names only, verification, operation, updates, backup/restore, rollback, failures, removal, upstream repo and license.
+VERIFICATION: Recursive Growth OS tree inspection confirmed all required tracked READMEs and both site pilot subdirectories.
+ROLLBACK: Reset bootstrap branch to P0-03 commit `dff71b8b2ffd6c6a0addf8154e165b30208308f1`.
 PROBLEMS: None.
 FIX: Not applicable.
-COMMIT_OR_PR: Recorded by the P0-04 commit `docs: scaffold Growth OS operating documentation`.
+COMMIT_OR_PR: `9c8eef97cb5fa8ecb28d0432118d31da3e18a6f3` — `docs: scaffold Growth OS operating documentation`
 NEXT_TASK: P0-05
+
+### P0-05 — Integrity, navigation and secret-hygiene validation
+ID: P0-05
+STATUS: VERIFIED_COMPLETE
+PURPOSE: Prove the bootstrap did not lose SEO knowledge, break relocation-relative navigation, or introduce credential leakage before review.
+ACTIONS: Compared baseline/archive trees and counts; inspected final recursive tree; checked required root paths; checked relocation semantics for relative links; searched the repository baseline/default branch for common secret patterns and directly reviewed all branch-only bootstrap content.
+EXPECTED_RESULT: 52 baseline SEO files equal 52 archived files with identical content; required Growth OS paths exist; zero relocation-caused broken relative links; no exposed PAT or obvious committed secret assignment; AGENT state is internally consistent.
+ACTUAL_RESULT: Archive tree SHA is exactly the baseline tree SHA, proving 52/52 identity. Required root paths, approved spec/plan, Growth OS skeleton and per-site docs exist. Because the complete original corpus moved under one common prefix without content changes, internal relative link topology is unchanged. Root Growth OS docs use repository paths as code text. Searches for `github_pat_`, `API_KEY=`, and `TOKEN=` returned zero results on the pre-bootstrap/default corpus; all branch-only bootstrap blobs were directly reviewed and contain no credential value.
+VERIFICATION: Final recursive tree inspection + archive tree identity + direct root/spec/plan/AGENT reads + secret-pattern searches. Pre-existing historical/future references inside the preserved SEO corpus were not rewritten because they were not caused by this relocation.
+ROLLBACK: Reset/recreate the bootstrap branch from baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f` or from the last known-good task commit.
+PROBLEMS: No validation defect remained after the earlier spec-tree repair.
+FIX: Not applicable.
+COMMIT_OR_PR: This commit — `chore: validate Growth OS bootstrap integrity`.
+NEXT_TASK: P0-06
 
 ## Execution notes
 
