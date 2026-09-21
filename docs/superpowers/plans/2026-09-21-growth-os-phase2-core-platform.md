@@ -2,41 +2,42 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Deploy the first persistent 24/7 Growth OS control plane on the verified Ubuntu 24.04 WSL2 host, with Activepieces Community Edition, PostgreSQL, Redis, Uptime Kuma, Dockge, backups, local-only management ports, and Windows-to-WSL autostart.
+**Goal:** Deploy the first persistent 24/7 Growth OS control plane on the verified Ubuntu 24.04 WSL2 host, with Activepieces Community Edition, PostgreSQL, Redis, Uptime Kuma, Dockge, backups, localhost-only management ports, and Windows-to-WSL autostart.
 
-**Architecture:** Docker Compose stacks live under `/opt/stacks` and persistent Growth OS operational data lives under `/opt/growth-os`. Activepieces is the workflow engine with a dedicated app container, one worker at concurrency 1, PostgreSQL as durable state, and Redis as the queue. Uptime Kuma monitors service health; Dockge provides a beginner-friendly Compose UI but is exposed only on localhost because its Docker socket mount is privileged. Phase 2 does not modify MyTel or Tehran Network production sites.
+**Architecture:** Docker Compose stacks live under `/opt/stacks`; the checked-out documentation/runtime repository lives at `/opt/growth-os/repo`; backups and host state live under `/opt/growth-os`. Activepieces provides orchestration, PostgreSQL durable state, Redis job queue, one worker with concurrency 1, Uptime Kuma service monitoring, and Dockge a beginner-friendly Compose UI. Phase 2 never modifies MyTel or Tehran Network production sites.
 
-**Tech Stack:** Ubuntu 24.04 on WSL2, Docker Engine 29.8.1, Docker Compose v5.5.1, Activepieces Community Edition pinned to `ghcr.io/activepieces/activepieces:0.86.3`, `pgvector/pgvector:0.8.0-pg14`, `redis:7.0.7`, `louislam/uptime-kuma:2`, `louislam/dockge:1`, PowerShell Scheduled Tasks.
+**Tech Stack:** Ubuntu 24.04 on WSL2, Docker Engine 29.8.1, Docker Compose v5.5.1, Activepieces Community Edition `ghcr.io/activepieces/activepieces:0.86.3`, `pgvector/pgvector:0.8.0-pg14`, `redis:7.0.7`, `louislam/uptime-kuma:2`, `louislam/dockge:1`, PowerShell Scheduled Tasks.
 
 **Spec:** `docs/superpowers/specs/2026-09-21-growth-os-autonomous-content-video-reporting-design.md`
 
 ## Global Constraints
 
-- The owner operates in review-only mode for routine Growth OS work; Phase 2 must not introduce a manual approval requirement for ordinary runtime operations.
+- Owner workflow is review-only for ordinary operations.
 - Paid generative APIs remain disabled by default.
-- No production-site change is permitted in Phase 2.
-- MyTel and Tehran Network credentials, queues, logs, reports, and state remain logically isolated.
+- Phase 2 performs no production-site changes.
+- MyTel and Tehran Network credentials, queues, logs, reports, and state remain isolated.
 - No raw secret value is committed to GitHub.
-- Every persistent service uses Docker Compose and `restart: unless-stopped`.
-- Management UIs bind to `127.0.0.1` only during the local pilot.
-- Activepieces Community Edition core is used; enterprise-only features are not required by this plan.
-- `AP_WORKER_CONCURRENCY=1` to reduce OOM blast radius and match Activepieces production guidance.
-- The WSL host remains capped by the already-verified `.wslconfig`: 20 GB RAM, 12 processors, 8 GB swap.
-- All operator-facing documentation remains bilingual FA/EN and every completed task is recorded in `AGENT.md`.
+- Persistent services use Docker Compose and `restart: unless-stopped`.
+- Management UIs bind to `127.0.0.1` only during the pilot.
+- Activepieces Community Edition only; no enterprise-only dependency.
+- `AP_WORKER_CONCURRENCY=1`.
+- Existing WSL cap remains 20 GB RAM, 12 processors, 8 GB swap.
+- Every completed step and deviation is recorded in `AGENT.md`.
+- Operator docs remain bilingual FA/EN.
 
 ## Review Focus
 
-1. **WSL starts but Docker does not** — the Windows autostart task must start the distro, and the smoke test must prove Docker becomes active without manual intervention.
-2. **Port collision on 8080/3001/5001** — preflight must fail before deployment if any selected localhost port is already listening.
-3. **Activepieces secret generation failure** — deployment must abort if encryption key, JWT secret, or PostgreSQL password is empty.
-4. **Activepieces worker cannot reach app** — worker must use `AP_FRONTEND_URL=http://app` internally and smoke test must confirm worker container remains healthy/running.
-5. **Backup succeeds syntactically but is unusable** — backup task must create a non-zero SQL dump, verify it contains a PostgreSQL dump header, and record SHA256.
+1. **WSL starts but Docker does not** — autostart test must prove Docker becomes active without manual intervention.
+2. **Port collision on 8080/3001/5001** — preflight aborts before deployment if a selected port is already in use.
+3. **Secret generation failure** — Activepieces deployment aborts if encryption key, JWT secret, or PostgreSQL password is empty.
+4. **Worker cannot reach app** — worker uses `AP_FRONTEND_URL=http://app`; smoke test must prove worker stays running.
+5. **Backup exists but is unusable** — backup must be non-zero, checksum-valid, and readable by `pg_restore -l`.
 
 ---
 
 ## File Structure
 
-The implementation creates or modifies these repository files:
+Repository files created in this phase:
 
 ```text
 growth-os/runtime/core/
@@ -58,12 +59,18 @@ growth-os/operations/
 AGENT.md
 ```
 
-The live host uses these runtime paths:
+Live host layout:
 
 ```text
+/opt/growth-os/repo/                 # read-only working clone of growth-os-bootstrap branch
+/opt/growth-os/backups/
+/opt/growth-os/logs/
+/opt/growth-os/state/
+
 /opt/stacks/activepieces/
   compose.yaml
   .env
+  cache/
 
 /opt/stacks/uptime-kuma/
   compose.yaml
@@ -71,18 +78,13 @@ The live host uses these runtime paths:
 /opt/stacks/dockge/
   compose.yaml
   data/
-
-/opt/growth-os/
-  backups/
-  logs/
-  state/
 ```
 
-Repository compose files are sanitized templates with no secret values. The live `/opt/stacks/activepieces/.env` is generated on the host and is never committed.
+Repository templates contain no secrets. `/opt/stacks/activepieces/.env` is host-only and never committed.
 
 ---
 
-### Task 1: Phase 2 host preflight and runtime directories
+### Task 1: Phase 2 host preflight, canonical repo clone, and runtime directories
 
 **Files:**
 - Create: `growth-os/runtime/core/README-FA.md`
@@ -91,7 +93,7 @@ Repository compose files are sanitized templates with no secret values. The live
 
 **Interfaces:**
 - Consumes: verified Phase 1 WSL2 + Docker baseline.
-- Produces: `/opt/stacks`, `/opt/growth-os/{backups,logs,state}` owned by `amirreza`, and a recorded port/resource preflight.
+- Produces: canonical repo clone at `/opt/growth-os/repo`, runtime directories, and verified free ports.
 
 - [ ] **Step 1: Verify host identity and Docker state**
 
@@ -107,11 +109,9 @@ docker compose version
 systemctl is-active docker
 ```
 
-Expected: user `amirreza`; memory about 19 GiB; `nproc` = 12; Docker 29.8.1; Compose v5.5.1; Docker state `active`.
+Expected: `amirreza`; about 19 GiB RAM; `nproc` = 12; Docker 29.8.1; Compose v5.5.1; Docker `active`.
 
 - [ ] **Step 2: Verify required ports are unused**
-
-Run:
 
 ```bash
 for p in 8080 3001 5001; do
@@ -124,44 +124,53 @@ for p in 8080 3001 5001; do
 done
 ```
 
-Expected:
+Expected exactly three `PORT_FREE` lines.
+
+- [ ] **Step 3: Create runtime directories**
+
+```bash
+sudo mkdir -p /opt/growth-os/backups /opt/growth-os/logs /opt/growth-os/state
+sudo mkdir -p /opt/stacks/activepieces /opt/stacks/uptime-kuma /opt/stacks/dockge
+sudo chown -R amirreza:amirreza /opt/growth-os /opt/stacks
+chmod 750 /opt/growth-os /opt/growth-os/backups /opt/growth-os/logs /opt/growth-os/state /opt/stacks
+```
+
+- [ ] **Step 4: Clone the working branch to the canonical host path**
+
+```bash
+if [ -e /opt/growth-os/repo ]; then
+  echo REPO_PATH_ALREADY_EXISTS
+  exit 1
+fi
+
+git clone --branch growth-os-bootstrap --single-branch https://github.com/DashSaman/-SEO.git /opt/growth-os/repo
+```
+
+Expected: checkout of `growth-os-bootstrap` succeeds without requiring credentials because the repository is public.
+
+- [ ] **Step 5: Verify branch and ownership**
+
+```bash
+git -C /opt/growth-os/repo branch --show-current
+stat -c '%U:%G %a %n' /opt/growth-os /opt/stacks
+```
+
+Expected branch `growth-os-bootstrap`; owner `amirreza:amirreza`.
+
+- [ ] **Step 6: Create bilingual host-layout docs and record evidence**
+
+Create `growth-os/runtime/core/README-FA.md` and `README-EN.md` with the exact runtime paths, local ports, backup path, and rule that `.env` never enters Git. Update `AGENT.md` with actual preflight output.
+
+Commit those repository changes through the connected GitHub integration with commit message:
 
 ```text
-PORT_FREE:8080
-PORT_FREE:3001
-PORT_FREE:5001
+docs: record Phase 2 host preflight
 ```
 
-- [ ] **Step 3: Create runtime directories with controlled ownership**
-
-Run:
+Then refresh the host clone:
 
 ```bash
-sudo mkdir -p /opt/stacks/activepieces /opt/stacks/uptime-kuma /opt/stacks/dockge
-sudo mkdir -p /opt/growth-os/backups /opt/growth-os/logs /opt/growth-os/state
-sudo chown -R amirreza:amirreza /opt/stacks /opt/growth-os
-chmod 750 /opt/stacks /opt/growth-os /opt/growth-os/backups /opt/growth-os/logs /opt/growth-os/state
-```
-
-- [ ] **Step 4: Verify ownership**
-
-Run:
-
-```bash
-stat -c '%U:%G %a %n' /opt/stacks /opt/growth-os /opt/growth-os/backups
-```
-
-Expected owner/group `amirreza:amirreza` and mode `750`.
-
-- [ ] **Step 5: Document the preflight and commit**
-
-Update `AGENT.md` with actual outputs and create FA/EN runtime-readme files explaining ports and runtime paths.
-
-Commit:
-
-```bash
-git add AGENT.md growth-os/runtime/core/README-FA.md growth-os/runtime/core/README-EN.md
-git commit -m "docs: record Phase 2 host preflight"
+git -C /opt/growth-os/repo pull --ff-only
 ```
 
 ---
@@ -171,16 +180,16 @@ git commit -m "docs: record Phase 2 host preflight"
 **Files:**
 - Create: `growth-os/runtime/core/activepieces.compose.yaml`
 - Create live host file: `/opt/stacks/activepieces/compose.yaml`
-- Create live secret file: `/opt/stacks/activepieces/.env` (never commit)
+- Create live host secret file: `/opt/stacks/activepieces/.env`
 - Modify: `AGENT.md`
 
 **Interfaces:**
-- Consumes: `/opt/stacks/activepieces`, Docker Compose, ports verified free.
-- Produces: Activepieces app on `127.0.0.1:8080`, one worker at concurrency 1, PostgreSQL, Redis.
+- Consumes: Task 1 runtime directories and free port 8080.
+- Produces: app on `127.0.0.1:8080`, one worker, PostgreSQL, Redis.
 
 - [ ] **Step 1: Write the sanitized Compose template**
 
-Create `growth-os/runtime/core/activepieces.compose.yaml` with exactly:
+Create `growth-os/runtime/core/activepieces.compose.yaml`:
 
 ```yaml
 services:
@@ -252,18 +261,23 @@ networks:
   activepieces:
 ```
 
-- [ ] **Step 2: Copy the Compose template to the live stack directory**
+- [ ] **Step 2: Commit the sanitized template and refresh the host clone**
 
-Run:
+Commit message:
+
+```text
+feat: add Activepieces core stack template
+```
+
+Then:
 
 ```bash
-cp growth-os/runtime/core/activepieces.compose.yaml /opt/stacks/activepieces/compose.yaml
+git -C /opt/growth-os/repo pull --ff-only
+cp /opt/growth-os/repo/growth-os/runtime/core/activepieces.compose.yaml /opt/stacks/activepieces/compose.yaml
 mkdir -p /opt/stacks/activepieces/cache
 ```
 
 - [ ] **Step 3: Generate host-only secrets**
-
-Run:
 
 ```bash
 sudo apt install -y openssl
@@ -292,9 +306,7 @@ EOF
 chmod 600 .env
 ```
 
-- [ ] **Step 4: Verify secrets are non-empty without printing their values**
-
-Run:
+- [ ] **Step 4: Verify secrets without printing values**
 
 ```bash
 python3 - <<'PY'
@@ -314,9 +326,7 @@ PY
 
 Expected: `SECRETS_OK`.
 
-- [ ] **Step 5: Validate Compose before starting**
-
-Run:
+- [ ] **Step 5: Validate Compose**
 
 ```bash
 cd /opt/stacks/activepieces
@@ -327,38 +337,47 @@ Expected: `COMPOSE_OK`.
 
 - [ ] **Step 6: Start Activepieces**
 
-Run:
-
 ```bash
 docker compose -p activepieces up -d
 ```
 
-- [ ] **Step 7: Verify app, database, Redis and worker**
-
-Run:
+- [ ] **Step 7: Wait for health and verify every component**
 
 ```bash
-docker compose -p activepieces ps
-curl -fsS http://localhost:8080/api/v1/health
+for i in $(seq 1 60); do
+  if curl -fsS http://localhost:8080/api/v1/health >/dev/null; then
+    echo ACTIVEPIECES_HEALTH_OK
+    break
+  fi
+  sleep 2
+  if [ "$i" -eq 60 ]; then
+    docker compose -p activepieces ps
+    docker logs --tail 100 growthos-activepieces-app
+    exit 1
+  fi
+done
 
 docker exec growthos-postgres pg_isready -U postgres -d activepieces
-docker exec growthos-redis redis-cli ping
-
-docker inspect -f '{{.State.Status}}' growthos-activepieces-worker
+test "$(docker exec growthos-redis redis-cli ping)" = "PONG"
+test "$(docker inspect -f '{{.State.Status}}' growthos-activepieces-worker)" = "running"
+docker compose -p activepieces ps
 ```
 
-Expected: all four containers running; health endpoint succeeds; PostgreSQL accepts connections; Redis returns `PONG`; worker status is `running`.
+Expected: health OK, PostgreSQL accepting connections, Redis PONG, worker running.
 
-- [ ] **Step 8: Pin evidence in the ledger and commit the sanitized template only**
+- [ ] **Step 8: Record runtime evidence**
 
-Commit:
+Update `AGENT.md` with actual image IDs/digests from:
 
 ```bash
-git add growth-os/runtime/core/activepieces.compose.yaml AGENT.md
-git commit -m "feat: add Activepieces core stack template"
+docker inspect --format='{{.Config.Image}} {{.Image}}' growthos-activepieces-app growthos-postgres growthos-redis
 ```
 
-Do not add `/opt/stacks/activepieces/.env` to Git.
+Commit message:
+
+```text
+chore: record Activepieces runtime verification
+```
 
 ---
 
@@ -371,9 +390,9 @@ Do not add `/opt/stacks/activepieces/.env` to Git.
 
 **Interfaces:**
 - Consumes: Docker Compose and free port 3001.
-- Produces: Uptime Kuma on `127.0.0.1:3001` with persistent storage.
+- Produces: Uptime Kuma on `127.0.0.1:3001`.
 
-- [ ] **Step 1: Write the Compose template**
+- [ ] **Step 1: Create the template**
 
 ```yaml
 services:
@@ -390,32 +409,52 @@ volumes:
   uptime_kuma_data:
 ```
 
-- [ ] **Step 2: Copy and validate**
+- [ ] **Step 2: Commit and refresh host clone**
 
-Run:
+Commit message:
+
+```text
+feat: add Uptime Kuma monitoring stack
+```
+
+Then:
 
 ```bash
-cp growth-os/runtime/core/uptime-kuma.compose.yaml /opt/stacks/uptime-kuma/compose.yaml
+git -C /opt/growth-os/repo pull --ff-only
+cp /opt/growth-os/repo/growth-os/runtime/core/uptime-kuma.compose.yaml /opt/stacks/uptime-kuma/compose.yaml
 cd /opt/stacks/uptime-kuma
 docker compose config >/dev/null && echo COMPOSE_OK
 ```
 
-- [ ] **Step 3: Start and test**
-
-Run:
+- [ ] **Step 3: Start and wait for HTTP response**
 
 ```bash
 docker compose -p uptime-kuma up -d
-curl -fsSI http://localhost:3001/ | head -n 1
+for i in $(seq 1 60); do
+  if curl -fsS http://localhost:3001/ >/dev/null; then
+    echo UPTIME_KUMA_HTTP_OK
+    break
+  fi
+  sleep 2
+  if [ "$i" -eq 60 ]; then
+    docker logs --tail 100 growthos-uptime-kuma
+    exit 1
+  fi
+done
 ```
 
-Expected HTTP response line beginning with `HTTP/1.1 200` or an equivalent successful 2xx response.
+Expected: `UPTIME_KUMA_HTTP_OK`.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Record image digest**
 
 ```bash
-git add growth-os/runtime/core/uptime-kuma.compose.yaml AGENT.md
-git commit -m "feat: add Uptime Kuma monitoring stack"
+docker inspect --format='{{.Config.Image}} {{.Image}}' growthos-uptime-kuma
+```
+
+Write result to `AGENT.md` and commit message:
+
+```text
+chore: record Uptime Kuma runtime verification
 ```
 
 ---
@@ -428,10 +467,19 @@ git commit -m "feat: add Uptime Kuma monitoring stack"
 - Modify: `AGENT.md`
 
 **Interfaces:**
-- Consumes: `/opt/stacks`, Docker socket, port 5001.
-- Produces: Dockge UI on `127.0.0.1:5001` able to discover stacks in `/opt/stacks`.
+- Consumes: `/opt/stacks`, Docker socket, free port 5001.
+- Produces: Dockge on `127.0.0.1:5001`.
 
-- [ ] **Step 1: Write Compose template**
+- [ ] **Step 1: Verify operator numeric UID/GID**
+
+```bash
+id -u amirreza
+id -g amirreza
+```
+
+Expected on this host: `1000` and `1000`. If output differs, do not start Dockge; record the actual values and generate the Compose file with those actual numbers before proceeding.
+
+- [ ] **Step 2: Create the template for the verified 1000/1000 host**
 
 ```yaml
 services:
@@ -451,46 +499,58 @@ services:
       PGID: "1000"
 ```
 
-- [ ] **Step 2: Verify current UID/GID before start**
+- [ ] **Step 3: Commit, refresh, validate and start**
 
-Run:
+Commit message:
 
-```bash
-id -u amirreza
-id -g amirreza
+```text
+feat: add local Dockge stack manager
 ```
 
-Expected both values `1000`. If either differs, edit the live Compose to the actual numeric values before startup and record the difference in `AGENT.md`.
-
-- [ ] **Step 3: Start and verify**
-
-Run:
+Then:
 
 ```bash
-cp growth-os/runtime/core/dockge.compose.yaml /opt/stacks/dockge/compose.yaml
+git -C /opt/growth-os/repo pull --ff-only
+cp /opt/growth-os/repo/growth-os/runtime/core/dockge.compose.yaml /opt/stacks/dockge/compose.yaml
 mkdir -p /opt/stacks/dockge/data
 cd /opt/stacks/dockge
 docker compose config >/dev/null && echo COMPOSE_OK
 docker compose -p dockge up -d
-curl -fsSI http://localhost:5001/ | head -n 1
 ```
 
-Expected successful 2xx/3xx HTTP response.
-
-- [ ] **Step 4: Record Docker-socket security note and commit**
-
-`AGENT.md` must state that Dockge is root-equivalent through `/var/run/docker.sock` and remains localhost-only during the pilot.
-
-Commit:
+- [ ] **Step 4: Wait for Dockge UI**
 
 ```bash
-git add growth-os/runtime/core/dockge.compose.yaml AGENT.md
-git commit -m "feat: add local Dockge stack manager"
+for i in $(seq 1 60); do
+  if curl -fsS http://localhost:5001/ >/dev/null; then
+    echo DOCKGE_HTTP_OK
+    break
+  fi
+  sleep 2
+  if [ "$i" -eq 60 ]; then
+    docker logs --tail 100 growthos-dockge
+    exit 1
+  fi
+done
+```
+
+Expected: `DOCKGE_HTTP_OK`.
+
+- [ ] **Step 5: Record security boundary and image digest**
+
+```bash
+docker inspect --format='{{.Config.Image}} {{.Image}}' growthos-dockge
+```
+
+`AGENT.md` must state that Dockge has root-equivalent capability through `/var/run/docker.sock` and is intentionally localhost-only. Commit message:
+
+```text
+chore: record Dockge runtime verification
 ```
 
 ---
 
-### Task 5: Phase 2 smoke-test script
+### Task 5: Unified Phase 2 smoke test
 
 **Files:**
 - Create: `growth-os/runtime/core/phase2-smoke.sh`
@@ -498,11 +558,9 @@ git commit -m "feat: add local Dockge stack manager"
 
 **Interfaces:**
 - Consumes: all Phase 2 containers.
-- Produces: single PASS/FAIL verification used after every restart and before later phases.
+- Produces: one deterministic PASS/FAIL command used after every restart.
 
 - [ ] **Step 1: Create the smoke test**
-
-Create `growth-os/runtime/core/phase2-smoke.sh`:
 
 ```bash
 #!/usr/bin/env bash
@@ -526,39 +584,43 @@ test "$(docker exec growthos-redis redis-cli ping)" = "PONG" && pass redis-ping 
 curl -fsS http://localhost:3001/ >/dev/null && pass kuma-http || fail kuma-http
 curl -fsS http://localhost:5001/ >/dev/null && pass dockge-http || fail dockge-http
 
+for p in 8080 3001 5001; do
+  ss -ltn "sport = :$p" | grep -q LISTEN || fail "port-$p"
+done
+pass expected-ports
+
 echo PHASE2_SMOKE_OK
 ```
 
-- [ ] **Step 2: Make executable and run**
+- [ ] **Step 2: Commit and execute**
+
+Commit message:
+
+```text
+test: add Phase 2 smoke verification
+```
+
+Then:
 
 ```bash
-chmod +x growth-os/runtime/core/phase2-smoke.sh
-./growth-os/runtime/core/phase2-smoke.sh
+git -C /opt/growth-os/repo pull --ff-only
+chmod +x /opt/growth-os/repo/growth-os/runtime/core/phase2-smoke.sh
+/opt/growth-os/repo/growth-os/runtime/core/phase2-smoke.sh
 ```
 
 Expected final line: `PHASE2_SMOKE_OK`.
 
-- [ ] **Step 3: Add port-collision regression check**
+- [ ] **Step 3: Record smoke result**
 
-Run:
+Update `AGENT.md` with complete PASS list and commit message:
 
-```bash
-for p in 8080 3001 5001; do ss -ltn "sport = :$p" | grep -q LISTEN || exit 1; done
-echo EXPECTED_PORTS_LISTENING
-```
-
-Expected: `EXPECTED_PORTS_LISTENING`.
-
-- [ ] **Step 4: Commit**
-
-```bash
-git add growth-os/runtime/core/phase2-smoke.sh AGENT.md
-git commit -m "test: add Phase 2 smoke verification"
+```text
+chore: record Phase 2 smoke result
 ```
 
 ---
 
-### Task 6: Backup and restore-validation scripts
+### Task 6: Backup and restore-input verification
 
 **Files:**
 - Create: `growth-os/runtime/core/phase2-backup.sh`
@@ -566,12 +628,10 @@ git commit -m "test: add Phase 2 smoke verification"
 - Modify: `AGENT.md`
 
 **Interfaces:**
-- Consumes: Activepieces PostgreSQL and live `.env`.
-- Produces: timestamped PostgreSQL dump, encrypted-secret configuration copy, SHA256 manifest, and a non-destructive restore-readability test.
+- Consumes: Activepieces PostgreSQL and host `.env`.
+- Produces: timestamped dump, protected secret-config copy, checksums, and non-destructive restore-readability test.
 
-- [ ] **Step 1: Create database/config backup script**
-
-Create `growth-os/runtime/core/phase2-backup.sh`:
+- [ ] **Step 1: Create backup script**
 
 ```bash
 #!/usr/bin/env bash
@@ -590,9 +650,7 @@ test -s "$DEST/activepieces.env"
 echo "$DEST"
 ```
 
-- [ ] **Step 2: Create non-destructive restore-readability check**
-
-Create `growth-os/runtime/core/phase2-restore-check.sh`:
+- [ ] **Step 2: Create restore-input verification script**
 
 ```bash
 #!/usr/bin/env bash
@@ -611,22 +669,38 @@ print('RESTORE_INPUTS_READABLE')
 PY
 ```
 
-- [ ] **Step 3: Install client utility and run backup**
+- [ ] **Step 3: Commit scripts**
 
-```bash
-sudo apt install -y postgresql-client
-chmod +x growth-os/runtime/core/phase2-backup.sh growth-os/runtime/core/phase2-restore-check.sh
-BACKUP_DIR="$(./growth-os/runtime/core/phase2-backup.sh)"
-./growth-os/runtime/core/phase2-restore-check.sh "$BACKUP_DIR"
+Commit message:
+
+```text
+feat: add Phase 2 backup verification
 ```
 
-Expected: checksum verification succeeds and final line `RESTORE_INPUTS_READABLE`.
-
-- [ ] **Step 4: Commit scripts, never the backup data**
+- [ ] **Step 4: Refresh host clone and run**
 
 ```bash
-git add growth-os/runtime/core/phase2-backup.sh growth-os/runtime/core/phase2-restore-check.sh AGENT.md
-git commit -m "feat: add Phase 2 backup verification"
+git -C /opt/growth-os/repo pull --ff-only
+sudo apt install -y postgresql-client
+chmod +x /opt/growth-os/repo/growth-os/runtime/core/phase2-backup.sh
+chmod +x /opt/growth-os/repo/growth-os/runtime/core/phase2-restore-check.sh
+BACKUP_DIR="$(/opt/growth-os/repo/growth-os/runtime/core/phase2-backup.sh)"
+/opt/growth-os/repo/growth-os/runtime/core/phase2-restore-check.sh "$BACKUP_DIR"
+```
+
+Expected final line: `RESTORE_INPUTS_READABLE`.
+
+- [ ] **Step 5: Record exact backup evidence**
+
+```bash
+find "$BACKUP_DIR" -maxdepth 1 -type f -printf '%f %s bytes\n'
+cat "$BACKUP_DIR/SHA256SUMS"
+```
+
+Record file sizes and hashes in `AGENT.md`; never commit backup files or secret values. Commit message:
+
+```text
+chore: record Phase 2 backup evidence
 ```
 
 ---
@@ -638,12 +712,10 @@ git commit -m "feat: add Phase 2 backup verification"
 - Modify: `AGENT.md`
 
 **Interfaces:**
-- Consumes: Windows 11 host, Ubuntu-24.04 distro, systemd-enabled Docker.
-- Produces: WSL launch at user logon and no automatic sleep while AC-powered.
+- Consumes: Windows 11 host and `Ubuntu-24.04` distro.
+- Produces: WSL launch at user logon and no automatic sleep while AC powered.
 
 - [ ] **Step 1: Create PowerShell setup script**
-
-Create `growth-os/runtime/core/windows-autostart.ps1`:
 
 ```powershell
 $ErrorActionPreference = 'Stop'
@@ -653,20 +725,33 @@ powercfg /change standby-timeout-ac 0
 $Action = New-ScheduledTaskAction -Execute 'wsl.exe' -Argument '-d Ubuntu-24.04 --exec /bin/true'
 $Trigger = New-ScheduledTaskTrigger -AtLogOn
 $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable
-Register-ScheduledTask -TaskName 'GrowthOS-Start-WSL' -Action $Action -Trigger $Trigger -Settings $Settings -Description 'Start Ubuntu WSL for Growth OS services at user logon' -Force
+$Principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Highest
+
+Register-ScheduledTask `
+  -TaskName 'GrowthOS-Start-WSL' `
+  -Action $Action `
+  -Trigger $Trigger `
+  -Settings $Settings `
+  -Principal $Principal `
+  -Description 'Start Ubuntu WSL for Growth OS services at user logon' `
+  -Force
 
 Get-ScheduledTask -TaskName 'GrowthOS-Start-WSL' | Select-Object TaskName, State
 ```
 
-- [ ] **Step 2: Run from Administrator PowerShell**
+- [ ] **Step 2: Commit script**
 
-Run from Windows, using the Windows-accessible path to the checked-out repository or copy/paste the script content into an elevated PowerShell session.
+Commit message:
 
-Expected task exists as `GrowthOS-Start-WSL`.
+```text
+feat: add Growth OS Windows autostart
+```
 
-- [ ] **Step 3: Test scheduled task without reboot**
+- [ ] **Step 3: Run in Administrator PowerShell**
 
-Run:
+Use the script content from the repository after it has been committed. Expected scheduled task name: `GrowthOS-Start-WSL`.
+
+- [ ] **Step 4: Test without reboot**
 
 ```powershell
 Start-ScheduledTask -TaskName 'GrowthOS-Start-WSL'
@@ -676,19 +761,20 @@ wsl -d Ubuntu-24.04 -- systemctl is-active docker
 
 Expected: `active`.
 
-- [ ] **Step 4: Re-run Phase 2 smoke test from WSL**
+- [ ] **Step 5: Run full smoke test from Windows through WSL**
 
 ```powershell
-wsl -d Ubuntu-24.04 -- bash -lc 'cd /path/to/repo && ./growth-os/runtime/core/phase2-smoke.sh'
+wsl -d Ubuntu-24.04 -- bash -lc '/opt/growth-os/repo/growth-os/runtime/core/phase2-smoke.sh'
 ```
 
-During implementation, replace `/path/to/repo` with the actual repository path discovered on the host and record that exact path in `AGENT.md`.
+Expected final line: `PHASE2_SMOKE_OK`.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Record evidence**
 
-```bash
-git add growth-os/runtime/core/windows-autostart.ps1 AGENT.md
-git commit -m "feat: add Growth OS Windows autostart"
+Update `AGENT.md` with scheduled-task state and smoke result. Commit message:
+
+```text
+chore: record Windows autostart verification
 ```
 
 ---
@@ -702,112 +788,43 @@ git commit -m "feat: add Growth OS Windows autostart"
 - Modify: `AGENT.md`
 
 **Interfaces:**
-- Consumes: verified Phase 2 service versions and official license sources.
-- Produces: commercial-product due-diligence record and operator recovery guide.
+- Consumes: actual deployed images and verified official licensing sources.
+- Produces: commercialization due-diligence record and recovery guide.
 
-- [ ] **Step 1: Record exact Phase 2 components and license boundaries**
+- [ ] **Step 1: Populate exact license ledger**
 
-`LICENSE-LEDGER.md` must record at minimum:
+Record at minimum:
 
 ```text
-Activepieces Community Edition — core MIT; enterprise directories separately commercial; deployed CE features only.
-Uptime Kuma — verify repository license at implementation time and record commit/tag.
-Dockge — verify repository license at implementation time and record commit/tag.
-PostgreSQL/pgvector image — record PostgreSQL + pgvector upstream licenses.
-Redis image — record the exact Redis 7.0.7 license applicable to the pinned image.
-Docker Engine/Compose — record upstream licensing and redistribution note.
+Activepieces Community Edition core — MIT; enterprise directories separately commercial.
+Uptime Kuma — MIT.
+Dockge — MIT.
+pgvector — PostgreSQL License.
+Redis 7.0.7 — BSD-3-Clause, because Redis 7.2.x and prior remain BSDv3.
+Docker/Moby/Compose — record the exact upstream license for the installed engine/CLI/compose components.
 ```
 
-Each row must include: component, pinned version/image, license, official source, commercial-use note, redistribution/SaaS note, date verified.
+Every row contains: component, image/tag, image digest, license, official source, commercial-use note, redistribution/SaaS note, verification date.
 
-- [ ] **Step 2: Write FA/EN runbooks**
+- [ ] **Step 2: Write bilingual operational runbooks**
 
-Both runbooks must contain exact commands for:
+Both runbooks include these exact commands:
 
 ```bash
-# Status
 cd /opt/stacks/activepieces && docker compose -p activepieces ps
 cd /opt/stacks/uptime-kuma && docker compose -p uptime-kuma ps
 cd /opt/stacks/dockge && docker compose -p dockge ps
 
-# Logs
 docker logs --tail 100 growthos-activepieces-app
 docker logs --tail 100 growthos-activepieces-worker
 docker logs --tail 100 growthos-postgres
 docker logs --tail 100 growthos-redis
 
-# Restart
-docker restart growthos-activepieces-app growthos-activepieces-worker
-
-# Smoke test
-./growth-os/runtime/core/phase2-smoke.sh
-
-# Backup
-./growth-os/runtime/core/phase2-backup.sh
+/opt/growth-os/repo/growth-os/runtime/core/phase2-smoke.sh
+/opt/growth-os/repo/growth-os/runtime/core/phase2-backup.sh
 ```
 
-The runbook must also explain how to reach `http://localhost:8080`, `http://localhost:3001`, and `http://localhost:5001` from Windows.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add growth-os/runtime/core/LICENSE-LEDGER.md growth-os/operations/PHASE2-RUNBOOK-FA.md growth-os/operations/PHASE2-RUNBOOK-EN.md AGENT.md
-git commit -m "docs: add Phase 2 license and operations runbooks"
-```
-
----
-
-### Task 9: Phase 2 restart resilience and completion gate
-
-**Files:**
-- Modify: `AGENT.md`
-
-**Interfaces:**
-- Consumes: all Phase 2 services, backup scripts, Windows autostart.
-- Produces: verified Phase 2 completion and a safe handoff to Phase 3 Local AI.
-
-- [ ] **Step 1: Take a fresh verified Phase 2 backup**
-
-Run:
-
-```bash
-cd <actual-repo-path>
-BACKUP_DIR="$(./growth-os/runtime/core/phase2-backup.sh)"
-./growth-os/runtime/core/phase2-restore-check.sh "$BACKUP_DIR"
-```
-
-Record backup directory, file sizes and SHA256 in `AGENT.md` without committing secret files.
-
-- [ ] **Step 2: Perform full WSL shutdown test**
-
-From Ubuntu:
-
-```bash
-exit
-```
-
-From Windows PowerShell:
-
-```powershell
-wsl --shutdown
-wsl -d Ubuntu-24.04 --exec /bin/true
-Start-Sleep -Seconds 10
-```
-
-- [ ] **Step 3: Run full smoke test after cold WSL start**
-
-From Ubuntu:
-
-```bash
-cd <actual-repo-path>
-./growth-os/runtime/core/phase2-smoke.sh
-```
-
-Expected final line: `PHASE2_SMOKE_OK`.
-
-- [ ] **Step 4: Verify local management endpoints from Windows**
-
-In Windows browser open:
+They also explain Windows access URLs:
 
 ```text
 http://localhost:8080
@@ -815,11 +832,73 @@ http://localhost:3001
 http://localhost:5001
 ```
 
-Expected: Activepieces, Uptime Kuma, Dockge UIs load.
+- [ ] **Step 3: Commit documentation**
 
-- [ ] **Step 5: Close Phase 2 in the ledger**
+Commit message:
 
-Update `AGENT.md`:
+```text
+docs: add Phase 2 license and operations runbooks
+```
+
+---
+
+### Task 9: Phase 2 cold-start resilience and completion gate
+
+**Files:**
+- Modify: `AGENT.md`
+
+**Interfaces:**
+- Consumes: all Phase 2 services, smoke test, backup scripts, Windows autostart.
+- Produces: verified Phase 2 completion and handoff to Phase 3 Local AI.
+
+- [ ] **Step 1: Take a fresh verified backup**
+
+```bash
+BACKUP_DIR="$(/opt/growth-os/repo/growth-os/runtime/core/phase2-backup.sh)"
+/opt/growth-os/repo/growth-os/runtime/core/phase2-restore-check.sh "$BACKUP_DIR"
+```
+
+Expected: checksum PASS and `RESTORE_INPUTS_READABLE`.
+
+- [ ] **Step 2: Cold-stop WSL**
+
+Inside Ubuntu:
+
+```bash
+exit
+```
+
+Then in Windows PowerShell:
+
+```powershell
+wsl --shutdown
+wsl -d Ubuntu-24.04 --exec /bin/true
+Start-Sleep -Seconds 10
+```
+
+- [ ] **Step 3: Run full smoke test after cold start**
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash -lc '/opt/growth-os/repo/growth-os/runtime/core/phase2-smoke.sh'
+```
+
+Expected final line: `PHASE2_SMOKE_OK`.
+
+- [ ] **Step 4: Verify all local UIs from Windows browser**
+
+Open:
+
+```text
+http://localhost:8080
+http://localhost:3001
+http://localhost:5001
+```
+
+Expected: Activepieces, Uptime Kuma and Dockge load.
+
+- [ ] **Step 5: Close Phase 2 in `AGENT.md`**
+
+Set:
 
 ```text
 STATUS: PHASE2 COMPLETE + PHASE3 READY
@@ -827,44 +906,43 @@ CURRENT_PHASE: Phase 3 — Local AI Layer
 CURRENT_TASK: P3-AI-01 — Local model runtime and GPU job scheduler
 ```
 
-Record all actual image versions, smoke result, backup verification and any deviations from this plan.
+Record actual image digests, smoke result, backup verification, license ledger commit, and any deviations.
 
-- [ ] **Step 6: Commit completion evidence**
+Commit message:
 
-```bash
-git add AGENT.md
-git commit -m "chore: close Phase 2 core platform"
+```text
+chore: close Phase 2 core platform
 ```
 
 ---
 
 ## Phase 2 Completion Criteria
 
-Phase 2 is complete only when all of the following are true:
-
 ```text
 [ ] Activepieces app reachable on localhost:8080
-[ ] Activepieces worker running with concurrency 1
+[ ] Activepieces worker running at concurrency 1
 [ ] PostgreSQL ready
-[ ] Redis PONG
+[ ] Redis returns PONG
 [ ] Uptime Kuma reachable on localhost:3001
 [ ] Dockge reachable on localhost:5001
-[ ] No management UI exposed beyond localhost during pilot
-[ ] Smoke test returns PHASE2_SMOKE_OK
-[ ] Backup dump + secret config copy pass checksum/readability verification
-[ ] WSL cold-start returns Docker and all services without manual startup
-[ ] Windows logon task exists
+[ ] Management UIs remain localhost-only
+[ ] phase2-smoke.sh returns PHASE2_SMOKE_OK
+[ ] Backup dump and secret-config copy pass checksum/readability verification
+[ ] WSL cold start returns all services without manual startup
+[ ] Windows GrowthOS-Start-WSL scheduled task exists
 [ ] AC sleep is disabled for 24/7 pilot operation
-[ ] License ledger updated
-[ ] FA/EN runbooks updated
+[ ] License ledger complete
+[ ] FA/EN runbooks complete
 [ ] AGENT.md records every action and deviation
 ```
 
-## Source Notes Used for This Plan
+## Sources Used for the Plan
 
-- Activepieces official self-host documentation currently recommends Docker Compose with PostgreSQL and Redis, Docker Compose v2, WSL2 on Windows, and health verification at `/api/v1/health`.
-- Activepieces official architecture documentation identifies PostgreSQL as durable application state and Redis/BullMQ as the job queue.
-- Activepieces official worker guidance recommends `AP_WORKER_CONCURRENCY=1` and `SANDBOX_CODE_ONLY` for production-style isolation.
-- Activepieces Community Edition core is MIT-licensed; enterprise directories/features are separately licensed.
-- Uptime Kuma official documentation supports Docker Compose and localhost-only port binding.
-- Dockge official documentation uses `/opt/stacks`, port 5001, and a Docker socket mount; the socket is therefore treated as privileged and localhost-only in this pilot.
+- Activepieces official self-host docs: Docker Compose with PostgreSQL and Redis; Docker Compose v2; WSL2 on Windows; `/api/v1/health` verification.
+- Activepieces official architecture docs: PostgreSQL durable state and Redis/BullMQ queue.
+- Activepieces worker docs: concurrency 1 and `SANDBOX_CODE_ONLY` production guidance.
+- Activepieces license docs: Community Edition core MIT; enterprise directories/features separately commercial.
+- Uptime Kuma official docs: Docker Compose deployment and localhost-only port binding supported; MIT license.
+- Dockge official docs: `/opt/stacks`, port 5001, Docker socket mount; MIT license.
+- Redis license record: Redis 7.2.x and earlier remain BSDv3; pinned image is 7.0.7.
+- pgvector official license: PostgreSQL License.
