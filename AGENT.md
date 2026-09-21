@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 NEAR COMPLETE
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-12 — Create Phase 1 backup/baseline record
-EXACT_NEXT_TASK: Export the verified `Ubuntu-24.04` WSL distribution to `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`, then record its file size and SHA256 before any Phase 2 service is deployed.
+EXACT_NEXT_TASK: Verify `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar` exists, record its exact file size and SHA256, then close Phase 1 and begin Phase 2 Core Platform.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -38,7 +38,7 @@ EXACT_NEXT_TASK: Export the verified `Ubuntu-24.04` WSL distribution to `C:\Grow
 - [x] P1-WSL-09 Verify systemd
 - [x] P1-WSL-10 Install Docker Engine + Compose
 - [x] P1-WSL-11 Verify Docker and WSL restart/autostart behavior
-- [~] P1-WSL-12 Create Phase 1 backup/baseline record — backup export pending
+- [~] P1-WSL-12 Create Phase 1 backup/baseline record — export succeeded; exact size + SHA256 verification remains
 
 ## Later phases
 - [ ] Phase 2 — Core Platform
@@ -242,15 +242,19 @@ CONCLUSION: Docker permission setup, systemd autostart behavior, daemon startup 
 NEXT_OPERATOR_ACTION: Create and verify a full WSL export baseline before deploying Phase 2 services.
 
 ### P1-WSL-12 — Phase 1 backup/baseline
-STATUS: IN_PROGRESS
+STATUS: EXPORT_COMPLETE_VERIFICATION_PENDING
 DATE: 2026-09-21
 PURPOSE: Preserve a known-good rollback point before persistent Growth OS services and databases are introduced.
-PLANNED_EXPORT: `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`
-VERIFICATION_REQUIRED:
-- Export command returns successfully.
-- Backup file exists and has non-zero size.
-- SHA256 is recorded in this ledger.
-- Backup archive itself is NOT committed to GitHub.
+EXPORT: `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`
+ACTUAL_RESULT:
+- `C:\GrowthOS-Backups` directory was created successfully.
+- WSL was shut down before export.
+- `wsl --export Ubuntu-24.04 C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar` completed successfully.
+- Export progress reported approximately 1854 MB transferred.
+VERIFICATION_REMAINING:
+- Verify the backup file exists and record its exact byte size.
+- Record SHA256 in this ledger.
+- Backup archive itself must NOT be committed to GitHub.
 GUIDES:
 - `growth-os/installation/PHASE1-BACKUP-FA.md`
 - `growth-os/installation/PHASE1-BACKUP-EN.md`
