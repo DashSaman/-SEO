@@ -1,10 +1,10 @@
 # AGENT.md — Growth OS Execution Ledger
 
 PROJECT: Growth OS
-STATUS: PHASE1 COMPLETE + PHASE2 READY
+STATUS: PHASE1 COMPLETE + PHASE2 EXECUTING
 CURRENT_PHASE: Phase 2 — Core Platform
-CURRENT_TASK: P2-CORE-01 — Design and deploy the always-on core platform
-EXACT_NEXT_TASK: Finalize the Phase 2 service composition (n8n, PostgreSQL, Redis, Uptime Kuma, secrets/backups and service management), then deploy the first persistent 24/7 services without modifying production sites.
+CURRENT_TASK: P2-CORE-02 — Deploy Activepieces + PostgreSQL + Redis
+EXACT_NEXT_TASK: Let the verified Activepieces stack finish pulling on `Amirreza-Pc`, then verify app health, PostgreSQL readiness, Redis PONG, and worker status before starting Uptime Kuma or Dockge.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -17,6 +17,8 @@ EXACT_NEXT_TASK: Finalize the Phase 2 service composition (n8n, PostgreSQL, Redi
 - [x] Keep visual diagrams/checklists for major operator phases.
 - [x] Treat content creation, media repurposing, social publishing, analytics feedback and website optimization as one integrated Growth OS loop.
 - [x] Treat revenue and competitive opportunity discovery as a first-class product function, not only SEO reporting.
+- [x] Owner workflow is review-only for routine content/video/publishing operations; the system should execute normal low-risk work autonomously and report results.
+- [x] Every site must maintain its own Repo-side operational reports and its own Telegram reporting channel/destination.
 
 ## Phase 0 — Repository Foundation
 - [x] P0-01 Inventory and freeze pre-bootstrap corpus
@@ -40,8 +42,17 @@ EXACT_NEXT_TASK: Finalize the Phase 2 service composition (n8n, PostgreSQL, Redi
 - [x] P1-WSL-11 Verify Docker and WSL restart/autostart behavior
 - [x] P1-WSL-12 Create Phase 1 backup/baseline record
 
+## Phase 2 — Core Platform
+- [x] P2-CORE-01 Host preflight, local ports, runtime directories and canonical repo clone
+- [~] P2-CORE-02 Activepieces + PostgreSQL + Redis — template/config/secrets verified; image pull and runtime verification in progress
+- [ ] P2-CORE-03 Uptime Kuma monitoring
+- [ ] P2-CORE-04 Dockge local Compose management
+- [ ] P2-CORE-05 Unified smoke test
+- [ ] P2-CORE-06 Backup + restore-input verification
+- [ ] P2-CORE-07 Windows/WSL autostart + AC no-sleep validation
+- [ ] P2-CORE-08 Phase 2 cold-start verification and baseline closeout
+
 ## Later phases
-- [ ] Phase 2 — Core Platform
 - [ ] Phase 3 — AI Layer
 - [ ] Phase 4 — SEO + Revenue Intelligence
 - [ ] Phase 5 — Agent Execution
@@ -65,9 +76,11 @@ The target system is not only an SEO monitor. The production goal is a single or
 - score opportunities by revenue potential, commercial intent, demand, speed, confidence, effort and risk;
 - generate or improve website pages, articles, FAQs, schema, internal links and commercial copy;
 - repurpose approved content into platform-specific social assets instead of blindly duplicating the same text everywhere;
+- automatically generate scripts, storyboards, characters/visuals, local voice, subtitles, short-form video edits and platform-specific renders without routine owner editing;
 - schedule and publish through official APIs/connectors where available;
 - measure website/search/social and business outcomes and feed results back into the next planning cycle;
 - use approval tiers so low-risk work can become automated while destructive/high-impact changes stay gated;
+- write per-site action/result reports to both the relevant repository and Telegram reporting channel;
 - keep a full action/cost/result history for later multi-site commercialization.
 
 Canonical design docs:
@@ -75,6 +88,8 @@ Canonical design docs:
 - `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-EN.md`
 - `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-FA.md`
 - `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-EN.md`
+- `docs/superpowers/specs/2026-09-21-growth-os-autonomous-content-video-reporting-design.md`
+- `docs/superpowers/plans/2026-09-21-growth-os-phase2-core-platform.md`
 
 ## Verified Phase 0 summary
 - P0-01 VERIFIED: baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f`; 52 SEO files inventoried.
@@ -254,6 +269,44 @@ ACTUAL_RESULT:
 - Backup archive itself is intentionally not committed to GitHub.
 CONCLUSION: Phase 1 has a verified rollback baseline and is complete.
 
+## Phase 2 run log
+
+### P2-CORE-01 — Host preflight + canonical runtime paths
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+DEVICE: `Amirreza-Pc` via authenticated Remote Desktop Commander connection.
+VERIFICATION:
+- Linux user: `amirreza`, UID/GID 1000; `docker` group present.
+- WSL memory: ~19 GiB total, 8 GiB swap.
+- CPU allocation: 12.
+- Docker Engine: 29.8.1.
+- Docker Compose: v5.5.1.
+- Docker daemon: `active`.
+- Ports 8080, 3001 and 5001 had no LISTEN socket.
+ACTIONS:
+- Created `/opt/growth-os/{backups,logs,state}` and `/opt/stacks/{activepieces,uptime-kuma,dockge}`.
+- Ownership verified as `amirreza:amirreza`, mode 750 on main runtime directories.
+- Cloned public branch `growth-os-bootstrap` to `/opt/growth-os/repo`.
+- Verified current branch `growth-os-bootstrap`.
+RESULT: Phase 2 host baseline is ready.
+
+### P2-CORE-02A — Activepieces sanitized template + host-only secrets
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+ACTIONS:
+- Added sanitized `growth-os/runtime/core/activepieces.compose.yaml` to GitHub branch.
+- Synced template to `/opt/stacks/activepieces/compose.yaml`.
+- Generated encryption key, JWT secret and PostgreSQL password locally on `Amirreza-Pc`; values were not printed or committed.
+- `.env` permission verified as `600`.
+- Required secrets verified non-empty: `SECRETS_OK`.
+- `docker compose config` returned `COMPOSE_OK`.
+RESULT: Configuration and secret gate passed.
+
+### P2-CORE-02B — Activepieces image pull/runtime start
+STATUS: IN_PROGRESS
+DATE: 2026-09-21
+RESULT: `docker compose -p activepieces up -d` started successfully and is actively downloading the pinned Activepieces/PostgreSQL/Redis images. Runtime health is intentionally NOT marked complete until app/DB/Redis/worker verification passes.
+
 ## Documentation assets
 - `README.fa.md` / `README.md` — bilingual repository entry points
 - `growth-os/START-HERE-FA.md` / `START-HERE-EN.md` — beginner-first start pages
@@ -262,6 +315,10 @@ CONCLUSION: Phase 1 has a verified rollback baseline and is complete.
 - `growth-os/installation/PHASE1-DOCKER-FA.md` / `PHASE1-DOCKER-EN.md`
 - `growth-os/installation/PHASE1-BACKUP-FA.md` / `PHASE1-BACKUP-EN.md`
 - `growth-os/installation/assets/docker-install-flow.svg`
+- `growth-os/runtime/core/README-FA.md` / `README-EN.md`
+- `growth-os/runtime/core/activepieces.compose.yaml`
+- `growth-os/runtime/core/uptime-kuma.compose.yaml`
+- `growth-os/runtime/core/dockge.compose.yaml`
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md`
 - `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md` / `CONTENT-SOCIAL-AUTOPILOT-EN.md`
 - `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-FA.md` / `REVENUE-OPPORTUNITY-ENGINE-EN.md`
