@@ -10,13 +10,15 @@
 - State: `/opt/growth-os/state`
 - Stackها: `/opt/stacks`
 
-## پورت‌های محلی
+## پورت‌های مدیریت
 
-- Activepieces: `127.0.0.1:8080`
-- Uptime Kuma: `127.0.0.1:3001`
-- Dockge: `127.0.0.1:5001`
+- Activepieces: پورت `8080`
+- Uptime Kuma: پورت `3001`
+- Dockge: پورت `5001`
 
-این پورت‌ها در Pilot فقط روی localhost bind می‌شوند و نباید مستقیم روی LAN/Internet باز شوند.
+Docker Engine مستقل داخل WSL این پورت‌ها را در namespace خصوصی WSL روی wildcard bind می‌کند تا Windows host بتواند از IP خصوصی WSL به آن‌ها برسد. در تست Phase 2 این پورت‌ها از IP LAN ویندوز قابل دسترس نبودند. هیچ‌یک از این UIها نباید مستقیماً روی Internet منتشر شوند.
+
+داخل WSL از `localhost` استفاده کن. در Windows از `windows-open-uis.ps1` استفاده کن تا IP فعلی WSL به‌صورت خودکار پیدا و پنل‌ها باز شوند.
 
 ## Secret Policy
 
@@ -29,3 +31,4 @@
 - Docker Compose v5.5.1
 - 20GB سقف RAM WSL، 12 CPU، 8GB Swap
 - کاربر عملیاتی: `amirreza`
+- Cold-start نهایی Phase 2: `PHASE2_SMOKE_OK`
