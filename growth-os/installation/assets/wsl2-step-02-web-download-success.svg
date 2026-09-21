@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <rect width="1200" height="650" fill="#0c0c0c"/>
+  <rect x="0" y="0" width="1200" height="46" fill="#1f1f1f"/>
+  <text x="22" y="30" font-family="Consolas, monospace" font-size="20" fill="#ffffff">Administrator: Windows PowerShell</text>
+  <g font-family="Consolas, monospace" font-size="19" fill="#e8e8e8">
+    <text x="24" y="88">PS C:\WINDOWS\system32&gt; wsl --install -d Ubuntu-24.04</text>
+    <text x="24" y="118" fill="#f0b429">Downloading: Windows Subsystem for Linux 2.7.14</text>
+    <text x="24" y="148" fill="#ff6b6b">Internal server error (500).</text>
+    <text x="24" y="198">PS C:\WINDOWS\system32&gt; wsl --install --web-download -d Ubuntu-24.04</text>
+    <text x="24" y="228" fill="#8bd5ff">Downloading: Windows Subsystem for Linux 2.7.14</text>
+    <text x="24" y="258" fill="#8bd5ff">Installing: Windows Subsystem for Linux 2.7.14</text>
+    <text x="24" y="288" fill="#6ee7a8">Windows Subsystem for Linux 2.7.14 has been installed.</text>
+    <text x="24" y="328">Installing Windows optional component: VirtualMachinePlatform</text>
+    <text x="24" y="382">Enabling feature(s)</text>
+    <text x="24" y="412" fill="#6ee7a8">[====================100.0%====================]</text>
+    <text x="24" y="442" fill="#6ee7a8">The operation completed successfully.</text>
+    <text x="24" y="472" fill="#ffd166">Changes will not be effective until the system is rebooted.</text>
+  </g>
+  <rect x="760" y="525" width="390" height="82" rx="12" fill="#143d2b" stroke="#6ee7a8" stroke-width="2"/>
+  <text x="790" y="558" font-family="Segoe UI, sans-serif" font-size="22" font-weight="700" fill="#ffffff">NEXT STEP / قدم بعدی</text>
+  <text x="790" y="588" font-family="Segoe UI, sans-serif" font-size="20" fill="#dff8e9">Restart Windows — دستور دیگری نزن</text>
+</svg>
