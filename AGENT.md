@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-11 — Verify Docker and reboot/autostart behavior
-EXACT_NEXT_TASK: Verify Docker CLI, Compose Plugin, daemon health and a `hello-world` container before changing Docker permissions or deploying any Phase 2 service.
+EXACT_NEXT_TASK: Configure non-root Docker access for the `amirreza` user, then shut down and relaunch WSL and verify Docker returns active automatically before any Phase 2 service is deployed.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -36,8 +36,8 @@ EXACT_NEXT_TASK: Verify Docker CLI, Compose Plugin, daemon health and a `hello-w
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
-- [x] P1-WSL-10 Install Docker Engine + Compose — packages installed successfully; daemon verification follows in P1-WSL-11
-- [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
+- [x] P1-WSL-10 Install Docker Engine + Compose
+- [~] P1-WSL-11 Verify Docker and reboot/autostart behavior — runtime verified; non-root + WSL restart/autostart test remains
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
 ## Later phases
@@ -194,19 +194,29 @@ STATUS: VERIFIED_COMPLETE
 RESULT: apt successfully fetched `https://download.docker.com/linux/ubuntu noble InRelease`; official repository active and trusted.
 
 ### P1-WSL-10F — Docker Engine + Compose package installation
-STATUS: INSTALL_COMPLETE_VERIFICATION_PENDING
+STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 COMMAND: `sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
-EVIDENCE: Operator screenshot shows package unpack/configuration completed and shell prompt returned.
-ACTUAL_RESULT:
-- `containerd.io` installed and systemd symlink created.
-- `docker-compose-plugin` installed.
-- `docker-ce-cli` installed.
-- `docker-buildx-plugin` installed.
-- `docker-ce` installed and Docker service/socket systemd symlinks created.
+RESULT:
+- Docker Engine, Docker CLI, containerd, Buildx and Compose Plugin installed successfully.
+- Docker service/socket systemd symlinks created.
 - Package triggers completed without visible fatal error.
-CONCLUSION: Docker packages are installed. Do not mark runtime healthy until P1-WSL-11 verifies CLI versions, daemon state and container execution.
-NEXT_OPERATOR_ACTION: Verify `docker --version`, `docker compose version`, `systemctl is-active docker`, and `sudo docker run --rm hello-world`.
+
+### P1-WSL-11A — Docker runtime verification
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMANDS:
+- `docker --version`
+- `docker compose version`
+- `systemctl is-active docker`
+- `sudo docker run --rm hello-world`
+ACTUAL_RESULT:
+- Docker Engine reported version `29.8.1`.
+- Docker Compose reported version `v5.5.1`.
+- Docker daemon state returned `active`.
+- `hello-world` image was pulled successfully and container output included `Hello from Docker!`.
+CONCLUSION: Docker CLI, Compose Plugin, daemon, outbound registry access, image pull and container execution are all verified healthy.
+NEXT_OPERATOR_ACTION: Add `amirreza` to the `docker` group for operator convenience, then fully shut down WSL and relaunch Ubuntu to verify Docker starts automatically without manual service intervention.
 
 ## Documentation assets
 - `README.fa.md` / `README.md` — bilingual repository entry points
