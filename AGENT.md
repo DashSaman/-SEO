@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
-CURRENT_TASK: P1-WSL-07 — Update Ubuntu packages
-EXACT_NEXT_TASK: In Ubuntu run `sudo apt upgrade -y`, wait for completion, then capture the final output before moving on.
+CURRENT_TASK: P1-WSL-08 — Configure WSL resource limits
+EXACT_NEXT_TASK: Create Windows `%UserProfile%\.wslconfig` with agreed RAM/CPU/swap limits, shut down WSL, relaunch Ubuntu, and verify the limits before continuing.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -14,6 +14,7 @@ EXACT_NEXT_TASK: In Ubuntu run `sudo apt upgrade -y`, wait for completion, then 
 - [x] Every production-impacting change in later phases requires rollback notes and live verification.
 - [x] Keep MyTel and Tehran Network site-specific state isolated.
 - [x] Explain every operator step for a beginner and preserve reusable FA/EN runbooks.
+- [x] Keep visual diagrams/checklists for major operator phases.
 
 ## Phase 0 — Repository Foundation
 - [x] P0-01 Inventory and freeze pre-bootstrap corpus
@@ -30,7 +31,7 @@ EXACT_NEXT_TASK: In Ubuntu run `sudo apt upgrade -y`, wait for completion, then 
 - [x] P1-WSL-04 Create Linux user/password
 - [x] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
 - [x] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
-- [~] P1-WSL-07 Update Ubuntu packages — package index refreshed successfully; 25 upgrades pending
+- [x] P1-WSL-07 Update Ubuntu packages
 - [ ] P1-WSL-08 Configure WSL resource limits
 - [ ] P1-WSL-09 Verify systemd
 - [ ] P1-WSL-10 Install Docker Engine + Compose
@@ -103,23 +104,32 @@ RESULT: Ubuntu `nvidia-smi` sees NVIDIA GeForce RTX 3070 with 8192 MiB VRAM; GPU
 
 ### P1-WSL-07A — Refresh Ubuntu package metadata
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
 COMMAND: `sudo apt update`
-EVIDENCE: Operator screenshot captured the completed command.
+RESULT: Ubuntu Noble package indexes downloaded successfully; 35.1 MB fetched; 25 packages reported as upgradable.
+
+### P1-WSL-07B — Upgrade Ubuntu packages
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMAND: `sudo apt upgrade -y`
+EVIDENCE: Operator screenshot captured the completed upgrade and return to the shell prompt.
 RESULT:
-- Ubuntu Noble main, updates, security, backports, universe, restricted and multiverse indexes downloaded successfully.
-- 35.1 MB fetched.
-- `Reading package lists... Done`
-- `Building dependency tree... Done`
-- `Reading state information... Done`
-- 25 packages reported as upgradable.
-CONCLUSION: Ubuntu networking, DNS resolution and package repositories are working. Package metadata refresh is complete, but P1-WSL-07 remains in progress until the 25 pending upgrades are installed and verified.
-NEXT_OPERATOR_ACTION: Run `sudo apt upgrade -y` and capture the final output.
+- Pending base packages were unpacked and configured successfully.
+- Python 3.12, netplan, krb5 libraries, polkitd, locales and related Ubuntu packages were updated.
+- Package triggers completed successfully.
+- Command returned to `amirreza@Amirreza-PC:...$` without a visible fatal error.
+CONCLUSION: P1-WSL-07 is complete. Ubuntu base packages are updated and the next task is WSL resource governance.
 
 ## Documentation assets
-- `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian guide
-- `growth-os/installation/PHASE1-WSL2-EN.md` — English guide
-- `growth-os/installation/assets/wsl2-step-02-web-download-success.svg` — visual install/reboot walkthrough
+- `README.fa.md` — Persian repository entry point with visual roadmap
+- `README.md` — English repository entry point with visual roadmap
+- `growth-os/START-HERE-FA.md` — Persian beginner-first start page
+- `growth-os/START-HERE-EN.md` — English beginner-first start page
+- `growth-os/assets/roadmap-fa.svg` — Persian visual full roadmap
+- `growth-os/assets/roadmap-en.svg` — English visual full roadmap
+- `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian WSL2 guide
+- `growth-os/installation/PHASE1-WSL2-EN.md` — English WSL2 guide
+- `growth-os/installation/assets/wsl2-step-02-web-download-success.svg` — visual WSL install/reboot walkthrough
+- `growth-os/installation/assets/phase1-progress-fa.svg` — visual Phase 1 progress checklist
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md` — real HTTP 500 incident and workaround
 
 ## Security incident SEC-0001
