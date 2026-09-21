@@ -1,6 +1,6 @@
 # Phase 1 — Install WSL2 and Ubuntu 24.04 on Windows 11
 
-This guide is written for an operator with no prior Linux, WSL, or Docker experience. The goal of this step is only to create a clean Linux environment inside Windows. Docker, agents, and SEO services are not installed yet.
+This guide is written for an operator with no prior Linux, WSL, or Docker experience. The goal is to build a clean, repeatable, supportable Linux environment inside Windows.
 
 ## What is WSL2?
 
@@ -10,32 +10,35 @@ WSL2 provides a real Linux environment inside Windows without VMware or dual boo
 flowchart TD
     A[Windows 11] --> B[WSL2]
     B --> C[Ubuntu 24.04 LTS]
-    C --> D[Docker later]
+    C --> D[Docker]
     D --> E[Growth OS Services]
 ```
 
 Windows remains the normal desktop; Ubuntu runs the server-side Growth OS stack in the background.
 
-## Pilot machine preflight — 2026-09-21
+## Pilot hardware
 
 ```text
-WSL: not installed at start
-Ubuntu: not installed at start
+CPU: AMD Ryzen 7 6800H — 8C / 16T
+RAM: 32 GB
 GPU: NVIDIA GeForce RTX 3070 Laptop GPU
 VRAM: 8192 MiB
 Windows NVIDIA Driver: 616.92
-CUDA UMD reported by Windows: 13.4
+WSL package: 2.7.14
+Ubuntu: 24.04 LTS
 ```
 
-## Step 1 — Open Administrator PowerShell
+## Step 1 — Administrator PowerShell
 
-Open PowerShell with **Run as administrator**. The expected prompt is:
+Open PowerShell with **Run as administrator**.
+
+Expected prompt:
 
 ```text
 PS C:\WINDOWS\system32>
 ```
 
-## Step 2 — Install WSL2 and Ubuntu 24.04
+## Step 2 — Install WSL
 
 Normal path:
 
@@ -43,109 +46,211 @@ Normal path:
 wsl --install -d Ubuntu-24.04
 ```
 
-On the pilot machine this download path returned:
+The pilot returned:
 
 ```text
 Internal server error (500).
 ```
 
-The documented alternative source was then used:
+The fallback path that succeeded:
 
 ```powershell
 wsl --install --web-download -d Ubuntu-24.04
 ```
 
-This succeeded in installing WSL 2.7.14 and enabling `VirtualMachinePlatform` to 100%. Windows then reported that the changes require a reboot.
+This installed WSL 2.7.14 and enabled `VirtualMachinePlatform`, after which Windows required a reboot.
 
-![Visual: successful WSL web-download retry](assets/wsl2-step-02-web-download-success.svg)
+![Visual WSL install flow](assets/wsl2-step-02-web-download-success.svg)
 
-At this point run no additional setup command. Save work and restart Windows.
+## Step 3 — Install Ubuntu 24.04
 
-## Step 3 — Restart and first Ubuntu launch
-
-After reboot, Ubuntu may launch automatically. If it does not, open Start and launch **Ubuntu 24.04**.
-
-The first launch may take a few minutes. If prompted, create a simple lowercase UNIX username, for example:
-
-```text
-saman
-```
-
-Linux does not display password characters or asterisks while typing. This is normal.
-
-A successful shell looks similar to:
-
-```text
-saman@COMPUTER:~$
-```
-
-## Step 4 — Verify from Windows
-
-After reboot and Ubuntu initialization, run:
+After reboot verify:
 
 ```powershell
 wsl --status
 wsl --list --verbose
+wsl --list --online
 ```
 
-Expected shape:
+If `Ubuntu-24.04` is available online but not installed, run:
+
+```powershell
+wsl --install --web-download -d Ubuntu-24.04
+```
+
+The pilot downloaded and installed Ubuntu 24.04 successfully.
+
+## Step 4 — Create the Linux user
+
+At the first-run prompt create a simple UNIX username. The pilot uses:
 
 ```text
-NAME              STATE           VERSION
-* Ubuntu-24.04    Running         2
+amirreza
 ```
 
-The critical value is `VERSION 2`. If Ubuntu is missing or VERSION is 1, stop and record the output.
+Linux does not display password characters while typing. This is normal.
 
-## Step 5 — Verify GPU inside Ubuntu
+A successful shell looks similar to:
 
-Inside Ubuntu run:
+```text
+amirreza@Amirreza-PC:~$
+```
+
+## Step 5 — Verify WSL2
+
+From PowerShell:
+
+```powershell
+wsl --list --verbose
+```
+
+Expected:
+
+```text
+Ubuntu-24.04    Running    2
+```
+
+The pilot passed this check.
+
+## Step 6 — Verify GPU inside Ubuntu
+
+Inside Ubuntu:
 
 ```bash
 nvidia-smi
 ```
 
-The RTX 3070 should be visible. Do not install a separate Linux NVIDIA display driver inside WSL for this check; WSL uses the Windows-side NVIDIA driver integration.
+The RTX 3070 and about 8192 MiB VRAM should be visible. The pilot passed this check.
 
-## Step 6 — Stop here
+Do not install a separate Linux NVIDIA display driver inside WSL just for this test; WSL uses Windows-side NVIDIA integration.
 
-Do not install Docker, Ollama, LiteLLM, n8n, PostgreSQL, Redis, OpenHands, Postiz, OpenGSC, or DispatchSEO until the foundation is verified and recorded.
+## Step 7 — Update Ubuntu
 
-## Real incident: HTTP 500 during WSL download
+Run:
 
-The normal install path failed on this pilot with HTTP 500 while fetching WSL 2.7.14. Retrying through:
-
-```powershell
-wsl --install --web-download -d Ubuntu-24.04
+```bash
+sudo apt update
+sudo apt upgrade -y
 ```
 
-successfully installed WSL 2.7.14 and enabled VirtualMachinePlatform. Full incident record:
+The pilot successfully refreshed package metadata and upgraded the pending base packages.
+
+## Step 8 — Configure WSL resource governance
+
+Exit Ubuntu:
+
+```bash
+exit
+```
+
+From Windows PowerShell:
+
+```powershell
+notepad $env:USERPROFILE\.wslconfig
+```
+
+Use this pilot configuration:
+
+```ini
+[wsl2]
+memory=20GB
+processors=12
+swap=8GB
+localhostForwarding=true
+```
+
+![WSL2 resource limits](assets/wsl2-step-03-resource-limits.svg)
+
+Why:
+
+- 20 GB maximum RAM for WSL
+- 12 of 16 CPU threads available to WSL
+- 8 GB swap safety buffer
+- Windows keeps roughly 12 GB RAM and 4 threads available for desktop use
+
+Save the file, close Notepad, then apply it:
+
+```powershell
+wsl --shutdown
+wsl -d Ubuntu-24.04
+```
+
+Verify inside Ubuntu:
+
+```bash
+free -h
+nproc
+swapon --show
+```
+
+Expected approximate values:
+
+```text
+Memory total: around 19–20 GiB
+nproc: 12
+Swap: around 8 GiB
+```
+
+Do not install Docker until these checks pass.
+
+## Step 9 — systemd
+
+After resource verification, verify systemd before Docker. This is still pending in the pilot.
+
+## Pilot checklist
+
+- [x] Administrator PowerShell
+- [x] Normal WSL install attempted
+- [x] HTTP 500 incident recorded
+- [x] WSL installed through `--web-download`
+- [x] VirtualMachinePlatform enabled
+- [x] Windows rebooted
+- [x] Ubuntu 24.04 installed
+- [x] Linux user created
+- [x] WSL VERSION 2 verified
+- [x] RTX 3070 visible inside Ubuntu
+- [x] `sudo apt update`
+- [x] `sudo apt upgrade -y`
+- [ ] `.wslconfig` created
+- [ ] RAM / CPU / swap verified
+- [ ] systemd verified
+- [ ] Docker installed
+- [ ] reboot/autostart tested
+- [ ] baseline/backup recorded
+
+## Troubleshooting
+
+### HTTP 500 during WSL download
+
+See:
 
 `../troubleshooting/INC-WSL2-0001-HTTP-500.md`
 
-## Operator checklist
+### Ubuntu does not appear in Start
 
-- [x] Administrator PowerShell opened.
-- [x] Normal WSL install path attempted.
-- [x] HTTP 500 failure recorded.
-- [x] `--web-download` fallback executed.
-- [x] WSL 2.7.14 installed.
-- [x] VirtualMachinePlatform enabled successfully.
-- [ ] Windows rebooted.
-- [ ] Ubuntu 24.04 initialized.
-- [ ] Linux username created.
-- [ ] `wsl --status` succeeds.
-- [ ] `wsl --list --verbose` reports VERSION 2.
-- [ ] `nvidia-smi` inside Ubuntu sees the RTX 3070.
-- [ ] Final verification evidence recorded in `AGENT.md`.
+Use:
 
-## Safety / rollback
+```powershell
+wsl --list --verbose
+wsl --list --online
+```
 
-Do not run unregister/removal commands as a troubleshooting shortcut. Those can destroy the Linux distribution and its data. Record the error first, then follow a documented recovery step.
+If the distribution is not installed, install it directly through WSL rather than downloading Ubuntu Desktop/ISO.
+
+### `.wslconfig` changes do not apply
+
+Run:
+
+```powershell
+wsl --shutdown
+```
+
+then relaunch Ubuntu.
 
 ## Official references
 
 - Microsoft Learn — Install WSL
+- Microsoft Learn — Advanced settings configuration in WSL
 - Microsoft Learn — Basic commands for WSL
 
-This guide is updated with real pilot failures and fixes so it can later become a repeatable customer runbook.
+This guide is updated from real pilot evidence so it can later serve as a customer-ready runbook.
