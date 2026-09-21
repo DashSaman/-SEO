@@ -1,10 +1,10 @@
 # AGENT.md — Growth OS Execution Ledger
 
 PROJECT: Growth OS
-STATUS: BOOTSTRAP + PHASE1 PREPARATION
-CURRENT_PHASE: 0 / Phase 1 preflight in progress
+STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
+CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-07 — Update Ubuntu packages
-EXACT_NEXT_TASK: Launch Ubuntu 24.04, run `sudo apt update`, capture the complete result, then continue to package upgrade only after verification.
+EXACT_NEXT_TASK: In Ubuntu run `sudo apt upgrade -y`, wait for completion, then capture the final output before moving on.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -13,7 +13,7 @@ EXACT_NEXT_TASK: Launch Ubuntu 24.04, run `sudo apt update`, capture the complet
 - [x] Never store credentials or secret values in this repository.
 - [x] Every production-impacting change in later phases requires rollback notes and live verification.
 - [x] Keep MyTel and Tehran Network site-specific state isolated.
-- [x] Explain every operator step for a beginner and preserve a reusable FA/EN runbook.
+- [x] Explain every operator step for a beginner and preserve reusable FA/EN runbooks.
 
 ## Phase 0 — Repository Foundation
 - [x] P0-01 Inventory and freeze pre-bootstrap corpus
@@ -30,7 +30,7 @@ EXACT_NEXT_TASK: Launch Ubuntu 24.04, run `sudo apt update`, capture the complet
 - [x] P1-WSL-04 Create Linux user/password
 - [x] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
 - [x] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
-- [ ] P1-WSL-07 Update Ubuntu packages
+- [~] P1-WSL-07 Update Ubuntu packages — package index refreshed successfully; 25 upgrades pending
 - [ ] P1-WSL-08 Configure WSL resource limits
 - [ ] P1-WSL-09 Verify systemd
 - [ ] P1-WSL-10 Install Docker Engine + Compose
@@ -54,115 +54,67 @@ EXACT_NEXT_TASK: Launch Ubuntu 24.04, run `sudo apt update`, capture the complet
 - Phase 8 validates the full 24/7 pilot loop and measured business/SEO outcomes.
 
 ## Verified Phase 0 summary
-
-### P0-01 — Inventory and freeze
-STATUS: VERIFIED_COMPLETE
-RESULT: Baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f`; 8 root docs + 14 checklist files + 30 legacy docs = 52 SEO files; no target-path collisions.
-
-### P0-02 — Atomic SEO corpus relocation
-STATUS: VERIFIED_COMPLETE
-RESULT: `SEO-REFERENCE-V1/` tree SHA equals baseline tree SHA `009ab50e4d0da8a506f4762fd12f4d4975a747b5`, proving content identity for all 52 migrated files.
-
-### P0-03 — Bilingual root docs + execution ledger
-STATUS: VERIFIED_COMPLETE
-RESULT: Root `README.md`, `README.fa.md`, and canonical `AGENT.md` created and verified.
-
-### P0-04 — Growth OS documentation skeleton
-STATUS: VERIFIED_COMPLETE
-RESULT: Architecture, installation, operations, troubleshooting, product, experiments, benchmarks, compliance, MyTel, and Tehran Network documentation homes created.
-
-### P0-05 — Integrity / navigation / secret hygiene
-STATUS: VERIFIED_COMPLETE
-RESULT: 52/52 SEO files preserved; required paths present; no committed PAT/API secret values found in reviewed bootstrap content.
-
-### P0-06 — Bootstrap PR
-STATUS: REVIEWED_AWAITING_MERGE_APPROVAL
-PR: `#1 Bootstrap Growth OS repository structure`
-NOTE: Do not merge without explicit owner approval.
+- P0-01 VERIFIED: baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f`; 52 SEO files inventoried.
+- P0-02 VERIFIED: `SEO-REFERENCE-V1/` tree SHA equals the original baseline tree SHA, proving 52/52 content identity.
+- P0-03 VERIFIED: root `README.md`, `README.fa.md`, and canonical `AGENT.md` created.
+- P0-04 VERIFIED: Growth OS documentation skeleton and isolated MyTel/Tehran Network docs created.
+- P0-05 VERIFIED: tree/navigation/secret-hygiene checks passed.
+- P0-06 REVIEWED_AWAITING_MERGE_APPROVAL: PR #1 is open; do not merge without explicit owner approval.
 
 ## Phase 1 run log
 
 ### P1-WSL-01 — Initial preflight
 STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
-EVIDENCE: Operator ran `wsl --status`, `wsl --list --verbose`, and Windows `nvidia-smi`.
-RESULT:
-- WSL was not installed.
-- No Linux distribution was installed.
-- GPU detected: NVIDIA GeForce RTX 3070 Laptop GPU.
-- VRAM: 8192 MiB.
-- Windows NVIDIA driver reported: 616.92.
-- CUDA UMD reported by Windows: 13.4.
-DECISION: Use WSL2 + Ubuntu 24.04 LTS; do not use VMware/Ubuntu Desktop for the pilot runtime.
+RESULT: WSL not installed initially; Windows detected NVIDIA GeForce RTX 3070 Laptop GPU with 8192 MiB VRAM; Windows NVIDIA driver 616.92; CUDA UMD 13.4.
+DECISION: Use WSL2 + Ubuntu 24.04 LTS, not VMware/Ubuntu Desktop.
 
 ### P1-WSL-02A — Normal WSL install attempt
 STATUS: FAILED_RECORDED
 COMMAND: `wsl --install -d Ubuntu-24.04`
-RESULT: `Downloading: Windows Subsystem for Linux 2.7.14` followed by `Internal server error (500)`.
-ACTION: No destructive cleanup attempted.
+RESULT: `Internal server error (500)` while downloading WSL 2.7.14.
 INCIDENT: `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md`
 
 ### P1-WSL-02B — Web-download workaround
 STATUS: VERIFIED_COMPLETE
 COMMAND: `wsl --install --web-download -d Ubuntu-24.04`
-RESULT:
-- Windows Subsystem for Linux 2.7.14 installed.
-- `VirtualMachinePlatform` enabled to 100%.
-- Windows explicitly required reboot before changes became effective.
-ACTION: Operator rebooted Windows.
+RESULT: WSL 2.7.14 installed; `VirtualMachinePlatform` enabled; Windows rebooted as requested.
 
 ### P1-WSL-02C — Post-reboot verification
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
-EVIDENCE: Operator ran `wsl --status`, `wsl --list --verbose`, and `wsl --list --online` after reboot.
-RESULT:
-- `Default Version: 2` — WSL2 is the default.
-- WSL reported no installed distributions yet.
-- Online distro list worked and included `Ubuntu-24.04` (`Ubuntu 24.04 LTS`).
-- WSL1 warning is not a blocker; WSL1 is not required for this project.
+RESULT: `Default Version: 2`; WSL2 engine responds; online distro list includes `Ubuntu-24.04`; WSL1 warning is irrelevant to this project.
 
 ### P1-WSL-03 — Ubuntu 24.04 distribution installation
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
 COMMAND: `wsl --install --web-download -d Ubuntu-24.04`
-EVIDENCE: Operator screenshot captured the completed installer output.
-RESULT:
-- `Downloading: Ubuntu 24.04 LTS`
-- `Installing: Ubuntu 24.04 LTS`
-- `Distribution successfully installed. It can be launched via 'wsl.exe -d Ubuntu-24.04'`
-- Ubuntu launched automatically and began first-run provisioning.
-- Prompt reached: `Create a default Unix user account:`
-CONCLUSION: Ubuntu 24.04 distribution install is complete.
+RESULT: Ubuntu 24.04 LTS downloaded, installed, and launched successfully.
 
-### P1-WSL-04 — Create Linux user/password
+### P1-WSL-04 — Linux account creation
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
-EVIDENCE: Operator screenshot captured completed first-run account setup and resulting Ubuntu shell.
-RESULT:
-- Linux username created: `amirreza`
-- Password setup completed successfully (`passwd: password updated successfully`).
-- Ubuntu shell prompt is active: `amirreza@Amirreza-PC:...$`.
-SECURITY: Password value was not shared and is not stored in Git.
-NOTE: The shell started in `/mnt/c/WINDOWS/system32` because Ubuntu was launched from Administrator PowerShell while the Windows current directory was `C:\WINDOWS\system32`. This is normal and is not the Linux home directory.
+RESULT: Linux username `amirreza` created; password setup succeeded; secret value was not shared or stored.
 
-### P1-WSL-05 — Verify Ubuntu is running on WSL2
+### P1-WSL-05 — Verify WSL version
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
-EVIDENCE: Operator exited Ubuntu to Administrator PowerShell and ran `wsl --list --verbose`.
-RESULT: `Ubuntu-24.04` is listed as `Running` with `VERSION 2`.
-CONCLUSION: The installed Ubuntu distribution is running on WSL2, not WSL1.
+RESULT: `wsl --list --verbose` reports `Ubuntu-24.04` as `Running`, `VERSION 2`.
 
 ### P1-WSL-06 — Verify NVIDIA GPU inside Ubuntu
 STATUS: VERIFIED_COMPLETE
+RESULT: Ubuntu `nvidia-smi` sees NVIDIA GeForce RTX 3070 with 8192 MiB VRAM; GPU compute visibility is working.
+
+### P1-WSL-07A — Refresh Ubuntu package metadata
+STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
-EVIDENCE: Operator ran `nvidia-smi` inside the Ubuntu shell.
+COMMAND: `sudo apt update`
+EVIDENCE: Operator screenshot captured the completed command.
 RESULT:
-- GPU visible inside Ubuntu: NVIDIA GeForce RTX 3070.
-- VRAM visible: 8192 MiB.
-- WSL-side NVIDIA-SMI reported 615.71.08 with KMD 616.92 and CUDA UMD 13.4.
-- Command completed without error.
-CONCLUSION: WSL GPU compute visibility is working and the RTX 3070 is available to future local-AI workloads.
-NEXT_OPERATOR_ACTION: Launch Ubuntu 24.04 and run only `sudo apt update`; capture the full output before continuing to upgrades.
+- Ubuntu Noble main, updates, security, backports, universe, restricted and multiverse indexes downloaded successfully.
+- 35.1 MB fetched.
+- `Reading package lists... Done`
+- `Building dependency tree... Done`
+- `Reading state information... Done`
+- 25 packages reported as upgradable.
+CONCLUSION: Ubuntu networking, DNS resolution and package repositories are working. Package metadata refresh is complete, but P1-WSL-07 remains in progress until the 25 pending upgrades are installed and verified.
+NEXT_OPERATOR_ACTION: Run `sudo apt upgrade -y` and capture the final output.
 
 ## Documentation assets
 - `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian guide
@@ -170,12 +122,7 @@ NEXT_OPERATOR_ACTION: Launch Ubuntu 24.04 and run only `sudo apt update`; captur
 - `growth-os/installation/assets/wsl2-step-02-web-download-success.svg` — visual install/reboot walkthrough
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md` — real HTTP 500 incident and workaround
 
-## Execution notes
-
-### EXEC-0001 — Temporary-file cleanup during bootstrap
-Two temporary/placeholder files were accidentally created on the isolated `growth-os-bootstrap` branch while preparing Git objects. Both were removed before corpus relocation. No temporary path exists in the verified relocation tree and `main` was not touched.
-
-### Security incident SEC-0001
+## Security incident SEC-0001
 A GitHub personal access token was exposed in chat during planning. The token value is intentionally not recorded here. Owner action required: revoke/rotate the exposed PAT before operational setup.
 
 ## Task record template
