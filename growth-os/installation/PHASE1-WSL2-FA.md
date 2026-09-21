@@ -21,8 +21,8 @@ flowchart TD
 نتیجه Preflight ثبت‌شده:
 
 ```text
-WSL: نصب نیست
-Ubuntu: نصب نیست
+WSL: در شروع نصب نبود
+Ubuntu: در شروع نصب نبود
 GPU: NVIDIA GeForce RTX 3070 Laptop GPU
 VRAM: 8192 MiB
 Windows NVIDIA Driver: 616.92
@@ -62,37 +62,38 @@ wsl --install -d Ubuntu-24.04
 
 طبق مستندات رسمی Microsoft، `wsl --install` روش توصیه‌شده نصب WSL روی Windows 11 است و با `-d` می‌توان توزیع موردنظر را تعیین کرد.
 
-## نتیجه مورد انتظار
+## نتیجه واقعی Pilot
 
-ممکن است پیام‌هایی درباره فعال‌شدن Featureها، Download و Install ببینی. در پایان معمولاً Windows می‌گوید برای کامل‌شدن نصب سیستم را Restart کن.
+در این سیستم مسیر عادی هنگام دانلود WSL 2.7.14 با خطای زیر متوقف شد:
 
-اگر Restart خواست:
+```text
+Internal server error (500).
+```
 
-1. همه فایل‌های بازت را ذخیره کن.
-2. Windows را Restart کن.
-3. بعد از بالا آمدن Windows ادامه همین راهنما را انجام بده.
+بنابراین مسیر جایگزین رسمی اجرا شد:
 
-> اگر نصب روی `0.0%` گیر کرد، فعلاً چیزی را حذف نکن. خطا را ثبت کن. راه جایگزین رسمی Microsoft این است:
->
-> ```powershell
-> wsl --install --web-download -d Ubuntu-24.04
-> ```
->
-> اما فقط وقتی از مسیر عادی خطا گرفتیم از آن استفاده می‌کنیم.
+```powershell
+wsl --install --web-download -d Ubuntu-24.04
+```
+
+این بار WSL 2.7.14 نصب شد، `VirtualMachinePlatform` تا 100% فعال شد و Windows اعلام کرد برای مؤثرشدن تغییرات باید سیستم Restart شود.
+
+![نمای تصویری موفقیت نصب WSL با web-download](assets/wsl2-step-02-web-download-success.svg)
+
+در این نقطه **هیچ دستور دیگری اجرا نکن**. فایل‌های باز را ذخیره کن و Windows را Restart کن.
 
 ---
 
-# قدم 3 — اولین اجرای Ubuntu
+# قدم 3 — Restart و اولین اجرای Ubuntu
 
-بعد از Restart ممکن است Ubuntu خودکار باز شود. اگر باز نشد:
-
-1. Start را باز کن.
-2. بنویس `Ubuntu 24.04`.
-3. برنامه را اجرا کن.
+1. فایل‌های باز را Save کن.
+2. Windows را Restart کن.
+3. بعد از بالا آمدن Windows ممکن است Ubuntu خودکار باز شود.
+4. اگر باز نشد، Start را باز کن و `Ubuntu 24.04` را جست‌وجو و اجرا کن.
 
 اولین اجرا ممکن است چند دقیقه برای آماده‌سازی فایل‌ها زمان بخواهد.
 
-سپس از تو Username می‌خواهد:
+اگر Ubuntu از تو Username خواست:
 
 ```text
 Enter new UNIX username:
@@ -106,9 +107,7 @@ saman
 
 بعد Password می‌خواهد.
 
-نکته مهم: هنگام تایپ Password در Linux هیچ ستاره یا کاراکتری روی صفحه نمی‌بینی. این طبیعی است. Password را تایپ کن و Enter بزن.
-
-Password را دوباره تکرار کن.
+نکته مهم: هنگام تایپ Password در Linux هیچ ستاره یا کاراکتری روی صفحه نمی‌بینی. این طبیعی است. Password را تایپ کن و Enter بزن و دوباره تکرار کن.
 
 وقتی تمام شد چیزی شبیه این می‌بینی:
 
@@ -122,7 +121,7 @@ saman@COMPUTER:~$
 
 # قدم 4 — Verify نصب از داخل Windows
 
-PowerShell را باز کن و بزن:
+بعد از Restart و اولین اجرای Ubuntu، PowerShell را باز کن و بزن:
 
 ```powershell
 wsl --status
@@ -147,7 +146,7 @@ NAME              STATE           VERSION
 VERSION = 2
 ```
 
-اگر VERSION برابر 1 بود، ادامه نده و مشکل را ثبت کن.
+اگر Ubuntu در لیست نبود یا VERSION برابر 1 بود، ادامه نده و خروجی را ثبت کن.
 
 ---
 
@@ -161,7 +160,7 @@ nvidia-smi
 
 باید RTX 3070 را ببینی. لازم نیست CUDA Toolkit را داخل Ubuntu نصب کنیم فقط برای اینکه `nvidia-smi` کار کند؛ WSL از درایور Windows استفاده می‌کند.
 
-اگر `nvidia-smi` کار کرد، GPU Pass-through برای WSL آماده است.
+اگر `nvidia-smi` کار کرد، GPU access برای WSL آماده است.
 
 ---
 
@@ -200,23 +199,37 @@ The Windows Subsystem for Linux is not installed
 wsl --install -d Ubuntu-24.04
 ```
 
-## نصب روی 0.0% گیر کرده
+## خطا: `Internal server error (500)` هنگام دانلود
 
-بعد از ثبت خطا می‌توان از مسیر رسمی جایگزین استفاده کرد:
+در Pilot واقعی این خطا رخ داد. بدون حذف یا دستکاری نصب، این دستور اجرا شد:
 
 ```powershell
 wsl --install --web-download -d Ubuntu-24.04
 ```
 
-## بعد از نصب Ubuntu باز نمی‌شود
+نتیجه: دانلود و نصب WSL 2.7.14 و فعال‌سازی VirtualMachinePlatform موفق شد و Restart درخواست شد.
 
-ابتدا Windows را Restart کن، سپس:
+رکورد کامل Incident:
+
+`../troubleshooting/INC-WSL2-0001-HTTP-500.md`
+
+## نصب روی 0.0% گیر کرده
+
+بعد از ثبت خطا می‌توان مسیر جایگزین زیر را بررسی کرد:
+
+```powershell
+wsl --install --web-download -d Ubuntu-24.04
+```
+
+## بعد از Restart Ubuntu باز نمی‌شود
+
+PowerShell را باز کن و ابتدا فقط این را بزن:
 
 ```powershell
 wsl --list --verbose
 ```
 
-و نتیجه را بررسی کن.
+خروجی را ثبت کن و قبل از حذف یا `unregister` کردن Ubuntu بررسی انجام بده.
 
 ## Password دیده نمی‌شود
 
@@ -226,15 +239,19 @@ wsl --list --verbose
 
 # چک‌لیست اپراتور
 
-- [ ] PowerShell به صورت Administrator باز شد.
-- [ ] `wsl --install -d Ubuntu-24.04` اجرا شد.
-- [ ] Windows در صورت نیاز Restart شد.
+- [x] PowerShell به صورت Administrator باز شد.
+- [x] مسیر عادی `wsl --install -d Ubuntu-24.04` امتحان شد.
+- [x] خطای HTTP 500 ثبت شد.
+- [x] مسیر `--web-download` اجرا شد.
+- [x] WSL 2.7.14 نصب شد.
+- [x] VirtualMachinePlatform با موفقیت فعال شد.
+- [ ] Windows Restart شد.
 - [ ] Ubuntu 24.04 اولین بار اجرا شد.
 - [ ] Linux username ساخته شد.
 - [ ] `wsl --status` بدون خطا اجرا شد.
 - [ ] `wsl --list --verbose` نشان داد Ubuntu روی VERSION 2 است.
 - [ ] `nvidia-smi` داخل Ubuntu کارت RTX 3070 را نشان داد.
-- [ ] نتیجه Verify در `AGENT.md` ثبت شد.
+- [ ] نتیجه Verify نهایی در `AGENT.md` ثبت شد.
 
 ## Rollback / حذف اضطراری
 
