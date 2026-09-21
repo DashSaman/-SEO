@@ -5,7 +5,7 @@ import sys
 MODULE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE_DIR))
 
-from public_baseline import extract_html_signals, sitemap_candidates
+from public_baseline import extract_html_signals, sitemap_candidates, timestamped_output_path
 
 
 class PublicBaselineTests(unittest.TestCase):
@@ -25,6 +25,10 @@ class PublicBaselineTests(unittest.TestCase):
             sitemap_candidates("https://example.com/path?q=1"),
             ["https://example.com/sitemap.xml", "https://example.com/sitemap_index.xml"],
         )
+
+    def test_timestamped_output_path_is_shell_independent(self):
+        path = timestamped_output_path("/tmp/baselines", "2026-09-21T04:30:45+00:00")
+        self.assertEqual(path, Path("/tmp/baselines/20260921T043045Z.json"))
 
 
 if __name__ == "__main__":
