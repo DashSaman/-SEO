@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO=/opt/growth-os/repo
 STATE=/opt/growth-os/state/sites
 LOCK=/opt/growth-os/state/daily-crawl.lock
 STAMP=$(date -u +%Y%m%dT%H%M%SZ)
@@ -33,4 +34,9 @@ run_site() {
 run_site mytel https://mytel.one/
 run_site tehnet https://tehnet.ir/
 
-echo DAILY_CRAWL_OK
+python3 "$REPO/growth-os/runtime/intelligence/daily_report.py" \
+  --site-id mytel --site-name MyTel
+python3 "$REPO/growth-os/runtime/intelligence/daily_report.py" \
+  --site-id tehnet --site-name "Tehran Network"
+
+echo DAILY_CRAWL_AND_REPORT_OK
