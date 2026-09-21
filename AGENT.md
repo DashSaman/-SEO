@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 PREPARATION
 CURRENT_PHASE: 0 / Phase 1 preflight in progress
-CURRENT_TASK: P1-WSL-05/06 — Verify WSL2 and RTX 3070 inside Ubuntu
-EXACT_NEXT_TASK: From the current Ubuntu shell run `nvidia-smi`; then `exit` back to PowerShell and run `wsl --list --verbose`. Capture both outputs.
+CURRENT_TASK: P1-WSL-07 — Update Ubuntu packages
+EXACT_NEXT_TASK: Launch Ubuntu 24.04, run `sudo apt update`, capture the complete result, then continue to package upgrade only after verification.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -28,8 +28,8 @@ EXACT_NEXT_TASK: From the current Ubuntu shell run `nvidia-smi`; then `exit` bac
 - [x] P1-WSL-02 Install WSL package + VirtualMachinePlatform and reboot
 - [x] P1-WSL-03 Install Ubuntu 24.04 distribution
 - [x] P1-WSL-04 Create Linux user/password
-- [ ] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
-- [ ] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
+- [x] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
+- [x] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
 - [ ] P1-WSL-07 Update Ubuntu packages
 - [ ] P1-WSL-08 Configure WSL resource limits
 - [ ] P1-WSL-09 Verify systemd
@@ -144,7 +144,25 @@ RESULT:
 - Ubuntu shell prompt is active: `amirreza@Amirreza-PC:...$`.
 SECURITY: Password value was not shared and is not stored in Git.
 NOTE: The shell started in `/mnt/c/WINDOWS/system32` because Ubuntu was launched from Administrator PowerShell while the Windows current directory was `C:\WINDOWS\system32`. This is normal and is not the Linux home directory.
-NEXT_OPERATOR_ACTION: In Ubuntu run `nvidia-smi`. Then run `exit` to return to PowerShell and run `wsl --list --verbose`.
+
+### P1-WSL-05 — Verify Ubuntu is running on WSL2
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+EVIDENCE: Operator exited Ubuntu to Administrator PowerShell and ran `wsl --list --verbose`.
+RESULT: `Ubuntu-24.04` is listed as `Running` with `VERSION 2`.
+CONCLUSION: The installed Ubuntu distribution is running on WSL2, not WSL1.
+
+### P1-WSL-06 — Verify NVIDIA GPU inside Ubuntu
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+EVIDENCE: Operator ran `nvidia-smi` inside the Ubuntu shell.
+RESULT:
+- GPU visible inside Ubuntu: NVIDIA GeForce RTX 3070.
+- VRAM visible: 8192 MiB.
+- WSL-side NVIDIA-SMI reported 615.71.08 with KMD 616.92 and CUDA UMD 13.4.
+- Command completed without error.
+CONCLUSION: WSL GPU compute visibility is working and the RTX 3070 is available to future local-AI workloads.
+NEXT_OPERATOR_ACTION: Launch Ubuntu 24.04 and run only `sudo apt update`; capture the full output before continuing to upgrades.
 
 ## Documentation assets
 - `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian guide
