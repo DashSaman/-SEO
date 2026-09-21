@@ -1,10 +1,10 @@
 # AGENT.md — Growth OS Execution Ledger
 
 PROJECT: Growth OS
-STATUS: BOOTSTRAP + PHASE1 NEAR COMPLETE
-CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
-CURRENT_TASK: P1-WSL-12 — Create Phase 1 backup/baseline record
-EXACT_NEXT_TASK: Verify `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar` exists, record its exact file size and SHA256, then close Phase 1 and begin Phase 2 Core Platform.
+STATUS: PHASE1 COMPLETE + PHASE2 READY
+CURRENT_PHASE: Phase 2 — Core Platform
+CURRENT_TASK: P2-CORE-01 — Design and deploy the always-on core platform
+EXACT_NEXT_TASK: Finalize the Phase 2 service composition (n8n, PostgreSQL, Redis, Uptime Kuma, secrets/backups and service management), then deploy the first persistent 24/7 services without modifying production sites.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -38,7 +38,7 @@ EXACT_NEXT_TASK: Verify `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`
 - [x] P1-WSL-09 Verify systemd
 - [x] P1-WSL-10 Install Docker Engine + Compose
 - [x] P1-WSL-11 Verify Docker and WSL restart/autostart behavior
-- [~] P1-WSL-12 Create Phase 1 backup/baseline record — export succeeded; exact size + SHA256 verification remains
+- [x] P1-WSL-12 Create Phase 1 backup/baseline record
 
 ## Later phases
 - [ ] Phase 2 — Core Platform
@@ -133,7 +133,7 @@ RESULT: Ubuntu Noble package indexes downloaded successfully; 35.1 MB fetched; 2
 STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 COMMAND: `sudo apt upgrade -y`
-RESULT: Pending base packages were unpacked/configured successfully; package triggers completed and shell prompt returned without visible fatal error.
+RESULT: 25 packages upgraded; package triggers completed and shell prompt returned without visible fatal error.
 
 ### P1-WSL-08 — Configure and verify WSL resource limits
 STATUS: VERIFIED_COMPLETE
@@ -239,25 +239,20 @@ ACTUAL_RESULT:
 - Docker daemon returned `active` immediately after WSL relaunch.
 - `docker run --rm hello-world` succeeded without `sudo` and printed `Hello from Docker!`.
 CONCLUSION: Docker permission setup, systemd autostart behavior, daemon startup and non-root container execution survive a full WSL shutdown/relaunch. P1-WSL-11 is complete.
-NEXT_OPERATOR_ACTION: Create and verify a full WSL export baseline before deploying Phase 2 services.
 
 ### P1-WSL-12 — Phase 1 backup/baseline
-STATUS: EXPORT_COMPLETE_VERIFICATION_PENDING
+STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 PURPOSE: Preserve a known-good rollback point before persistent Growth OS services and databases are introduced.
 EXPORT: `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`
 ACTUAL_RESULT:
-- `C:\GrowthOS-Backups` directory was created successfully.
-- WSL was shut down before export.
+- `C:\GrowthOS-Backups` directory created successfully.
+- WSL shut down before export.
 - `wsl --export Ubuntu-24.04 C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar` completed successfully.
-- Export progress reported approximately 1854 MB transferred.
-VERIFICATION_REMAINING:
-- Verify the backup file exists and record its exact byte size.
-- Record SHA256 in this ledger.
-- Backup archive itself must NOT be committed to GitHub.
-GUIDES:
-- `growth-os/installation/PHASE1-BACKUP-FA.md`
-- `growth-os/installation/PHASE1-BACKUP-EN.md`
+- Verified exact backup size: `1,944,412,160` bytes (~1.81 GiB / ~1.94 GB decimal).
+- Verified SHA256: `823965D6DB48A74111105B8433CD98CF77DA042DA909E96CDFEE3770D8BD77CC`.
+- Backup archive itself is intentionally not committed to GitHub.
+CONCLUSION: Phase 1 has a verified rollback baseline and is complete.
 
 ## Documentation assets
 - `README.fa.md` / `README.md` — bilingual repository entry points
