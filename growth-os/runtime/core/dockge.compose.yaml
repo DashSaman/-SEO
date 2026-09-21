@@ -4,7 +4,7 @@ services:
     container_name: growthos-dockge
     restart: unless-stopped
     ports:
-      - "127.0.0.1:5001:5001"
+      - "0.0.0.0:5001:5001"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./data:/app/data
