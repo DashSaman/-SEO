@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1200" height="760" fill="#0d1117"/>
+  <style>
+    .t{font-family:Arial,sans-serif;fill:#f0f6fc}.s{font-family:Arial,sans-serif;fill:#8b949e}.b{fill:#161b22;stroke:#30363d;stroke-width:2}.ok{fill:#102a1b;stroke:#2ea043;stroke-width:2}.next{fill:#1f2937;stroke:#58a6ff;stroke-width:3}.line{stroke:#8b949e;stroke-width:3;marker-end:url(#a)}
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8b949e"/></marker></defs>
+  <text x="600" y="55" text-anchor="middle" class="t" font-size="34" font-weight="700">Growth OS — Docker Engine Installation Flow</text>
+  <text x="600" y="88" text-anchor="middle" class="s" font-size="18">Ubuntu 24.04 on WSL2 — official Docker apt repository</text>
+
+  <rect x="390" y="125" width="420" height="72" rx="14" class="ok"/>
+  <text x="600" y="156" text-anchor="middle" class="t" font-size="22">✓ WSL2 + Ubuntu + systemd ready</text>
+  <text x="600" y="181" text-anchor="middle" class="s" font-size="16">20 GB RAM • 12 CPU • 8 GB swap</text>
+
+  <line x1="600" y1="197" x2="600" y2="235" class="line"/>
+  <rect x="390" y="235" width="420" height="72" rx="14" class="next"/>
+  <text x="600" y="268" text-anchor="middle" class="t" font-size="22">1. Preflight / conflict check</text>
+  <text x="600" y="292" text-anchor="middle" class="s" font-size="16">docker --version • dpkg package check</text>
+
+  <line x1="600" y1="307" x2="600" y2="345" class="line"/>
+  <rect x="390" y="345" width="420" height="72" rx="14" class="b"/>
+  <text x="600" y="378" text-anchor="middle" class="t" font-size="22">2. Add official Docker repository</text>
+  <text x="600" y="402" text-anchor="middle" class="s" font-size="16">CA certs • curl • GPG key • docker.sources</text>
+
+  <line x1="600" y1="417" x2="600" y2="455" class="line"/>
+  <rect x="390" y="455" width="420" height="72" rx="14" class="b"/>
+  <text x="600" y="488" text-anchor="middle" class="t" font-size="22">3. Install Engine + Compose v2</text>
+  <text x="600" y="512" text-anchor="middle" class="s" font-size="16">docker-ce • containerd.io • buildx • compose plugin</text>
+
+  <line x1="600" y1="527" x2="600" y2="565" class="line"/>
+  <rect x="390" y="565" width="420" height="72" rx="14" class="b"/>
+  <text x="600" y="598" text-anchor="middle" class="t" font-size="22">4. Verify</text>
+  <text x="600" y="622" text-anchor="middle" class="s" font-size="16">service active • versions • hello-world</text>
+
+  <line x1="600" y1="637" x2="600" y2="675" class="line"/>
+  <rect x="390" y="675" width="420" height="58" rx="14" class="ok"/>
+  <text x="600" y="711" text-anchor="middle" class="t" font-size="22">✓ Docker ready for Growth OS</text>
+</svg>
