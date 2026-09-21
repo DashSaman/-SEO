@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
-CURRENT_TASK: P1-WSL-10 — Install Docker Engine + Compose
-EXACT_NEXT_TASK: Install Docker Engine, containerd, Buildx and Compose Plugin from Docker's official Ubuntu repository, then verify versions and daemon health before any Phase 2 service is deployed.
+CURRENT_TASK: P1-WSL-11 — Verify Docker and reboot/autostart behavior
+EXACT_NEXT_TASK: Verify Docker CLI, Compose Plugin, daemon health and a `hello-world` container before changing Docker permissions or deploying any Phase 2 service.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -16,6 +16,7 @@ EXACT_NEXT_TASK: Install Docker Engine, containerd, Buildx and Compose Plugin fr
 - [x] Explain every operator step for a beginner and preserve reusable FA/EN runbooks.
 - [x] Keep visual diagrams/checklists for major operator phases.
 - [x] Treat content creation, media repurposing, social publishing, analytics feedback and website optimization as one integrated Growth OS loop.
+- [x] Treat revenue and competitive opportunity discovery as a first-class product function, not only SEO reporting.
 
 ## Phase 0 — Repository Foundation
 - [x] P0-01 Inventory and freeze pre-bootstrap corpus
@@ -35,41 +36,45 @@ EXACT_NEXT_TASK: Install Docker Engine, containerd, Buildx and Compose Plugin fr
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
-- [~] P1-WSL-10 Install Docker Engine + Compose — official Docker repository verified; package installation is next
+- [x] P1-WSL-10 Install Docker Engine + Compose — packages installed successfully; daemon verification follows in P1-WSL-11
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
 ## Later phases
 - [ ] Phase 2 — Core Platform
 - [ ] Phase 3 — AI Layer
-- [ ] Phase 4 — SEO Intelligence
+- [ ] Phase 4 — SEO + Revenue Intelligence
 - [ ] Phase 5 — Agent Execution
-- [ ] Phase 6 — Intelligence Feeds
+- [ ] Phase 6 — Intelligence Feeds / Competitors / Trends
 - [ ] Phase 7 — Content + Social Automation
 - [ ] Phase 8 — Pilots
 - [ ] Phase 9 — Productization
 
 ## Phase timing / site-work boundary
 - Phases 0–3 prepare the controlled runtime and AI infrastructure; they do not modify production sites.
-- Phase 4 begins real data ingestion/auditing for MyTel and Tehran Network.
+- Phase 4 begins real data ingestion/auditing for MyTel and Tehran Network and starts building the Revenue Opportunity queue.
 - Phase 5 enables controlled Agent-driven code/content changes through branch/PR/QA gates.
+- Phase 6 expands continuous competitor, trend and market-signal discovery.
 - Phase 7 adds integrated content generation, media repurposing, editorial scheduling and multi-channel social publishing with measurement feedback.
 - Phase 8 validates the full 24/7 pilot loop and measured business/SEO outcomes.
 
 ## Unified Growth OS product requirement
 The target system is not only an SEO monitor. The production goal is a single orchestration layer that can:
-- continuously ingest GSC, GA4, crawl, ranking, server/log, competitor and social performance signals;
-- detect and prioritize opportunities and technical/content problems;
+- continuously ingest GSC, GA4, crawl, ranking, server/log, competitor, trend, lead and social-performance signals;
+- detect and prioritize technical, search, content, conversion, product, offer and market opportunities;
+- score opportunities by revenue potential, commercial intent, demand, speed, confidence, effort and risk;
 - generate or improve website pages, articles, FAQs, schema, internal links and commercial copy;
 - repurpose approved content into platform-specific social assets instead of blindly duplicating the same text everywhere;
 - schedule and publish through official APIs/connectors where available;
-- measure website/search/social outcomes and feed results back into the next planning cycle;
+- measure website/search/social and business outcomes and feed results back into the next planning cycle;
 - use approval tiers so low-risk work can become automated while destructive/high-impact changes stay gated;
 - keep a full action/cost/result history for later multi-site commercialization.
 
 Canonical design docs:
 - `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md`
 - `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-EN.md`
+- `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-FA.md`
+- `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-EN.md`
 
 ## Verified Phase 0 summary
 - P0-01 VERIFIED: baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f`; 52 SEO files inventoried.
@@ -135,7 +140,6 @@ STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 HOST: Ryzen 7 6800H (8C/16T), 32 GB RAM, RTX 3070 8 GB
 CONFIG: Windows `%UserProfile%\.wslconfig`
-
 ```ini
 [wsl2]
 memory=20GB
@@ -143,8 +147,6 @@ processors=12
 swap=8GB
 localhostForwarding=true
 ```
-
-APPLY ACTION: Operator saved the file with Ctrl+S, ran `wsl --shutdown`, and relaunched `Ubuntu-24.04`.
 VERIFICATION:
 - `free -h` reported approximately 19 GiB total memory.
 - `nproc` returned `12`.
@@ -154,83 +156,68 @@ CONCLUSION: `.wslconfig` is applied successfully.
 ### P1-WSL-09 — Verify systemd
 STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
-EVIDENCE: Operator screenshot captured both verification commands and outputs.
 COMMANDS:
 - `ps -p 1 -o comm=`
 - `systemctl is-system-running`
 ACTUAL_RESULT:
 - PID 1 command returned `systemd`.
 - `systemctl is-system-running` returned `running`.
-CONCLUSION: systemd is already active and healthy in Ubuntu 24.04 under WSL2. No `/etc/wsl.conf` modification is required for systemd on this pilot.
+CONCLUSION: systemd is active and healthy.
 
 ### P1-WSL-10A — Docker clean-install preflight
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
 COMMANDS:
 - `docker --version`
 - `dpkg -l | grep -E 'docker|containerd|runc'`
-ACTUAL_RESULT:
-- `docker --version` returned `Command 'docker' not found` with Ubuntu package suggestions; Docker CLI is not installed.
-- Package query returned no installed Docker/containerd/runc packages.
-CONCLUSION: No pre-existing Docker Engine/containerd/runc package conflict was detected. Proceed with Docker's official Ubuntu apt repository. Do not install Docker Desktop and do not use Ubuntu's suggested `docker.io` package for this production-style setup.
-SOURCE: Docker Docs — Install Docker Engine on Ubuntu, official apt repository method (verified 2026-09-21).
+RESULT: No pre-existing Docker Engine/containerd/runc package conflict detected.
 
 ### P1-WSL-10B — Docker repository prerequisites
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
 COMMAND: `sudo apt install -y ca-certificates curl`
-ACTUAL_RESULT:
-- `ca-certificates` is already the newest version.
-- `curl` is already the newest version.
-CONCLUSION: HTTPS certificate trust and curl prerequisites are present and current.
+RESULT: Both prerequisites already present and current.
 
 ### P1-WSL-10C — Docker apt keyring directory
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
 COMMAND: `sudo install -m 0755 -d /etc/apt/keyrings`
-CONCLUSION: `/etc/apt/keyrings` exists with mode 0755 and is ready for Docker's signing key.
+RESULT: `/etc/apt/keyrings` ready.
 
 ### P1-WSL-10D — Docker signing key
 STATUS: VERIFIED_COMPLETE
-DATE: 2026-09-21
 COMMANDS:
 - `sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc`
 - `sudo chmod a+r /etc/apt/keyrings/docker.asc`
 - `ls -lh /etc/apt/keyrings/docker.asc`
-ACTUAL_RESULT: `/etc/apt/keyrings/docker.asc` exists, is world-readable, and is approximately 3.8 KB.
-CONCLUSION: Docker's official Ubuntu signing key is installed and readable by apt.
+RESULT: `docker.asc` exists, readable, approximately 3.8 KB.
 
 ### P1-WSL-10E — Docker official apt repository
 STATUS: VERIFIED_COMPLETE
+RESULT: apt successfully fetched `https://download.docker.com/linux/ubuntu noble InRelease`; official repository active and trusted.
+
+### P1-WSL-10F — Docker Engine + Compose package installation
+STATUS: INSTALL_COMPLETE_VERIFICATION_PENDING
 DATE: 2026-09-21
-ACTIONS:
-- Added Docker's stable Ubuntu repository under `/etc/apt/sources.list.d/docker.list` using the signed key.
-- Ran `sudo apt update`.
+COMMAND: `sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
+EVIDENCE: Operator screenshot shows package unpack/configuration completed and shell prompt returned.
 ACTUAL_RESULT:
-- apt successfully fetched `https://download.docker.com/linux/ubuntu noble InRelease`.
-- Docker repository package metadata downloaded successfully.
-- `All packages are up to date.`
-CONCLUSION: The official Docker apt repository is active and trusted. Ready to install Docker Engine and Compose Plugin.
-NEXT_OPERATOR_ACTION: Install `docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`, then verify daemon and versions.
+- `containerd.io` installed and systemd symlink created.
+- `docker-compose-plugin` installed.
+- `docker-ce-cli` installed.
+- `docker-buildx-plugin` installed.
+- `docker-ce` installed and Docker service/socket systemd symlinks created.
+- Package triggers completed without visible fatal error.
+CONCLUSION: Docker packages are installed. Do not mark runtime healthy until P1-WSL-11 verifies CLI versions, daemon state and container execution.
+NEXT_OPERATOR_ACTION: Verify `docker --version`, `docker compose version`, `systemctl is-active docker`, and `sudo docker run --rm hello-world`.
 
 ## Documentation assets
-- `README.fa.md` — Persian repository entry point with visual roadmap
-- `README.md` — English repository entry point with visual roadmap
-- `growth-os/START-HERE-FA.md` — Persian beginner-first start page
-- `growth-os/START-HERE-EN.md` — English beginner-first start page
-- `growth-os/assets/roadmap-fa.svg` — Persian visual full roadmap
-- `growth-os/assets/roadmap-en.svg` — English visual full roadmap
-- `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian WSL2 guide
-- `growth-os/installation/PHASE1-WSL2-EN.md` — English WSL2 guide
-- `growth-os/installation/assets/wsl2-step-02-web-download-success.svg` — visual WSL install/reboot walkthrough
-- `growth-os/installation/assets/wsl2-step-03-resource-limits.svg` — visual WSL resource limits and verification
-- `growth-os/installation/assets/phase1-progress-fa.svg` — visual Phase 1 progress checklist
-- `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md` — real HTTP 500 incident and workaround
-- `growth-os/installation/PHASE1-DOCKER-FA.md` — Persian beginner-first Docker Engine guide
-- `growth-os/installation/PHASE1-DOCKER-EN.md` — English Docker Engine guide
-- `growth-os/installation/assets/docker-install-flow.svg` — visual Docker installation/verification flow
-- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md` — Persian unified content/social growth loop
-- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-EN.md` — English unified content/social growth loop
+- `README.fa.md` / `README.md` — bilingual repository entry points
+- `growth-os/START-HERE-FA.md` / `START-HERE-EN.md` — beginner-first start pages
+- `growth-os/assets/roadmap-fa.svg` / `roadmap-en.svg` — visual roadmap
+- `growth-os/installation/PHASE1-WSL2-FA.md` / `PHASE1-WSL2-EN.md`
+- `growth-os/installation/PHASE1-DOCKER-FA.md` / `PHASE1-DOCKER-EN.md`
+- `growth-os/installation/assets/docker-install-flow.svg`
+- `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md`
+- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md` / `CONTENT-SOCIAL-AUTOPILOT-EN.md`
+- `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-FA.md` / `REVENUE-OPPORTUNITY-ENGINE-EN.md`
 
 ## Security incident SEC-0001
 A GitHub personal access token was exposed in chat during planning. The token value is intentionally not recorded here. Owner action required: revoke/rotate the exposed PAT before operational setup.
