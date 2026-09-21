@@ -1,0 +1,26 @@
+site_id: mytel
+name: MyTel
+primary_url: https://mytel.one
+mode: growth
+status: pilot
+monitoring:
+  continuous: true
+  daily_report: true
+  weekly_optimization_cycle: true
+  public_baseline_enabled: true
+reporting:
+  repo_path: growth-os/sites/mytel/reports
+  telegram_destination: pending_connector
+safety:
+  production_changes_in_phase4: false
+  destructive_actions: fail_closed
+objectives:
+  - qualified_search_visibility
+  - commercial_query_page1_share
+  - ctr_improvement
+  - lead_conversion_growth
+  - revenue_impact
+secrets:
+  gsc: host_only
+  ga4: host_only
+  telegram: host_only
