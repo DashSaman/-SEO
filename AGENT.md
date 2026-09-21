@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-10 — Install Docker Engine + Compose
-EXACT_NEXT_TASK: Install only the Docker repository prerequisites (`ca-certificates` and `curl`) inside Ubuntu, then capture the result before adding Docker's signing key/repository.
+EXACT_NEXT_TASK: Create `/etc/apt/keyrings`, download Docker's official Ubuntu signing key to `/etc/apt/keyrings/docker.asc`, make it world-readable, then verify the key file exists before adding the Docker repository.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -34,7 +34,7 @@ EXACT_NEXT_TASK: Install only the Docker repository prerequisites (`ca-certifica
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
-- [~] P1-WSL-10 Install Docker Engine + Compose — clean preflight verified; official-repo install in progress
+- [~] P1-WSL-10 Install Docker Engine + Compose — clean preflight and prerequisites verified; official repository setup in progress
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
@@ -157,7 +157,18 @@ ACTUAL_RESULT:
 - Package query returned no installed Docker/containerd/runc packages.
 CONCLUSION: No pre-existing Docker Engine/containerd/runc package conflict was detected. Proceed with Docker's official Ubuntu apt repository. Do not install Docker Desktop and do not use Ubuntu's suggested `docker.io` package for this production-style setup.
 SOURCE: Docker Docs — Install Docker Engine on Ubuntu, official apt repository method (verified 2026-09-21).
-NEXT_OPERATOR_ACTION: Install only `ca-certificates` and `curl`, then capture the result before adding the Docker signing key/repository.
+
+### P1-WSL-10B — Docker repository prerequisites
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMAND: `sudo apt install -y ca-certificates curl`
+EVIDENCE: Operator screenshot captured the completed apt result and return to the shell prompt.
+ACTUAL_RESULT:
+- `ca-certificates` is already the newest version.
+- `curl` is already the newest version.
+- `0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.`
+CONCLUSION: HTTPS certificate trust and curl prerequisites are present and current. Proceed to Docker's official signing key and repository setup.
+NEXT_OPERATOR_ACTION: Create `/etc/apt/keyrings`, download `https://download.docker.com/linux/ubuntu/gpg` to `/etc/apt/keyrings/docker.asc`, set readable permissions, and verify the file before adding the repository.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
