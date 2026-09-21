@@ -1,5 +1,9 @@
 # Growth OS
 
+> **First time here?** Start with [`growth-os/START-HERE-EN.md`](./growth-os/START-HERE-EN.md). Persian operator guide: [`README.fa.md`](./README.fa.md).
+
+![Growth OS roadmap](./growth-os/assets/roadmap-en.svg)
+
 Site-to-Growth Autopilot research and implementation repository.
 
 Growth OS is being built first on two real pilots, then hardened into a reusable commercial system. The repository keeps the original SEO operating knowledge intact while adding an auditable automation, AI-routing, site-building, growth, monitoring, and productization layer around it.
@@ -9,10 +13,14 @@ Growth OS is being built first on two real pilots, then hardened into a reusable
 - Tehran Network / tehnet.ir — Build Mode / Site Factory, then Growth Mode
 
 ## Repository map
-- `AGENT.md` — current execution state, completed checks, incidents, and exact next task
+- `AGENT.md` — live execution state, completed checks, incidents, and exact next task
 - `README.fa.md` — Persian operator guide
+- `growth-os/START-HERE-EN.md` — beginner-friendly English entry point
+- `growth-os/START-HERE-FA.md` — beginner-friendly Persian entry point
+- `growth-os/installation/` — step-by-step install runbooks plus visual assets
+- `growth-os/troubleshooting/` — real incidents and verified remedies
 - `SEO-REFERENCE-V1/` — preserved SEO knowledge base from the pre-bootstrap repository
-- `growth-os/` — Growth OS architecture, installation, operations, experiments, benchmarks, per-site state, and productization documentation
+- `growth-os/` — architecture, operations, experiments, benchmarks, per-site state, and productization documentation
 - `docs/superpowers/` — approved designs and implementation plans
 
 ## Operating rule
@@ -36,4 +44,4 @@ Never commit credentials, OAuth secrets, API keys, PATs, cookies, session tokens
 Real site data collection begins in Phase 4. Controlled code/content execution begins in Phase 5. The full pilot loop across site, SEO, social, measurement, and autonomous iteration is validated in Phase 8.
 
 ## Current stage
-Phase 0 — Repository Bootstrap
+Read `AGENT.md` for the live state. Phase 1 is currently active; WSL2, Ubuntu 24.04, WSL version verification, and RTX 3070 visibility have passed.
