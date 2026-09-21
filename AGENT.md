@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-10 — Install Docker Engine + Compose
-EXACT_NEXT_TASK: Perform the Docker preflight/conflict check, then install Docker Engine from Docker's official Ubuntu apt repository. Verify each sub-step before continuing.
+EXACT_NEXT_TASK: Install only the Docker repository prerequisites (`ca-certificates` and `curl`) inside Ubuntu, then capture the result before adding Docker's signing key/repository.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -34,7 +34,7 @@ EXACT_NEXT_TASK: Perform the Docker preflight/conflict check, then install Docke
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
-- [ ] P1-WSL-10 Install Docker Engine + Compose
+- [~] P1-WSL-10 Install Docker Engine + Compose — clean preflight verified; official-repo install in progress
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
@@ -145,7 +145,19 @@ ACTUAL_RESULT:
 - PID 1 command returned `systemd`.
 - `systemctl is-system-running` returned `running`.
 CONCLUSION: systemd is already active and healthy in Ubuntu 24.04 under WSL2. No `/etc/wsl.conf` modification is required for systemd on this pilot.
-NEXT_OPERATOR_ACTION: Begin P1-WSL-10 using Docker's official Ubuntu apt repository. First perform a conflict/pre-existing Docker check; do not install Docker Desktop.
+
+### P1-WSL-10A — Docker clean-install preflight
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMANDS:
+- `docker --version`
+- `dpkg -l | grep -E 'docker|containerd|runc'`
+ACTUAL_RESULT:
+- `docker --version` returned `Command 'docker' not found` with Ubuntu package suggestions; Docker CLI is not installed.
+- Package query returned no installed Docker/containerd/runc packages.
+CONCLUSION: No pre-existing Docker Engine/containerd/runc package conflict was detected. Proceed with Docker's official Ubuntu apt repository. Do not install Docker Desktop and do not use Ubuntu's suggested `docker.io` package for this production-style setup.
+SOURCE: Docker Docs — Install Docker Engine on Ubuntu, official apt repository method (verified 2026-09-21).
+NEXT_OPERATOR_ACTION: Install only `ca-certificates` and `curl`, then capture the result before adding the Docker signing key/repository.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
