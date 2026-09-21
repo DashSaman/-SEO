@@ -108,10 +108,19 @@ VERIFICATION: Final recursive tree inspection + archive tree identity + direct r
 ROLLBACK: Reset/recreate the bootstrap branch from baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f` or from the last known-good task commit.
 PROBLEMS: No validation defect remained after the earlier spec-tree repair.
 FIX: Not applicable.
-COMMIT_OR_PR: This commit — `chore: validate Growth OS bootstrap integrity`.
+COMMIT_OR_PR: `c9dd9ae1263026910c792e839277067864c2418c` — `chore: validate Growth OS bootstrap integrity`.
 NEXT_TASK: P0-06
 
 ## Execution notes
+
+### P1-PREFLIGHT-0001 — Windows / WSL / GPU readiness
+STATUS: VERIFIED_PRECHECK_ONLY — Phase 1 installation is not yet marked complete.
+DATE: 2026-09-21
+EVIDENCE: User executed `wsl --status`, `wsl --list --verbose`, and `nvidia-smi` in Administrator PowerShell.
+ACTUAL_RESULT: WSL is not installed; no Linux distribution is installed; Windows sees NVIDIA GeForce RTX 3070 Laptop GPU with 8192 MiB VRAM; NVIDIA-SMI reports Windows driver 616.92 and CUDA UMD 13.4.
+DECISION: Use WSL2 + Ubuntu 24.04 LTS, not VMware or Ubuntu Desktop, for the Growth OS pilot runtime.
+NEXT_OPERATOR_ACTION: Run `wsl --install -d Ubuntu-24.04` in Administrator PowerShell, then restart if Windows requests it. Do not install Docker or Growth OS services yet.
+DOCUMENTATION: `growth-os/installation/PHASE1-WSL2-FA.md` and `growth-os/installation/PHASE1-WSL2-EN.md` created with step-by-step operator instructions and Mermaid diagrams.
 
 ### EXEC-0001 — Temporary-file cleanup during bootstrap
 Two temporary/placeholder files were accidentally created on the isolated `growth-os-bootstrap` branch while preparing Git objects. Both were removed immediately before the corpus relocation. No temporary path exists in the verified relocation tree and no production/main branch was touched.
