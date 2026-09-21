@@ -1,19 +1,23 @@
 $ErrorActionPreference = 'Stop'
 
+# Keep the plugged-in pilot host awake.
 powercfg /change standby-timeout-ac 0
 
-$Action = New-ScheduledTaskAction -Execute 'wsl.exe' -Argument '-d Ubuntu-24.04 --exec /bin/true'
-$Trigger = New-ScheduledTaskTrigger -AtLogOn
-$Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable
-$Principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Highest
+# Start WSL at user logon without requiring an elevated Scheduled Task.
+$StartupDir = [Environment]::GetFolderPath('Startup')
+$Launcher = Join-Path $StartupDir 'GrowthOS-Start-WSL.cmd'
+@"
+@echo off
+wsl.exe -d Ubuntu-24.04 --exec /bin/true
+"@ | Set-Content -Path $Launcher -Encoding ASCII
 
-Register-ScheduledTask `
-  -TaskName 'GrowthOS-Start-WSL' `
-  -Action $Action `
-  -Trigger $Trigger `
-  -Settings $Settings `
-  -Principal $Principal `
-  -Description 'Start Ubuntu WSL for Growth OS services at user logon' `
-  -Force
+$AcSleep = (powercfg /query SCHEME_CURRENT SUB_SLEEP STANDBYIDLE | Select-String 'Current AC Power Setting Index').Line
+if ($AcSleep -notmatch '0x00000000') {
+    throw 'AC sleep was not disabled.'
+}
+if (-not (Test-Path $Launcher)) {
+    throw 'Startup launcher was not created.'
+}
 
-Get-ScheduledTask -TaskName 'GrowthOS-Start-WSL' | Select-Object TaskName, State
+Get-Item $Launcher | Select-Object FullName,Length
+Write-Output 'GROWTHOS_STARTUP_OK'
