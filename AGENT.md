@@ -1,10 +1,10 @@
 # AGENT.md — Growth OS Execution Ledger
 
 PROJECT: Growth OS
-STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
+STATUS: BOOTSTRAP + PHASE1 NEAR COMPLETE
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
-CURRENT_TASK: P1-WSL-11 — Verify Docker and reboot/autostart behavior
-EXACT_NEXT_TASK: Fully exit Ubuntu, run `wsl --shutdown` from Windows PowerShell, relaunch `Ubuntu-24.04`, then verify the `amirreza` session has the `docker` group, Docker is `active`, and `docker run --rm hello-world` works without `sudo`.
+CURRENT_TASK: P1-WSL-12 — Create Phase 1 backup/baseline record
+EXACT_NEXT_TASK: Export the verified `Ubuntu-24.04` WSL distribution to `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`, then record its file size and SHA256 before any Phase 2 service is deployed.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -37,8 +37,8 @@ EXACT_NEXT_TASK: Fully exit Ubuntu, run `wsl --shutdown` from Windows PowerShell
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
 - [x] P1-WSL-10 Install Docker Engine + Compose
-- [~] P1-WSL-11 Verify Docker and reboot/autostart behavior — runtime and group change completed; WSL restart/autostart + non-root verification remains
-- [ ] P1-WSL-12 Create Phase 1 backup/baseline record
+- [x] P1-WSL-11 Verify Docker and WSL restart/autostart behavior
+- [~] P1-WSL-12 Create Phase 1 backup/baseline record — backup export pending
 
 ## Later phases
 - [ ] Phase 2 — Core Platform
@@ -218,13 +218,42 @@ ACTUAL_RESULT:
 CONCLUSION: Docker CLI, Compose Plugin, daemon, outbound registry access, image pull and container execution are all verified healthy.
 
 ### P1-WSL-11B — Non-root Docker operator setup
-STATUS: ACTION_COMPLETE_RELOGIN_VERIFICATION_PENDING
+STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 COMMAND: `sudo usermod -aG docker $USER`
-EVIDENCE: Operator screenshot shows the command returned to the shell prompt with no error.
-ACTUAL_RESULT: `amirreza` was added to the `docker` group; group membership must be verified after a fresh Linux login/session.
+RESULT: `amirreza` was added to the `docker` group. Membership was verified after a fresh WSL session.
 SECURITY_NOTE: Membership in the `docker` group is effectively privileged/root-equivalent on this host. It is acceptable for this single-owner pilot but must not be handed directly to untrusted users in the future multi-tenant product.
-NEXT_OPERATOR_ACTION: Exit Ubuntu, shut down WSL completely, relaunch Ubuntu, then verify `groups`, `systemctl is-active docker`, and `docker run --rm hello-world` without `sudo`.
+
+### P1-WSL-11C — WSL restart / Docker autostart / non-root verification
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+ACTIONS:
+- Exited Ubuntu.
+- Ran `wsl --shutdown` from Windows PowerShell.
+- Relaunched `Ubuntu-24.04`.
+- Ran `groups`.
+- Ran `systemctl is-active docker`.
+- Ran `docker run --rm hello-world` without `sudo`.
+ACTUAL_RESULT:
+- `groups` included `docker`.
+- Docker daemon returned `active` immediately after WSL relaunch.
+- `docker run --rm hello-world` succeeded without `sudo` and printed `Hello from Docker!`.
+CONCLUSION: Docker permission setup, systemd autostart behavior, daemon startup and non-root container execution survive a full WSL shutdown/relaunch. P1-WSL-11 is complete.
+NEXT_OPERATOR_ACTION: Create and verify a full WSL export baseline before deploying Phase 2 services.
+
+### P1-WSL-12 — Phase 1 backup/baseline
+STATUS: IN_PROGRESS
+DATE: 2026-09-21
+PURPOSE: Preserve a known-good rollback point before persistent Growth OS services and databases are introduced.
+PLANNED_EXPORT: `C:\GrowthOS-Backups\Ubuntu-24.04-phase1-2026-09-21.tar`
+VERIFICATION_REQUIRED:
+- Export command returns successfully.
+- Backup file exists and has non-zero size.
+- SHA256 is recorded in this ledger.
+- Backup archive itself is NOT committed to GitHub.
+GUIDES:
+- `growth-os/installation/PHASE1-BACKUP-FA.md`
+- `growth-os/installation/PHASE1-BACKUP-EN.md`
 
 ## Documentation assets
 - `README.fa.md` / `README.md` — bilingual repository entry points
@@ -232,6 +261,7 @@ NEXT_OPERATOR_ACTION: Exit Ubuntu, shut down WSL completely, relaunch Ubuntu, th
 - `growth-os/assets/roadmap-fa.svg` / `roadmap-en.svg` — visual roadmap
 - `growth-os/installation/PHASE1-WSL2-FA.md` / `PHASE1-WSL2-EN.md`
 - `growth-os/installation/PHASE1-DOCKER-FA.md` / `PHASE1-DOCKER-EN.md`
+- `growth-os/installation/PHASE1-BACKUP-FA.md` / `PHASE1-BACKUP-EN.md`
 - `growth-os/installation/assets/docker-install-flow.svg`
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md`
 - `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md` / `CONTENT-SOCIAL-AUTOPILOT-EN.md`
