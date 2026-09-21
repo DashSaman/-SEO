@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-10 — Install Docker Engine + Compose
-EXACT_NEXT_TASK: Download Docker's official Ubuntu signing key to `/etc/apt/keyrings/docker.asc`, make it world-readable, verify the key file exists, then add Docker's official apt repository.
+EXACT_NEXT_TASK: Install Docker Engine, containerd, Buildx and Compose Plugin from Docker's official Ubuntu repository, then verify versions and daemon health before any Phase 2 service is deployed.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -15,6 +15,7 @@ EXACT_NEXT_TASK: Download Docker's official Ubuntu signing key to `/etc/apt/keyr
 - [x] Keep MyTel and Tehran Network site-specific state isolated.
 - [x] Explain every operator step for a beginner and preserve reusable FA/EN runbooks.
 - [x] Keep visual diagrams/checklists for major operator phases.
+- [x] Treat content creation, media repurposing, social publishing, analytics feedback and website optimization as one integrated Growth OS loop.
 
 ## Phase 0 — Repository Foundation
 - [x] P0-01 Inventory and freeze pre-bootstrap corpus
@@ -34,7 +35,7 @@ EXACT_NEXT_TASK: Download Docker's official Ubuntu signing key to `/etc/apt/keyr
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
-- [~] P1-WSL-10 Install Docker Engine + Compose — clean preflight, prerequisites, and keyring directory verified; official repository setup in progress
+- [~] P1-WSL-10 Install Docker Engine + Compose — official Docker repository verified; package installation is next
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
@@ -44,7 +45,7 @@ EXACT_NEXT_TASK: Download Docker's official Ubuntu signing key to `/etc/apt/keyr
 - [ ] Phase 4 — SEO Intelligence
 - [ ] Phase 5 — Agent Execution
 - [ ] Phase 6 — Intelligence Feeds
-- [ ] Phase 7 — Social
+- [ ] Phase 7 — Content + Social Automation
 - [ ] Phase 8 — Pilots
 - [ ] Phase 9 — Productization
 
@@ -52,7 +53,23 @@ EXACT_NEXT_TASK: Download Docker's official Ubuntu signing key to `/etc/apt/keyr
 - Phases 0–3 prepare the controlled runtime and AI infrastructure; they do not modify production sites.
 - Phase 4 begins real data ingestion/auditing for MyTel and Tehran Network.
 - Phase 5 enables controlled Agent-driven code/content changes through branch/PR/QA gates.
+- Phase 7 adds integrated content generation, media repurposing, editorial scheduling and multi-channel social publishing with measurement feedback.
 - Phase 8 validates the full 24/7 pilot loop and measured business/SEO outcomes.
+
+## Unified Growth OS product requirement
+The target system is not only an SEO monitor. The production goal is a single orchestration layer that can:
+- continuously ingest GSC, GA4, crawl, ranking, server/log, competitor and social performance signals;
+- detect and prioritize opportunities and technical/content problems;
+- generate or improve website pages, articles, FAQs, schema, internal links and commercial copy;
+- repurpose approved content into platform-specific social assets instead of blindly duplicating the same text everywhere;
+- schedule and publish through official APIs/connectors where available;
+- measure website/search/social outcomes and feed results back into the next planning cycle;
+- use approval tiers so low-risk work can become automated while destructive/high-impact changes stay gated;
+- keep a full action/cost/result history for later multi-site commercialization.
+
+Canonical design docs:
+- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md`
+- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-EN.md`
 
 ## Verified Phase 0 summary
 - P0-01 VERIFIED: baseline commit `dabb9794095897a86bc1c5ed7a2ed9d3fb0e264f`; 52 SEO files inventoried.
@@ -162,20 +179,39 @@ SOURCE: Docker Docs — Install Docker Engine on Ubuntu, official apt repository
 STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 COMMAND: `sudo apt install -y ca-certificates curl`
-EVIDENCE: Operator screenshot captured the completed apt result and return to the shell prompt.
 ACTUAL_RESULT:
 - `ca-certificates` is already the newest version.
 - `curl` is already the newest version.
-- `0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.`
 CONCLUSION: HTTPS certificate trust and curl prerequisites are present and current.
 
 ### P1-WSL-10C — Docker apt keyring directory
 STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 COMMAND: `sudo install -m 0755 -d /etc/apt/keyrings`
-EVIDENCE: Operator screenshot captured the command returning to the shell prompt with no error.
-CONCLUSION: `/etc/apt/keyrings` has been created/ensured with mode 0755 and is ready for Docker's signing key.
-NEXT_OPERATOR_ACTION: Download Docker's official Ubuntu signing key to `/etc/apt/keyrings/docker.asc`, set readable permissions, verify the file, then add the official Docker apt repository.
+CONCLUSION: `/etc/apt/keyrings` exists with mode 0755 and is ready for Docker's signing key.
+
+### P1-WSL-10D — Docker signing key
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMANDS:
+- `sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc`
+- `sudo chmod a+r /etc/apt/keyrings/docker.asc`
+- `ls -lh /etc/apt/keyrings/docker.asc`
+ACTUAL_RESULT: `/etc/apt/keyrings/docker.asc` exists, is world-readable, and is approximately 3.8 KB.
+CONCLUSION: Docker's official Ubuntu signing key is installed and readable by apt.
+
+### P1-WSL-10E — Docker official apt repository
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+ACTIONS:
+- Added Docker's stable Ubuntu repository under `/etc/apt/sources.list.d/docker.list` using the signed key.
+- Ran `sudo apt update`.
+ACTUAL_RESULT:
+- apt successfully fetched `https://download.docker.com/linux/ubuntu noble InRelease`.
+- Docker repository package metadata downloaded successfully.
+- `All packages are up to date.`
+CONCLUSION: The official Docker apt repository is active and trusted. Ready to install Docker Engine and Compose Plugin.
+NEXT_OPERATOR_ACTION: Install `docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`, then verify daemon and versions.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
@@ -193,6 +229,8 @@ NEXT_OPERATOR_ACTION: Download Docker's official Ubuntu signing key to `/etc/apt
 - `growth-os/installation/PHASE1-DOCKER-FA.md` — Persian beginner-first Docker Engine guide
 - `growth-os/installation/PHASE1-DOCKER-EN.md` — English Docker Engine guide
 - `growth-os/installation/assets/docker-install-flow.svg` — visual Docker installation/verification flow
+- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md` — Persian unified content/social growth loop
+- `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-EN.md` — English unified content/social growth loop
 
 ## Security incident SEC-0001
 A GitHub personal access token was exposed in chat during planning. The token value is intentionally not recorded here. Owner action required: revoke/rotate the exposed PAT before operational setup.
