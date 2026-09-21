@@ -3,7 +3,9 @@ set -euo pipefail
 BACKUP_DIR="${1:?usage: phase2-restore-check.sh /opt/growth-os/backups/phase2-YYYYMMDD-HHMMSS}"
 cd "$BACKUP_DIR"
 sha256sum -c SHA256SUMS
-pg_restore -l activepieces.dump >/dev/null
+
+docker exec -i growthos-postgres pg_restore -l < activepieces.dump >/dev/null
+
 python3 - <<'PY'
 from pathlib import Path
 text = Path('activepieces.env').read_text()
