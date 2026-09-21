@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-10 — Install Docker Engine + Compose
-EXACT_NEXT_TASK: Create `/etc/apt/keyrings`, download Docker's official Ubuntu signing key to `/etc/apt/keyrings/docker.asc`, make it world-readable, then verify the key file exists before adding the Docker repository.
+EXACT_NEXT_TASK: Download Docker's official Ubuntu signing key to `/etc/apt/keyrings/docker.asc`, make it world-readable, verify the key file exists, then add Docker's official apt repository.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -34,7 +34,7 @@ EXACT_NEXT_TASK: Create `/etc/apt/keyrings`, download Docker's official Ubuntu s
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
 - [x] P1-WSL-09 Verify systemd
-- [~] P1-WSL-10 Install Docker Engine + Compose — clean preflight and prerequisites verified; official repository setup in progress
+- [~] P1-WSL-10 Install Docker Engine + Compose — clean preflight, prerequisites, and keyring directory verified; official repository setup in progress
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
 
@@ -167,8 +167,15 @@ ACTUAL_RESULT:
 - `ca-certificates` is already the newest version.
 - `curl` is already the newest version.
 - `0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.`
-CONCLUSION: HTTPS certificate trust and curl prerequisites are present and current. Proceed to Docker's official signing key and repository setup.
-NEXT_OPERATOR_ACTION: Create `/etc/apt/keyrings`, download `https://download.docker.com/linux/ubuntu/gpg` to `/etc/apt/keyrings/docker.asc`, set readable permissions, and verify the file before adding the repository.
+CONCLUSION: HTTPS certificate trust and curl prerequisites are present and current.
+
+### P1-WSL-10C — Docker apt keyring directory
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMAND: `sudo install -m 0755 -d /etc/apt/keyrings`
+EVIDENCE: Operator screenshot captured the command returning to the shell prompt with no error.
+CONCLUSION: `/etc/apt/keyrings` has been created/ensured with mode 0755 and is ready for Docker's signing key.
+NEXT_OPERATOR_ACTION: Download Docker's official Ubuntu signing key to `/etc/apt/keyrings/docker.asc`, set readable permissions, verify the file, then add the official Docker apt repository.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
