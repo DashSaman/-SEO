@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
-CURRENT_TASK: P1-WSL-08 — Configure WSL resource limits
-EXACT_NEXT_TASK: Put the approved `.wslconfig` values in Windows, save, run `wsl --shutdown`, relaunch Ubuntu, then verify memory/CPU/swap with `free -h`, `nproc`, and `swapon --show`.
+CURRENT_TASK: P1-WSL-09 — Verify systemd
+EXACT_NEXT_TASK: In Ubuntu run `ps -p 1 -o comm=` and `systemctl is-system-running`; capture the results before any Docker installation.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -32,7 +32,7 @@ EXACT_NEXT_TASK: Put the approved `.wslconfig` values in Windows, save, run `wsl
 - [x] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
 - [x] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
 - [x] P1-WSL-07 Update Ubuntu packages
-- [ ] P1-WSL-08 Configure WSL resource limits
+- [x] P1-WSL-08 Configure WSL resource limits
 - [ ] P1-WSL-09 Verify systemd
 - [ ] P1-WSL-10 Install Docker Engine + Compose
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
@@ -111,19 +111,13 @@ RESULT: Ubuntu Noble package indexes downloaded successfully; 35.1 MB fetched; 2
 STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 COMMAND: `sudo apt upgrade -y`
-EVIDENCE: Operator screenshot captured the completed upgrade and return to the shell prompt.
-RESULT:
-- Pending base packages were unpacked and configured successfully.
-- Python 3.12, netplan, krb5 libraries, polkitd, locales and related Ubuntu packages were updated.
-- Package triggers completed successfully.
-- Command returned to the Ubuntu shell without a visible fatal error.
-CONCLUSION: P1-WSL-07 complete.
+RESULT: Pending base packages were unpacked/configured successfully; package triggers completed and shell prompt returned without visible fatal error.
 
-### P1-WSL-08A — Resource governance decision
-STATUS: CONFIG_SELECTED — verification pending
+### P1-WSL-08 — Configure and verify WSL resource limits
+STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
 HOST: Ryzen 7 6800H (8C/16T), 32 GB RAM, RTX 3070 8 GB
-DECISION: Use Windows `%UserProfile%\.wslconfig` with:
+CONFIG: Windows `%UserProfile%\.wslconfig`
 
 ```ini
 [wsl2]
@@ -133,13 +127,22 @@ swap=8GB
 localhostForwarding=true
 ```
 
+APPLY ACTION: Operator saved the file with Ctrl+S, ran `wsl --shutdown`, and relaunched `Ubuntu-24.04`.
+VERIFICATION COMMANDS:
+- `free -h`
+- `nproc`
+- `swapon --show`
+ACTUAL RESULT:
+- `free -h` reported approximately 19 GiB total memory, consistent with the configured 20 GB WSL ceiling.
+- `nproc` returned `12`.
+- `swapon --show` reported `/dev/sdc` with size `8G`.
+CONCLUSION: `.wslconfig` was saved and applied successfully. WSL resource governance is verified.
 RATIONALE:
 - Reserve roughly 12 GB host RAM for Windows/browser/desktop applications.
 - Reserve 4 of 16 CPU threads for Windows responsiveness.
-- Give WSL enough headroom for Docker, agents, crawlers and local-AI support workloads.
-- Provide an 8 GB swap safety buffer without using swap as normal working memory.
-VERIFICATION_REQUIRED: Save file → `wsl --shutdown` → relaunch Ubuntu → `free -h`, `nproc`, `swapon --show`.
-DOCUMENTATION: `growth-os/installation/PHASE1-WSL2-FA.md`, `PHASE1-WSL2-EN.md`, and `assets/wsl2-step-03-resource-limits.svg`.
+- Give WSL enough headroom for Docker, agents, crawlers, and local-AI support workloads.
+- Provide an 8 GB swap safety buffer without relying on swap as normal working memory.
+NEXT_OPERATOR_ACTION: Verify whether systemd is already active before Docker installation.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
