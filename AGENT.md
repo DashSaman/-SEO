@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 PREPARATION
 CURRENT_PHASE: 0 / Phase 1 preflight in progress
-CURRENT_TASK: P1-WSL-04 — Create Linux user/password
-EXACT_NEXT_TASK: Finish the Ubuntu first-run account prompt, then capture the resulting shell prompt. Do not share the password.
+CURRENT_TASK: P1-WSL-05/06 — Verify WSL2 and RTX 3070 inside Ubuntu
+EXACT_NEXT_TASK: From the current Ubuntu shell run `nvidia-smi`; then `exit` back to PowerShell and run `wsl --list --verbose`. Capture both outputs.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -27,7 +27,7 @@ EXACT_NEXT_TASK: Finish the Ubuntu first-run account prompt, then capture the re
 - [x] P1-WSL-01 Preflight Windows / WSL / GPU
 - [x] P1-WSL-02 Install WSL package + VirtualMachinePlatform and reboot
 - [x] P1-WSL-03 Install Ubuntu 24.04 distribution
-- [ ] P1-WSL-04 Create Linux user/password
+- [x] P1-WSL-04 Create Linux user/password
 - [ ] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
 - [ ] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
 - [ ] P1-WSL-07 Update Ubuntu packages
@@ -132,8 +132,19 @@ RESULT:
 - `Distribution successfully installed. It can be launched via 'wsl.exe -d Ubuntu-24.04'`
 - Ubuntu launched automatically and began first-run provisioning.
 - Prompt reached: `Create a default Unix user account:`
-CONCLUSION: Ubuntu 24.04 distribution install is complete; first Linux user creation is now the active task.
-NEXT_OPERATOR_ACTION: Finish the username/password prompts. Do not share the password in chat or Git.
+CONCLUSION: Ubuntu 24.04 distribution install is complete.
+
+### P1-WSL-04 — Create Linux user/password
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+EVIDENCE: Operator screenshot captured completed first-run account setup and resulting Ubuntu shell.
+RESULT:
+- Linux username created: `amirreza`
+- Password setup completed successfully (`passwd: password updated successfully`).
+- Ubuntu shell prompt is active: `amirreza@Amirreza-PC:...$`.
+SECURITY: Password value was not shared and is not stored in Git.
+NOTE: The shell started in `/mnt/c/WINDOWS/system32` because Ubuntu was launched from Administrator PowerShell while the Windows current directory was `C:\WINDOWS\system32`. This is normal and is not the Linux home directory.
+NEXT_OPERATOR_ACTION: In Ubuntu run `nvidia-smi`. Then run `exit` to return to PowerShell and run `wsl --list --verbose`.
 
 ## Documentation assets
 - `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian guide
