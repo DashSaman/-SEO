@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
-CURRENT_TASK: P1-WSL-09 — Verify systemd
-EXACT_NEXT_TASK: In Ubuntu run `ps -p 1 -o comm=` and `systemctl is-system-running`; capture the results before any Docker installation.
+CURRENT_TASK: P1-WSL-10 — Install Docker Engine + Compose
+EXACT_NEXT_TASK: Perform the Docker preflight/conflict check, then install Docker Engine from Docker's official Ubuntu apt repository. Verify each sub-step before continuing.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -33,7 +33,7 @@ EXACT_NEXT_TASK: In Ubuntu run `ps -p 1 -o comm=` and `systemctl is-system-runni
 - [x] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
 - [x] P1-WSL-07 Update Ubuntu packages
 - [x] P1-WSL-08 Configure WSL resource limits
-- [ ] P1-WSL-09 Verify systemd
+- [x] P1-WSL-09 Verify systemd
 - [ ] P1-WSL-10 Install Docker Engine + Compose
 - [ ] P1-WSL-11 Verify Docker and reboot/autostart behavior
 - [ ] P1-WSL-12 Create Phase 1 backup/baseline record
@@ -128,21 +128,24 @@ localhostForwarding=true
 ```
 
 APPLY ACTION: Operator saved the file with Ctrl+S, ran `wsl --shutdown`, and relaunched `Ubuntu-24.04`.
-VERIFICATION COMMANDS:
-- `free -h`
-- `nproc`
-- `swapon --show`
-ACTUAL RESULT:
-- `free -h` reported approximately 19 GiB total memory, consistent with the configured 20 GB WSL ceiling.
+VERIFICATION:
+- `free -h` reported approximately 19 GiB total memory.
 - `nproc` returned `12`.
 - `swapon --show` reported `/dev/sdc` with size `8G`.
-CONCLUSION: `.wslconfig` was saved and applied successfully. WSL resource governance is verified.
-RATIONALE:
-- Reserve roughly 12 GB host RAM for Windows/browser/desktop applications.
-- Reserve 4 of 16 CPU threads for Windows responsiveness.
-- Give WSL enough headroom for Docker, agents, crawlers, and local-AI support workloads.
-- Provide an 8 GB swap safety buffer without relying on swap as normal working memory.
-NEXT_OPERATOR_ACTION: Verify whether systemd is already active before Docker installation.
+CONCLUSION: `.wslconfig` is applied successfully.
+
+### P1-WSL-09 — Verify systemd
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+EVIDENCE: Operator screenshot captured both verification commands and outputs.
+COMMANDS:
+- `ps -p 1 -o comm=`
+- `systemctl is-system-running`
+ACTUAL_RESULT:
+- PID 1 command returned `systemd`.
+- `systemctl is-system-running` returned `running`.
+CONCLUSION: systemd is already active and healthy in Ubuntu 24.04 under WSL2. No `/etc/wsl.conf` modification is required for systemd on this pilot.
+NEXT_OPERATOR_ACTION: Begin P1-WSL-10 using Docker's official Ubuntu apt repository. First perform a conflict/pre-existing Docker check; do not install Docker Desktop.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
@@ -157,6 +160,9 @@ NEXT_OPERATOR_ACTION: Verify whether systemd is already active before Docker ins
 - `growth-os/installation/assets/wsl2-step-03-resource-limits.svg` — visual WSL resource limits and verification
 - `growth-os/installation/assets/phase1-progress-fa.svg` — visual Phase 1 progress checklist
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md` — real HTTP 500 incident and workaround
+- `growth-os/installation/PHASE1-DOCKER-FA.md` — Persian beginner-first Docker Engine guide
+- `growth-os/installation/PHASE1-DOCKER-EN.md` — English Docker Engine guide
+- `growth-os/installation/assets/docker-install-flow.svg` — visual Docker installation/verification flow
 
 ## Security incident SEC-0001
 A GitHub personal access token was exposed in chat during planning. The token value is intentionally not recorded here. Owner action required: revoke/rotate the exposed PAT before operational setup.
