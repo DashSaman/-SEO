@@ -19,25 +19,17 @@ Windows remains the normal desktop; Ubuntu runs the server-side Growth OS stack 
 ## Pilot machine preflight — 2026-09-21
 
 ```text
-WSL: not installed
-Ubuntu: not installed
+WSL: not installed at start
+Ubuntu: not installed at start
 GPU: NVIDIA GeForce RTX 3070 Laptop GPU
 VRAM: 8192 MiB
 Windows NVIDIA Driver: 616.92
 CUDA UMD reported by Windows: 13.4
 ```
 
-The correct path for this pilot is a clean WSL2 installation.
-
 ## Step 1 — Open Administrator PowerShell
 
-1. Open Start.
-2. Search for `PowerShell`.
-3. Right-click Windows PowerShell.
-4. Choose **Run as administrator**.
-5. Approve the Windows UAC prompt.
-
-Expected prompt:
+Open PowerShell with **Run as administrator**. The expected prompt is:
 
 ```text
 PS C:\WINDOWS\system32>
@@ -45,37 +37,41 @@ PS C:\WINDOWS\system32>
 
 ## Step 2 — Install WSL2 and Ubuntu 24.04
 
-Run:
+Normal path:
 
 ```powershell
 wsl --install -d Ubuntu-24.04
 ```
 
-Microsoft documents `wsl --install` as the recommended Windows 11 installation path; `-d` selects the desired distribution.
+On the pilot machine this download path returned:
 
-If Windows requests a restart, save your work and restart the PC.
+```text
+Internal server error (500).
+```
 
-If download/install is stuck at `0.0%`, do not uninstall anything. Record the error first. Microsoft documents this fallback:
+The documented alternative source was then used:
 
 ```powershell
 wsl --install --web-download -d Ubuntu-24.04
 ```
 
-Use it only after the normal path fails.
+This succeeded in installing WSL 2.7.14 and enabling `VirtualMachinePlatform` to 100%. Windows then reported that the changes require a reboot.
 
-## Step 3 — First Ubuntu launch
+![Visual: successful WSL web-download retry](assets/wsl2-step-02-web-download-success.svg)
 
-After restart Ubuntu may open automatically. Otherwise launch **Ubuntu 24.04** from Start.
+At this point run no additional setup command. Save work and restart Windows.
 
-On the first launch, wait for initialization. You will be asked for a UNIX username and password.
+## Step 3 — Restart and first Ubuntu launch
 
-Example username:
+After reboot, Ubuntu may launch automatically. If it does not, open Start and launch **Ubuntu 24.04**.
+
+The first launch may take a few minutes. If prompted, create a simple lowercase UNIX username, for example:
 
 ```text
 saman
 ```
 
-Linux does not display characters or asterisks while typing a password. This is normal.
+Linux does not display password characters or asterisks while typing. This is normal.
 
 A successful shell looks similar to:
 
@@ -85,15 +81,10 @@ saman@COMPUTER:~$
 
 ## Step 4 — Verify from Windows
 
-Run in PowerShell:
+After reboot and Ubuntu initialization, run:
 
 ```powershell
 wsl --status
-```
-
-Then:
-
-```powershell
 wsl --list --verbose
 ```
 
@@ -104,33 +95,49 @@ NAME              STATE           VERSION
 * Ubuntu-24.04    Running         2
 ```
 
-The important value is `VERSION 2`.
+The critical value is `VERSION 2`. If Ubuntu is missing or VERSION is 1, stop and record the output.
 
 ## Step 5 — Verify GPU inside Ubuntu
 
-Inside the Ubuntu terminal run:
+Inside Ubuntu run:
 
 ```bash
 nvidia-smi
 ```
 
-The NVIDIA RTX 3070 should be visible. Do not install a separate Linux NVIDIA display driver inside WSL for this step; WSL uses the Windows-side NVIDIA driver path.
+The RTX 3070 should be visible. Do not install a separate Linux NVIDIA display driver inside WSL for this check; WSL uses the Windows-side NVIDIA driver integration.
 
 ## Step 6 — Stop here
 
-Do not install Docker, Ollama, LiteLLM, n8n, PostgreSQL, Redis, OpenHands, Postiz, OpenGSC, or DispatchSEO yet. First record and verify this foundation.
+Do not install Docker, Ollama, LiteLLM, n8n, PostgreSQL, Redis, OpenHands, Postiz, OpenGSC, or DispatchSEO until the foundation is verified and recorded.
+
+## Real incident: HTTP 500 during WSL download
+
+The normal install path failed on this pilot with HTTP 500 while fetching WSL 2.7.14. Retrying through:
+
+```powershell
+wsl --install --web-download -d Ubuntu-24.04
+```
+
+successfully installed WSL 2.7.14 and enabled VirtualMachinePlatform. Full incident record:
+
+`../troubleshooting/INC-WSL2-0001-HTTP-500.md`
 
 ## Operator checklist
 
-- [ ] Administrator PowerShell opened.
-- [ ] `wsl --install -d Ubuntu-24.04` executed.
-- [ ] Windows restarted if requested.
+- [x] Administrator PowerShell opened.
+- [x] Normal WSL install path attempted.
+- [x] HTTP 500 failure recorded.
+- [x] `--web-download` fallback executed.
+- [x] WSL 2.7.14 installed.
+- [x] VirtualMachinePlatform enabled successfully.
+- [ ] Windows rebooted.
 - [ ] Ubuntu 24.04 initialized.
 - [ ] Linux username created.
 - [ ] `wsl --status` succeeds.
 - [ ] `wsl --list --verbose` reports VERSION 2.
 - [ ] `nvidia-smi` inside Ubuntu sees the RTX 3070.
-- [ ] Verification evidence recorded in `AGENT.md`.
+- [ ] Final verification evidence recorded in `AGENT.md`.
 
 ## Safety / rollback
 
