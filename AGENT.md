@@ -1,10 +1,10 @@
 # AGENT.md — Growth OS Execution Ledger
 
 PROJECT: Growth OS
-STATUS: PHASE1 COMPLETE + PHASE2 EXECUTING
-CURRENT_PHASE: Phase 2 — Core Platform
-CURRENT_TASK: P2-CORE-02 — Deploy Activepieces + PostgreSQL + Redis
-EXACT_NEXT_TASK: Let the verified Activepieces stack finish pulling on `Amirreza-Pc`, then verify app health, PostgreSQL readiness, Redis PONG, and worker status before starting Uptime Kuma or Dockge.
+STATUS: PHASE2 COMPLETE + PHASE3 READY
+CURRENT_PHASE: Phase 3 — Local AI Layer
+CURRENT_TASK: P3-AI-00 — Prepare the local-AI implementation plan
+EXACT_NEXT_TASK: Create and review the Phase 3 Native implementation plan for local text/model routing, GPU job scheduling and resource-safe AI workers before installing AI services on `Amirreza-Pc`.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -44,13 +44,14 @@ EXACT_NEXT_TASK: Let the verified Activepieces stack finish pulling on `Amirreza
 
 ## Phase 2 — Core Platform
 - [x] P2-CORE-01 Host preflight, local ports, runtime directories and canonical repo clone
-- [~] P2-CORE-02 Activepieces + PostgreSQL + Redis — template/config/secrets verified; image pull and runtime verification in progress
-- [ ] P2-CORE-03 Uptime Kuma monitoring
-- [ ] P2-CORE-04 Dockge local Compose management
-- [ ] P2-CORE-05 Unified smoke test
-- [ ] P2-CORE-06 Backup + restore-input verification
-- [ ] P2-CORE-07 Windows/WSL autostart + AC no-sleep validation
-- [ ] P2-CORE-08 Phase 2 cold-start verification and baseline closeout
+- [x] P2-CORE-02 Activepieces + PostgreSQL + Redis
+- [x] P2-CORE-03 Uptime Kuma monitoring
+- [x] P2-CORE-04 Dockge local Compose management
+- [x] P2-CORE-05 Unified smoke test
+- [x] P2-CORE-06 Backup + restore-input verification
+- [x] P2-CORE-07 Windows/WSL autostart + AC no-sleep validation
+- [x] P2-CORE-08 License ledger + bilingual operations runbook
+- [x] P2-CORE-09 Cold-start verification and baseline closeout
 
 ## Later phases
 - [ ] Phase 3 — AI Layer
@@ -282,13 +283,13 @@ VERIFICATION:
 - Docker Engine: 29.8.1.
 - Docker Compose: v5.5.1.
 - Docker daemon: `active`.
-- Ports 8080, 3001 and 5001 had no LISTEN socket.
+- Ports 8080, 3001 and 5001 had no LISTEN socket before deployment.
 ACTIONS:
 - Created `/opt/growth-os/{backups,logs,state}` and `/opt/stacks/{activepieces,uptime-kuma,dockge}`.
 - Ownership verified as `amirreza:amirreza`, mode 750 on main runtime directories.
 - Cloned public branch `growth-os-bootstrap` to `/opt/growth-os/repo`.
 - Verified current branch `growth-os-bootstrap`.
-RESULT: Phase 2 host baseline is ready.
+RESULT: Phase 2 host baseline ready.
 
 ### P2-CORE-02A — Activepieces sanitized template + host-only secrets
 STATUS: VERIFIED_COMPLETE
@@ -302,10 +303,117 @@ ACTIONS:
 - `docker compose config` returned `COMPOSE_OK`.
 RESULT: Configuration and secret gate passed.
 
-### P2-CORE-02B — Activepieces image pull/runtime start
-STATUS: IN_PROGRESS
+### P2-CORE-02B — Activepieces + PostgreSQL + Redis runtime
+STATUS: VERIFIED_COMPLETE
 DATE: 2026-09-21
-RESULT: `docker compose -p activepieces up -d` started successfully and is actively downloading the pinned Activepieces/PostgreSQL/Redis images. Runtime health is intentionally NOT marked complete until app/DB/Redis/worker verification passes.
+VERIFICATION:
+- Activepieces app HTTP health returned `{"status":"Healthy"}`.
+- Activepieces worker is running, connected to API and configured with concurrency 1 / `SANDBOX_CODE_ONLY`.
+- PostgreSQL `pg_isready` returned accepting connections.
+- Redis returned `PONG`.
+- Activepieces app/worker restart count remained 0 during runtime investigation.
+PINNED_IMAGES:
+- `ghcr.io/activepieces/activepieces:0.86.3` → `sha256:208517c4f0d798a477a0c594bf432dd0f4918433f4b6f5b5f188a6e10e638c6c`
+- `pgvector/pgvector:0.8.0-pg14` → `sha256:c55d7e7deac05dde62139e0ded4fcf4f58363656cbc382dbea82fbed995aa767`
+- `redis:7.0.7` → `sha256:bb474c35022ca2c5618f4c49ca759bd2c0eea1daf5d934c560bd30092b97b498`
+STARTUP_NOTE: Early `ENOTFOUND redis` and worker websocket messages were transient dependency-readiness messages and resolved without container restart.
+
+### P2-CORE-03 — Uptime Kuma
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+RESULT:
+- `louislam/uptime-kuma:2` pulled and started with persistent volume.
+- HTTP check inside WSL returned success.
+- Pinned image digest: `sha256:c74379ac4509ce2d2c2633f509e67003ee2e45b6e995c5e43fc101f45a0e1fbe`.
+
+### P2-CORE-04 — Dockge
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+RESULT:
+- Runtime UID/GID verified as 1000/1000 before startup.
+- `louislam/dockge:1` pulled and started.
+- HTTP check inside WSL returned success.
+- Pinned image digest: `sha256:335c6368b880ecc203236ed89e6e5232e0d6578e8ef5920e4a502390451502bf`.
+SECURITY_NOTE: Dockge mounts `/var/run/docker.sock`; treat it as privileged and never expose it directly to the public Internet.
+
+### P2-CORE-05 — Unified smoke test + readiness regression
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+INITIAL_FAILURE:
+- First unified smoke run hit `curl: (56) Recv failure: Connection reset by peer` on Activepieces health while app/worker restart counts remained zero.
+ROOT_CAUSE_EVIDENCE:
+- Five immediate health probes showed four resets followed by HTTP 200.
+- A subsequent sequence of ten health requests returned Healthy ten times consecutively.
+- App logs showed normal boot/piece synchronization and no container crash/restart.
+RULING: The smoke test had a readiness race under concurrent image extraction / service startup, not an Activepieces crash.
+FIX:
+- `phase2-smoke.sh` now retries HTTP readiness for up to 60 seconds for Activepieces, Uptime Kuma and Dockge.
+FINAL_RESULT:
+- Docker active PASS.
+- All six containers running PASS.
+- Activepieces health PASS.
+- PostgreSQL readiness PASS.
+- Redis PONG PASS.
+- Uptime Kuma HTTP PASS.
+- Dockge HTTP PASS.
+- Expected ports PASS.
+- Final line: `PHASE2_SMOKE_OK`.
+
+### P2-CORE-06 — Backup + restore-input verification
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+FINAL_BASELINE: `/opt/growth-os/backups/phase2-20260921-074410`
+RESULT:
+- `activepieces.dump`: 88,042,466 bytes.
+- PostgreSQL dump SHA256: `20f1c1b83f95fe6b9e42b3568594c8341e411c57f3c1dc4ea6190b42b7070ff1`.
+- Host-only secret configuration copy: 543 bytes; checksum verified locally but secret contents and checksum are not recorded here.
+- `sha256sum -c` passed for both backup files.
+- Containerized `pg_restore -l` accepted the dump.
+- Required secret-key names were present without printing values.
+- Final restore-input check: `RESTORE_INPUTS_READABLE`.
+RULING: Use the PostgreSQL container's `pg_restore` instead of adding a host `postgresql-client` dependency; this avoids an unnecessary host package and sudo prompt while testing the exact deployed PostgreSQL toolchain.
+
+### P2-CORE-07 — Windows autostart + AC no-sleep
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+INITIAL_ATTEMPT:
+- `Register-ScheduledTask` with Highest privileges failed with `Access is denied` because Remote Desktop Commander is not elevated.
+- A second non-elevated Scheduled Task attempt was also denied by host policy.
+RULING: Do not request extra Administrator privilege for a task that only needs to launch user WSL. Use the current user's Windows Startup folder instead.
+FINAL_IMPLEMENTATION:
+- `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\GrowthOS-Start-WSL.cmd` created.
+- Launcher runs `wsl.exe -d Ubuntu-24.04 --exec /bin/true` at user logon.
+- Launcher execution verified Docker returned `active`.
+- `windows-autostart.ps1` was updated to reproduce the non-admin Startup-folder implementation.
+- AC sleep verification returned `Current AC Power Setting Index: 0x00000000`.
+- Script verification returned `GROWTHOS_STARTUP_OK`.
+
+### P2-CORE-08 — License ledger + bilingual runbook
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+RESULT:
+- Added `growth-os/runtime/core/LICENSE-LEDGER.md` with exact Phase 2 tags/digests and upstream license sources.
+- Added and updated `growth-os/operations/PHASE2-RUNBOOK-FA.md` and `PHASE2-RUNBOOK-EN.md`.
+- Added `windows-open-uis.ps1` to resolve the current WSL private address, verify all three local UIs and open them for the Windows operator.
+- License/productization notes explicitly require a fresh review for future versions and local AI model/voice/media licenses.
+
+### P2-CORE-09 — WSL networking + cold-start closeout
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+NETWORK_FINDING:
+- Standalone Docker Engine inside WSL publishes host ports through kernel NAT; WSL localhost forwarding detected a normal wildcard Python listener but did not reliably surface Docker-published ports on Windows `localhost`.
+- Direct Windows access to the WSL private address returned HTTP 200 for ports 8080, 3001 and 5001.
+- The same service ports were not reachable through the Windows LAN address during verification.
+RULING:
+- Compose management ports bind to `0.0.0.0` inside the private WSL NAT namespace so the Windows host can reach them through WSL's private address.
+- Do not publish these UIs directly to the public Internet; later remote access must use the planned controlled tunnel/private-access layer.
+FINAL_COLD_START:
+- Ran `wsl --shutdown`.
+- Relaunched Ubuntu through the installed Startup launcher.
+- Waited for service readiness.
+- Full `phase2-smoke.sh` returned `PHASE2_SMOKE_OK`.
+- Windows then received HTTP 200 from Activepieces, Uptime Kuma and Dockge through the current WSL private address.
+CONCLUSION: Phase 2 runtime, persistence, monitoring, management, backup, autostart and cold-start recovery gates are verified complete.
 
 ## Documentation assets
 - `README.fa.md` / `README.md` — bilingual repository entry points
@@ -319,6 +427,13 @@ RESULT: `docker compose -p activepieces up -d` started successfully and is activ
 - `growth-os/runtime/core/activepieces.compose.yaml`
 - `growth-os/runtime/core/uptime-kuma.compose.yaml`
 - `growth-os/runtime/core/dockge.compose.yaml`
+- `growth-os/runtime/core/phase2-smoke.sh`
+- `growth-os/runtime/core/phase2-backup.sh`
+- `growth-os/runtime/core/phase2-restore-check.sh`
+- `growth-os/runtime/core/windows-autostart.ps1`
+- `growth-os/runtime/core/windows-open-uis.ps1`
+- `growth-os/runtime/core/LICENSE-LEDGER.md`
+- `growth-os/operations/PHASE2-RUNBOOK-FA.md` / `PHASE2-RUNBOOK-EN.md`
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md`
 - `growth-os/architecture/CONTENT-SOCIAL-AUTOPILOT-FA.md` / `CONTENT-SOCIAL-AUTOPILOT-EN.md`
 - `growth-os/architecture/REVENUE-OPPORTUNITY-ENGINE-FA.md` / `REVENUE-OPPORTUNITY-ENGINE-EN.md`
