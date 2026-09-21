@@ -4,7 +4,7 @@ PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 IN PROGRESS
 CURRENT_PHASE: Phase 1 — Windows / WSL2 Foundation
 CURRENT_TASK: P1-WSL-08 — Configure WSL resource limits
-EXACT_NEXT_TASK: Create Windows `%UserProfile%\.wslconfig` with agreed RAM/CPU/swap limits, shut down WSL, relaunch Ubuntu, and verify the limits before continuing.
+EXACT_NEXT_TASK: Put the approved `.wslconfig` values in Windows, save, run `wsl --shutdown`, relaunch Ubuntu, then verify memory/CPU/swap with `free -h`, `nproc`, and `swapon --show`.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -116,8 +116,30 @@ RESULT:
 - Pending base packages were unpacked and configured successfully.
 - Python 3.12, netplan, krb5 libraries, polkitd, locales and related Ubuntu packages were updated.
 - Package triggers completed successfully.
-- Command returned to `amirreza@Amirreza-PC:...$` without a visible fatal error.
-CONCLUSION: P1-WSL-07 is complete. Ubuntu base packages are updated and the next task is WSL resource governance.
+- Command returned to the Ubuntu shell without a visible fatal error.
+CONCLUSION: P1-WSL-07 complete.
+
+### P1-WSL-08A — Resource governance decision
+STATUS: CONFIG_SELECTED — verification pending
+DATE: 2026-09-21
+HOST: Ryzen 7 6800H (8C/16T), 32 GB RAM, RTX 3070 8 GB
+DECISION: Use Windows `%UserProfile%\.wslconfig` with:
+
+```ini
+[wsl2]
+memory=20GB
+processors=12
+swap=8GB
+localhostForwarding=true
+```
+
+RATIONALE:
+- Reserve roughly 12 GB host RAM for Windows/browser/desktop applications.
+- Reserve 4 of 16 CPU threads for Windows responsiveness.
+- Give WSL enough headroom for Docker, agents, crawlers and local-AI support workloads.
+- Provide an 8 GB swap safety buffer without using swap as normal working memory.
+VERIFICATION_REQUIRED: Save file → `wsl --shutdown` → relaunch Ubuntu → `free -h`, `nproc`, `swapon --show`.
+DOCUMENTATION: `growth-os/installation/PHASE1-WSL2-FA.md`, `PHASE1-WSL2-EN.md`, and `assets/wsl2-step-03-resource-limits.svg`.
 
 ## Documentation assets
 - `README.fa.md` — Persian repository entry point with visual roadmap
@@ -129,6 +151,7 @@ CONCLUSION: P1-WSL-07 is complete. Ubuntu base packages are updated and the next
 - `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian WSL2 guide
 - `growth-os/installation/PHASE1-WSL2-EN.md` — English WSL2 guide
 - `growth-os/installation/assets/wsl2-step-02-web-download-success.svg` — visual WSL install/reboot walkthrough
+- `growth-os/installation/assets/wsl2-step-03-resource-limits.svg` — visual WSL resource limits and verification
 - `growth-os/installation/assets/phase1-progress-fa.svg` — visual Phase 1 progress checklist
 - `growth-os/troubleshooting/INC-WSL2-0001-HTTP-500.md` — real HTTP 500 incident and workaround
 
