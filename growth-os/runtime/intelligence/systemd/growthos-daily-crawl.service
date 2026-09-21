@@ -1,0 +1,14 @@
+[Unit]
+Description=Growth OS daily technical crawl
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=amirreza
+Group=amirreza
+ExecStart=/bin/bash /opt/growth-os/repo/growth-os/runtime/intelligence/run_daily_crawl.sh
+Nice=10
+
+[Install]
+WantedBy=multi-user.target
