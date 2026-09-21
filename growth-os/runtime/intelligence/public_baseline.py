@@ -57,6 +57,12 @@ def sitemap_candidates(url):
     return [f"{base}/sitemap.xml", f"{base}/sitemap_index.xml"]
 
 
+def timestamped_output_path(output_dir, collected_at=None):
+    stamp = collected_at or datetime.now(timezone.utc).isoformat()
+    dt = datetime.fromisoformat(stamp.replace("Z", "+00:00")).astimezone(timezone.utc)
+    return Path(output_dir) / dt.strftime("%Y%m%dT%H%M%SZ.json")
+
+
 def fetch(url, timeout=20, body_limit=2_000_000):
     started = time.monotonic()
     req = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,*/*;q=0.8"})
@@ -111,12 +117,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--site-id", required=True)
     parser.add_argument("--url", required=True)
-    parser.add_argument("--output", required=True)
+    output_group = parser.add_mutually_exclusive_group(required=True)
+    output_group.add_argument("--output")
+    output_group.add_argument("--output-dir")
     parser.add_argument("--timeout", type=int, default=20)
     args = parser.parse_args()
 
     data = collect(args.site_id, args.url, args.timeout)
-    output = Path(args.output)
+    output = Path(args.output) if args.output else timestamped_output_path(args.output_dir, data["collected_at"])
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"site_id": args.site_id, "status": data["root"].get("status"), "final_url": data["root"].get("final_url"), "output": str(output)}, ensure_ascii=False))
