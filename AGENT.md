@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP + PHASE1 PREPARATION
 CURRENT_PHASE: 0 / Phase 1 preflight in progress
-CURRENT_TASK: P1-WSL-03 — Install Ubuntu 24.04 distribution
-EXACT_NEXT_TASK: Run `wsl --install --web-download -d Ubuntu-24.04` in Administrator PowerShell and capture the full result.
+CURRENT_TASK: P1-WSL-04 — Create Linux user/password
+EXACT_NEXT_TASK: Finish the Ubuntu first-run account prompt, then capture the resulting shell prompt. Do not share the password.
 
 ## State rules
 - [x] Never repeat a verified completed task unless verification later fails or an intentional upgrade is approved.
@@ -26,7 +26,7 @@ EXACT_NEXT_TASK: Run `wsl --install --web-download -d Ubuntu-24.04` in Administr
 ## Phase 1 — Windows / WSL2 Foundation
 - [x] P1-WSL-01 Preflight Windows / WSL / GPU
 - [x] P1-WSL-02 Install WSL package + VirtualMachinePlatform and reboot
-- [ ] P1-WSL-03 Install Ubuntu 24.04 distribution
+- [x] P1-WSL-03 Install Ubuntu 24.04 distribution
 - [ ] P1-WSL-04 Create Linux user/password
 - [ ] P1-WSL-05 Verify Ubuntu runs on WSL VERSION 2
 - [ ] P1-WSL-06 Verify RTX 3070 is visible inside Ubuntu
@@ -117,11 +117,23 @@ DATE: 2026-09-21
 EVIDENCE: Operator ran `wsl --status`, `wsl --list --verbose`, and `wsl --list --online` after reboot.
 RESULT:
 - `Default Version: 2` — WSL2 is the default.
-- WSL reports no installed distributions yet.
-- Online distro list works and includes `Ubuntu-24.04` (`Ubuntu 24.04 LTS`).
-- A message states WSL1 is not supported with the current configuration and mentions the legacy optional component. This is not a blocker for the chosen WSL2 path; WSL1 is not required for this project.
-CONCLUSION: WSL2 engine is installed and responding; Ubuntu 24.04 distribution installation is the next isolated step.
-NEXT_OPERATOR_ACTION: Run only `wsl --install --web-download -d Ubuntu-24.04` in Administrator PowerShell. Preserve the full output. Do not install Docker or other Growth OS components yet.
+- WSL reported no installed distributions yet.
+- Online distro list worked and included `Ubuntu-24.04` (`Ubuntu 24.04 LTS`).
+- WSL1 warning is not a blocker; WSL1 is not required for this project.
+
+### P1-WSL-03 — Ubuntu 24.04 distribution installation
+STATUS: VERIFIED_COMPLETE
+DATE: 2026-09-21
+COMMAND: `wsl --install --web-download -d Ubuntu-24.04`
+EVIDENCE: Operator screenshot captured the completed installer output.
+RESULT:
+- `Downloading: Ubuntu 24.04 LTS`
+- `Installing: Ubuntu 24.04 LTS`
+- `Distribution successfully installed. It can be launched via 'wsl.exe -d Ubuntu-24.04'`
+- Ubuntu launched automatically and began first-run provisioning.
+- Prompt reached: `Create a default Unix user account:`
+CONCLUSION: Ubuntu 24.04 distribution install is complete; first Linux user creation is now the active task.
+NEXT_OPERATOR_ACTION: Finish the username/password prompts. Do not share the password in chat or Git.
 
 ## Documentation assets
 - `growth-os/installation/PHASE1-WSL2-FA.md` — beginner-first Persian guide
