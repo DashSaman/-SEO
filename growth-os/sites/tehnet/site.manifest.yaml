@@ -1,0 +1,26 @@
+site_id: tehnet
+name: Tehran Network
+primary_url: https://tehnet.ir
+mode: build_site_factory
+status: pilot
+monitoring:
+  continuous: true
+  daily_report: true
+  weekly_optimization_cycle: true
+  public_baseline_enabled: true
+reporting:
+  repo_path: growth-os/sites/tehnet/reports
+  telegram_destination: pending_connector
+safety:
+  production_changes_in_phase4: false
+  destructive_actions: fail_closed
+objectives:
+  - establish_searchable_site_architecture
+  - qualified_search_visibility
+  - commercial_query_page1_share
+  - lead_conversion_growth
+  - revenue_impact
+secrets:
+  gsc: host_only
+  ga4: host_only
+  telegram: host_only

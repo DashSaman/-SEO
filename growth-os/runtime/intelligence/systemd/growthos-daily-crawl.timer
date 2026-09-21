@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Growth OS technical crawl every 24 hours
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=24h
+AccuracySec=5min
+Persistent=true
+Unit=growthos-daily-crawl.service
+
+[Install]
+WantedBy=timers.target
