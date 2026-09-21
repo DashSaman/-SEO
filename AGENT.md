@@ -3,8 +3,8 @@
 PROJECT: Growth OS
 STATUS: BOOTSTRAP
 CURRENT_PHASE: 0
-CURRENT_TASK: P0-04
-EXACT_NEXT_TASK: P0-05
+CURRENT_TASK: P0-05
+EXACT_NEXT_TASK: P0-06
 
 ## State rules
 - [x] Never repeat a verified completed task unless its verification later fails or an intentional upgrade is approved.
@@ -18,7 +18,7 @@ EXACT_NEXT_TASK: P0-05
 - [x] P0-01 Inventory and freeze pre-bootstrap corpus
 - [x] P0-02 Move existing SEO corpus to `SEO-REFERENCE-V1/`
 - [x] P0-03 Create bilingual root docs and canonical execution ledger
-- [ ] P0-04 Create Growth OS documentation skeleton
+- [x] P0-04 Create Growth OS documentation skeleton
 - [ ] P0-05 Validate tree, links, and secret hygiene
 - [ ] P0-06 Open bootstrap PR and complete review
 
@@ -75,13 +75,27 @@ STATUS: VERIFIED_COMPLETE
 PURPOSE: Create human-readable English/Persian entry points and make execution state durable outside chat context.
 ACTIONS: Created root `README.md`, `README.fa.md`, and canonical `AGENT.md`; documented phase boundaries, security rules, pilot roles, and exact execution state.
 EXPECTED_RESULT: English/Persian root guides are readable; repository paths are correctly named; `AGENT.md` contains one current task and one exact next task; no secret value is recorded.
-ACTUAL_RESULT: Root English/Persian guides and execution ledger prepared with repository navigation, 10-phase roadmap, MyTel/TehNet timing boundary, reusable task template, and incident records.
-VERIFICATION: Blob contents reviewed against the approved plan; referenced existing paths are correct and future `growth-os/` path is represented as code text until P0-04 creates it. No credential value is present.
-ROLLBACK: Remove the three root files or reset the bootstrap branch to commit `1474b95d0fea5a0c35a9eb20c2798ded7a4ef0fc`.
+ACTUAL_RESULT: Root English/Persian guides and execution ledger created with repository navigation, 10-phase roadmap, MyTel/TehNet timing boundary, reusable task template, and incident records.
+VERIFICATION: All three files were fetched from `growth-os-bootstrap` after commit and reviewed against the approved plan.
+ROLLBACK: Reset the bootstrap branch to commit `1474b95d0fea5a0c35a9eb20c2798ded7a4ef0fc`.
 PROBLEMS: None in final P0-03 artifacts.
 FIX: Not applicable.
-COMMIT_OR_PR: Recorded by the P0-03 commit `docs: add Growth OS root guides and execution ledger`.
+COMMIT_OR_PR: `dff71b8b2ffd6c6a0addf8154e165b30208308f1` — `docs: add Growth OS root guides and execution ledger`
 NEXT_TASK: P0-04
+
+### P0-04 — Growth OS documentation skeleton
+ID: P0-04
+STATUS: VERIFIED_COMPLETE
+PURPOSE: Give every future architecture, installation, operation, incident, experiment, benchmark, compliance record and site-specific artifact a stable documented home.
+ACTIONS: Created `growth-os/` map plus architecture, installation, operations, troubleshooting, product, experiments, benchmarks, compliance and sites indexes; created isolated MyTel and Tehran Network pilot indexes.
+EXPECTED_RESULT: Every planned directory is represented by a tracked README; operator documentation contract is recorded; per-site isolation rules are explicit; no empty Git directory is assumed.
+ACTUAL_RESULT: 12 tracked README documents prepared, including dedicated MyTel Growth Mode and Tehran Network Build/Site Factory pilot records. Operator docs require purpose, selection reason, version, prerequisites, installation, configuration, ports, secret variable names only, verification, operation, updates, backup/restore, rollback, failures, removal, upstream repo and license.
+VERIFICATION: Growth OS tree object contains a tracked README for every planned directory and both site pilot subdirectories; no credentials are included.
+ROLLBACK: Remove `growth-os/` and restore `AGENT.md` from the P0-03 commit.
+PROBLEMS: None.
+FIX: Not applicable.
+COMMIT_OR_PR: Recorded by the P0-04 commit `docs: scaffold Growth OS operating documentation`.
+NEXT_TASK: P0-05
 
 ## Execution notes
 
