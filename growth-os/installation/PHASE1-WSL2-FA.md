@@ -1,6 +1,6 @@
 # Phase 1 — نصب WSL2 و Ubuntu 24.04 روی Windows 11
 
-این راهنما برای کاربری نوشته شده که هیچ تجربه قبلی با Linux، WSL یا Docker ندارد. هدف این مرحله فقط ساخت محیط Linux تمیز داخل Windows است؛ هنوز Docker، Agentها یا ابزارهای SEO نصب نمی‌شوند.
+این راهنما برای کاربری نوشته شده که هیچ تجربه قبلی با Linux، WSL یا Docker ندارد. هدف این مرحله ساخت یک محیط Linux تمیز، قابل‌تکرار و قابل‌عیب‌یابی داخل Windows است.
 
 ## WSL2 چیست؟
 
@@ -10,256 +10,312 @@ WSL2 یعنی یک محیط Linux واقعی داخل Windows بدون نیاز 
 flowchart TD
     A[Windows 11] --> B[WSL2]
     B --> C[Ubuntu 24.04 LTS]
-    C --> D[بعداً Docker]
+    C --> D[Docker]
     D --> E[Growth OS Services]
 ```
 
 تو همچنان با Windows کار می‌کنی و Ubuntu پشت‌صحنه برای سرویس‌های سروری استفاده می‌شود.
 
-## وضعیت این سیستم در 2026-09-21
-
-نتیجه Preflight ثبت‌شده:
+## مشخصات Pilot
 
 ```text
-WSL: در شروع نصب نبود
-Ubuntu: در شروع نصب نبود
+CPU: AMD Ryzen 7 6800H — 8C / 16T
+RAM: 32 GB
 GPU: NVIDIA GeForce RTX 3070 Laptop GPU
 VRAM: 8192 MiB
 Windows NVIDIA Driver: 616.92
-CUDA UMD reported by Windows: 13.4
+WSL package: 2.7.14
+Ubuntu: 24.04 LTS
 ```
-
-پس مسیر درست این سیستم، نصب WSL2 از صفر است.
 
 ---
 
-# قدم 1 — باز کردن PowerShell با دسترسی Administrator
+# قدم 1 — PowerShell Administrator
 
-1. روی Start کلیک کن.
-2. بنویس `PowerShell`.
-3. روی **Windows PowerShell** راست‌کلیک کن.
-4. **Run as administrator** را بزن.
-5. اگر پنجره تأیید Windows باز شد، **Yes** را بزن.
+Start → PowerShell → راست‌کلیک → **Run as administrator**.
 
 باید چیزی شبیه این ببینی:
 
 ```text
-Windows PowerShell
 PS C:\WINDOWS\system32>
 ```
 
 ---
 
-# قدم 2 — نصب WSL2 و Ubuntu 24.04
+# قدم 2 — نصب WSL
 
-در همان PowerShell Administrator این دستور را دقیقاً وارد کن:
+مسیر عادی:
 
 ```powershell
 wsl --install -d Ubuntu-24.04
 ```
 
-این دستور باید WSL، Virtual Machine Platform، Linux kernel و Ubuntu 24.04 را نصب کند.
-
-طبق مستندات رسمی Microsoft، `wsl --install` روش توصیه‌شده نصب WSL روی Windows 11 است و با `-d` می‌توان توزیع موردنظر را تعیین کرد.
-
-## نتیجه واقعی Pilot
-
-در این سیستم مسیر عادی هنگام دانلود WSL 2.7.14 با خطای زیر متوقف شد:
+در Pilot واقعی این مسیر هنگام دانلود WSL 2.7.14 با خطای زیر متوقف شد:
 
 ```text
 Internal server error (500).
 ```
 
-بنابراین مسیر جایگزین رسمی اجرا شد:
+مسیر جایگزین رسمی که موفق شد:
 
 ```powershell
 wsl --install --web-download -d Ubuntu-24.04
 ```
 
-این بار WSL 2.7.14 نصب شد، `VirtualMachinePlatform` تا 100% فعال شد و Windows اعلام کرد برای مؤثرشدن تغییرات باید سیستم Restart شود.
+نتیجه واقعی:
 
-![نمای تصویری موفقیت نصب WSL با web-download](assets/wsl2-step-02-web-download-success.svg)
+```text
+Windows Subsystem for Linux 2.7.14 has been installed.
+VirtualMachinePlatform enabled successfully.
+Changes will not be effective until the system is rebooted.
+```
 
-در این نقطه **هیچ دستور دیگری اجرا نکن**. فایل‌های باز را ذخیره کن و Windows را Restart کن.
+![نمای تصویری موفقیت نصب WSL](assets/wsl2-step-02-web-download-success.svg)
+
+بعد Windows را Restart کن.
 
 ---
 
-# قدم 3 — Restart و اولین اجرای Ubuntu
+# قدم 3 — نصب خود Ubuntu 24.04
 
-1. فایل‌های باز را Save کن.
-2. Windows را Restart کن.
-3. بعد از بالا آمدن Windows ممکن است Ubuntu خودکار باز شود.
-4. اگر باز نشد، Start را باز کن و `Ubuntu 24.04` را جست‌وجو و اجرا کن.
-
-اولین اجرا ممکن است چند دقیقه برای آماده‌سازی فایل‌ها زمان بخواهد.
-
-اگر Ubuntu از تو Username خواست:
-
-```text
-Enter new UNIX username:
-```
-
-یک نام ساده انگلیسی انتخاب کن؛ مثال:
-
-```text
-saman
-```
-
-بعد Password می‌خواهد.
-
-نکته مهم: هنگام تایپ Password در Linux هیچ ستاره یا کاراکتری روی صفحه نمی‌بینی. این طبیعی است. Password را تایپ کن و Enter بزن و دوباره تکرار کن.
-
-وقتی تمام شد چیزی شبیه این می‌بینی:
-
-```text
-saman@COMPUTER:~$
-```
-
-این یعنی وارد Ubuntu شده‌ای.
-
----
-
-# قدم 4 — Verify نصب از داخل Windows
-
-بعد از Restart و اولین اجرای Ubuntu، PowerShell را باز کن و بزن:
+بعد از Restart وضعیت را بررسی کن:
 
 ```powershell
 wsl --status
+wsl --list --verbose
+wsl --list --online
 ```
 
-سپس:
+اگر `Ubuntu-24.04` در لیست آنلاین بود ولی Distribution نصب نبود، بزن:
+
+```powershell
+wsl --install --web-download -d Ubuntu-24.04
+```
+
+در Pilot واقعی Ubuntu 24.04 LTS با موفقیت دانلود و نصب شد.
+
+---
+
+# قدم 4 — ساخت کاربر Linux
+
+در اولین اجرا Ubuntu می‌پرسد:
+
+```text
+Create a default Unix user account:
+```
+
+یک نام انگلیسی ساده انتخاب کن. در Pilot:
+
+```text
+amirreza
+```
+
+بعد Password را بساز. هنگام تایپ Password هیچ ستاره یا کاراکتری دیده نمی‌شود؛ طبیعی است.
+
+اگر در پایان چیزی شبیه این دیدی، وارد Linux شده‌ای:
+
+```text
+amirreza@Amirreza-PC:~$
+```
+
+---
+
+# قدم 5 — Verify اینکه WSL2 است
+
+در PowerShell:
 
 ```powershell
 wsl --list --verbose
 ```
 
-نتیجه مورد انتظار باید چیزی شبیه این باشد:
+باید `VERSION 2` ببینی:
 
 ```text
-NAME              STATE           VERSION
-* Ubuntu-24.04    Running         2
+Ubuntu-24.04    Running    2
 ```
 
-مهم‌ترین قسمت:
-
-```text
-VERSION = 2
-```
-
-اگر Ubuntu در لیست نبود یا VERSION برابر 1 بود، ادامه نده و خروجی را ثبت کن.
+در Pilot این تست پاس شد.
 
 ---
 
-# قدم 5 — Verify GPU داخل Ubuntu
+# قدم 6 — Verify کارت گرافیک داخل Ubuntu
 
-داخل پنجره Ubuntu این دستور را اجرا کن:
+داخل Ubuntu:
 
 ```bash
 nvidia-smi
 ```
 
-باید RTX 3070 را ببینی. لازم نیست CUDA Toolkit را داخل Ubuntu نصب کنیم فقط برای اینکه `nvidia-smi` کار کند؛ WSL از درایور Windows استفاده می‌کند.
+باید RTX 3070 و حدود 8192 MiB VRAM دیده شود. در Pilot این تست پاس شد.
 
-اگر `nvidia-smi` کار کرد، GPU access برای WSL آماده است.
-
----
-
-# قدم 6 — فعلاً توقف
-
-بعد از موفقیت قدم‌های بالا هنوز این‌ها را نصب نکن:
-
-```text
-Docker
-Ollama
-LiteLLM
-n8n
-PostgreSQL
-Redis
-OpenHands
-Postiz
-OpenGSC
-DispatchSEO
-```
-
-اول خروجی Verifyها باید ثبت شود، بعد Phase 1 ادامه پیدا می‌کند.
+> برای این تست، درایور NVIDIA لینوکسی جداگانه داخل WSL نصب نکن. WSL از Integration درایور Windows استفاده می‌کند.
 
 ---
 
-# خطاهای رایج
+# قدم 7 — آپدیت Ubuntu
 
-## خطا: WSL نصب نیست
+داخل Ubuntu:
+
+```bash
+sudo apt update
+```
+
+در Pilot:
 
 ```text
-The Windows Subsystem for Linux is not installed
+35.1 MB fetched
+25 packages can be upgraded
 ```
 
-راه‌حل مرحله فعلی:
+بعد:
+
+```bash
+sudo apt upgrade -y
+```
+
+در Pilot این ارتقا بدون خطای fatal تمام شد و Shell برگشت.
+
+---
+
+# قدم 8 — محدودکردن RAM و CPU برای WSL
+
+این مرحله مهم است چون نمی‌خواهیم Agentها و Docker تمام RAM سیستم را مصرف کنند.
+
+در Ubuntu بزن:
+
+```bash
+exit
+```
+
+بعد در PowerShell Windows:
 
 ```powershell
-wsl --install -d Ubuntu-24.04
+notepad $env:USERPROFILE\.wslconfig
 ```
 
-## خطا: `Internal server error (500)` هنگام دانلود
+داخل فایل دقیقاً این را قرار بده:
 
-در Pilot واقعی این خطا رخ داد. بدون حذف یا دستکاری نصب، این دستور اجرا شد:
+```ini
+[wsl2]
+memory=20GB
+processors=12
+swap=8GB
+localhostForwarding=true
+```
+
+![تنظیم پیشنهادی منابع WSL2](assets/wsl2-step-03-resource-limits.svg)
+
+### معنی تنظیمات
+
+- `memory=20GB` → WSL حداکثر 20GB RAM می‌گیرد.
+- `processors=12` → از 16 Thread سیستم، حداکثر 12 Thread در اختیار WSL است.
+- `swap=8GB` → 8GB فضای Swap برای فشار حافظه.
+- `localhostForwarding=true` → سرویس‌های WSL از Windows با localhost راحت‌تر قابل‌دسترسی‌اند.
+
+این انتخاب برای Pilot با 32GB RAM عمداً حدود 12GB RAM و 4 Thread را برای خود Windows آزاد نگه می‌دارد.
+
+بعد File → Save و Notepad را ببند.
+
+در PowerShell بزن:
 
 ```powershell
-wsl --install --web-download -d Ubuntu-24.04
+wsl --shutdown
 ```
 
-نتیجه: دانلود و نصب WSL 2.7.14 و فعال‌سازی VirtualMachinePlatform موفق شد و Restart درخواست شد.
+سپس دوباره Ubuntu را اجرا کن:
 
-رکورد کامل Incident:
+```powershell
+wsl -d Ubuntu-24.04
+```
+
+داخل Ubuntu برای Verify بزن:
+
+```bash
+free -h
+nproc
+swapon --show
+```
+
+نتیجه مورد انتظار تقریبی:
+
+```text
+Memory total: حدود 19 تا 20 GiB
+nproc: 12
+Swap: حدود 8 GiB
+```
+
+تا وقتی این سه Verify پاس نشده‌اند، Docker نصب نکن.
+
+---
+
+# قدم 9 — systemd
+
+بعد از Verify منابع، systemd را بررسی می‌کنیم. این مرحله هنوز در Pilot انجام نشده و باید قبل از Docker ثبت و Verify شود.
+
+---
+
+# چک‌لیست واقعی Pilot
+
+- [x] PowerShell Administrator
+- [x] تلاش نصب عادی WSL
+- [x] ثبت خطای HTTP 500
+- [x] نصب WSL با `--web-download`
+- [x] فعال‌شدن VirtualMachinePlatform
+- [x] Restart Windows
+- [x] نصب Ubuntu 24.04
+- [x] ساخت کاربر `amirreza`
+- [x] Verify `VERSION 2`
+- [x] Verify RTX 3070 داخل Ubuntu
+- [x] `sudo apt update`
+- [x] `sudo apt upgrade -y`
+- [ ] ساخت `.wslconfig`
+- [ ] Verify RAM / CPU / Swap
+- [ ] Verify systemd
+- [ ] نصب Docker
+- [ ] تست reboot/autostart
+- [ ] ثبت baseline/backup
+
+---
+
+# خطاهای واقعی و Troubleshooting
+
+## HTTP 500 هنگام نصب WSL
+
+رکورد کامل:
 
 `../troubleshooting/INC-WSL2-0001-HTTP-500.md`
 
-## نصب روی 0.0% گیر کرده
+## Ubuntu در Start دیده نمی‌شود
 
-بعد از ثبت خطا می‌توان مسیر جایگزین زیر را بررسی کرد:
-
-```powershell
-wsl --install --web-download -d Ubuntu-24.04
-```
-
-## بعد از Restart Ubuntu باز نمی‌شود
-
-PowerShell را باز کن و ابتدا فقط این را بزن:
+اول با PowerShell بررسی کن:
 
 ```powershell
 wsl --list --verbose
+wsl --list --online
 ```
 
-خروجی را ثبت کن و قبل از حذف یا `unregister` کردن Ubuntu بررسی انجام بده.
+اگر Distribution نصب نیست، مستقیم از WSL نصبش کن و Ubuntu Desktop/ISO دانلود نکن.
 
 ## Password دیده نمی‌شود
 
-طبیعی است. Linux هنگام تایپ Password چیزی نشان نمی‌دهد.
+طبیعی است؛ Linux موقع تایپ Password چیزی نمایش نمی‌دهد.
+
+## `.wslconfig` اثر نکرد
+
+بعد از Save باید حتماً:
+
+```powershell
+wsl --shutdown
+```
+
+اجرا شود و WSL دوباره بالا بیاید.
 
 ---
 
-# چک‌لیست اپراتور
-
-- [x] PowerShell به صورت Administrator باز شد.
-- [x] مسیر عادی `wsl --install -d Ubuntu-24.04` امتحان شد.
-- [x] خطای HTTP 500 ثبت شد.
-- [x] مسیر `--web-download` اجرا شد.
-- [x] WSL 2.7.14 نصب شد.
-- [x] VirtualMachinePlatform با موفقیت فعال شد.
-- [ ] Windows Restart شد.
-- [ ] Ubuntu 24.04 اولین بار اجرا شد.
-- [ ] Linux username ساخته شد.
-- [ ] `wsl --status` بدون خطا اجرا شد.
-- [ ] `wsl --list --verbose` نشان داد Ubuntu روی VERSION 2 است.
-- [ ] `nvidia-smi` داخل Ubuntu کارت RTX 3070 را نشان داد.
-- [ ] نتیجه Verify نهایی در `AGENT.md` ثبت شد.
-
-## Rollback / حذف اضطراری
-
-در این مرحله اگر نصب ناقص شد، قبل از حذف یا `unregister` کردن Ubuntu ابتدا خطا باید ثبت و بررسی شود. دستورهای حذف عمداً در این راهنمای شروع قرار داده نشده‌اند تا کاربر تازه‌کار تصادفاً داده Linux را پاک نکند.
-
-## منابع رسمی
+# منابع رسمی
 
 - Microsoft Learn — Install WSL
+- Microsoft Learn — Advanced settings configuration in WSL
 - Microsoft Learn — Basic commands for WSL
 
-این راهنما با هر تغییر واقعی در نصب، خطا یا راه‌حل روی سیستم Pilot به‌روزرسانی می‌شود تا بعداً به Runbook قابل استفاده برای مشتری تبدیل شود.
+این راهنما با نتیجه واقعی Pilot به‌روزرسانی می‌شود و هدف نهایی آن تبدیل‌شدن به Runbook قابل استفاده برای مشتری است.
