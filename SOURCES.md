@@ -276,3 +276,9 @@ If these cannot be answered, classify the item `DISCOVERED`/`PARTIAL` and do not
 | ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | OBS-TN-PORTFOLIO-20261101 | VERIFIED | MEASURED | Candidate inventory consistency receipt | https://github.com/DashSaman/TehNet/blob/87805ecc4d2306996f2fdfac50c893e440574f92/qa/growth-2026-10-31/intent-portfolio-verification.json | TehNet repository | 2026-11-01 | 2026-11-01 | docs/cross-brand-intent-portfolios.md | 100 jobs/20 clusters;33 planned improvements at13 existing destinations,67 jobs at14 proposed groups;20 reproducible artifact checks. | HIGH for scoped artifact counts only | 35 source rows vary in review depth;93 market hypotheses and7 limited query clues; zero new publications or rank/cannibalization/AI-outcome evidence. |
+
+## 2026-11-01 — Existing-page editorial acceptance
+
+| ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| OBS-TN-EDITORIAL-20261101 | VERIFIED | MEASURED | Existing lesson production acceptance | https://github.com/DashSaman/TehNet/blob/1f0da538783df2b7b78041f8e0b93988711ae28c/qa/growth-2026-10-31/editorial-production-release.json | TehNet repository | 2026-11-01 | 2026-11-01 | docs/cross-brand-intent-portfolios.md | Five portfolio jobs addressed by one existing-page revision;9 TLS GETs and35 read-only public-browser checks after qualified content-only release. | HIGH for functional acceptance | Zero new articles/URLs/runtime replacements; no RouterOS lab, indexing, rank, traffic or AI-citation outcome. |
