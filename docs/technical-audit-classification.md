@@ -1,0 +1,29 @@
+# Classify technical-audit observations before changing a site
+
+Reviewed: 2026-11-01 (Asia/Tehran; immutable receipts carry UTC). Status: VERIFIED_FUNCTIONAL_CASE_ONLY. Workstream: `tehnet-metadata-audit-20261101`. This does not recalculate the71% central baseline or finish the original validation backlog.
+
+## Evidence and boundaries
+
+`OBSERVED` — [OBS-TN-TECHNICAL-20261101](https://github.com/DashSaman/TehNet/blob/c287a86783016164404ed2158f60ac7ce4a02656/qa/growth-2026-10-31/technical-audit-and-metadata-role.json) records73 bounded unauthenticated GET responses,68 successful HTML documents and25 product pages. Status/H1/canonical/robots/descriptions/JSON syntax, image attributes and a bounded link graph were examined. Four public routes in four viewport/JS modes produced16 real-browser smoke observations. This is not a comprehensive WCAG, field Core Web Vitals, real crawler-identity or target-market measurement, and is not a120-store competitor review.
+
+`OBSERVED` — [OBS-TN-METADATA-20261101](https://github.com/DashSaman/TehNet/blob/51a0decf3c145a93e18c41d3c66bfd51f9e6d1d2/qa/growth-2026-10-31/metadata-role-production-release.json) records the resulting one-file production correction: four resource/curriculum hubs no longer infer Article solely from a visible source note; real lesson Articles remain.56 metadata tests passed after four actual baseline failures,12 operator tests and16 native read-only-state checks passed. An immutable one-file native staging release passed8 before/after HTTP comparisons and188 browser checks, then exact original-file rollback/repeat. Production separately passed13 valid-TLS GETs and188 read-only browser checks after fresh verified backup/drift gates. Zero DB/content rows were written, seven other guarded files and container identity/network/ports were retained. Noindex, inquiry-only commerce and MyTel freeze remained.
+
+## Why a warning is not automatically a defect
+
+`FACT-OFFICIAL` — [WordPress sitemaps_enabled](https://developer.wordpress.org/reference/classes/wp_sitemaps/sitemaps_enabled/) defaults to the boolean blog_public option, with a filter; disabled sitemaps retain rewrite rules that return404. `OBSERVED` — the site intentionally had blog_public0/noindex and sitemap404. `INFERENCE` — this is consistent with its current owner policy, not evidence that the remedy is to turn indexing on. Filters and an approved eligible-URL scope still require validation at launch. Sitemap availability never proves indexing.
+
+`FACT-OFFICIAL` — [Cloudflare email obfuscation](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/) describes replacement links and a deferred decode script (provider updated2026-08-03). `OBSERVED` — the raw decode-link path returned404, but three JS-enabled browser widths produced a mailto href; no-JS remained dependent on obfuscation. No email was sent. `INFERENCE` — testing the transformed href is necessary before calling a raw-link-check result a broken JS journey. Record the no-JS limitation and available contact alternatives; do not silently disable a zone-wide protection setting.
+
+`OBSERVED` — the cached queryless link graph reached66 of68 successful documents from home; two utility paths were not reached because context/query links were excluded. `INFERENCE` — this restricted graph cannot establish orphan status. Likewise, two missing utility descriptions or a shared catalog-pagination description are observations requiring intent/context judgment, not universal uniqueness or ranking failures. HTTP200 and one H1 do not establish semantic correctness.
+
+## Role-aware structured data and bounded implementation
+
+`FACT-OFFICIAL` — [GGL-SDPOL-017](https://developers.google.com/search/docs/appearance/structured-data/sd-policies) requires relevant, truthful markup that represents the visible main content, and does not guarantee rich-result display. [GGL-ARTICLE-038](https://developers.google.com/search/docs/appearance/structured-data/article) describes article-page markup and applicable properties. These sections were freshly reviewed; the review is not an audit of every rich-result feature.
+
+`INFERENCE` — after reviewing the four pages' primary organizing/curriculum purpose, this site's implementation conservatively omitted Article for those exact WP page paths. This is an editorial role decision, not a claim that Google prohibits Article on every hub or has penalized the site. A source note is useful on both a hub and a lesson; it should not alone determine schema type. Excluding every WP page would also exclude valid lessons, so the fix preserved them. Adding CollectionPage/ItemList would need its own truthful collection model; it was not silently added for schema counts.
+
+`INFERENCE` — retain source/content review, red-capable tests, isolated file deployment, rollback and actual public acceptance as distinct evidence. The metadata scope used a read-only native data-digest journal, not a content migrator. A repeated apply made no file change; rollback repeat could rewrite the same original bytes, so it was not reported as zero writes. Syntax parsing and functional release acceptance are not Google Rich Results Test/URL Inspection, eligibility, field performance, indexing, ranking, traffic, AI citation or conversion evidence.
+
+## Next work and unresolved gates
+
+Cited TarazNet/service-competitor review and an evidenced distinct improvement to existing TehNet services remain next. The candidate portfolio is still a dated inventory, two lessons were already revised and this metadata fix is a separate delivery. Do not replay those accepted releases or treat candidate rows as published articles. MyTel production remains read-only; credential rotation UNKNOWN, remote-history NEEDS_APPROVAL, Origin UNDETERMINED and index/payment approval gates remain. Raw HTML, exact operational inventory, backups and journals stay outside public Git.
