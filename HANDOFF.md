@@ -1,3 +1,9 @@
+## CURRENT — scoped implementation transfer, 2026-10-31
+
+Workstream `tehnet-intake-validation-20261031`: completed source review/synthesis of WordPress nonce return behavior, shortcode output and CPT query-variable collisions; added `docs/wordpress-service-intake-validation.md` and four source rows. TehNet's immutable receipt separates24 native-browser checks and three synthetic private records from production/search results. All owned test records were cleaned and previous fingerprints matched. No private MyTel metrics, customer data or operational addresses were transferred.
+
+The central baseline remains71%; this is a bounded addition, not completion of the existing SERP/open-source/final-validation workstreams. TehNet deployment is still pending its own release gates. Next for this workstream: reconcile actual authorized production acceptance when available, then measure real intake/search outcomes only through working first-party access. Continue the original baseline backlog below without repeating completed source research.
+
 # HANDOFF.md — Live Continuation State
 
 > **Purpose:** A brand-new chat/agent must be able to continue from this file without reconstructing prior conversation history.

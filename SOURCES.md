@@ -247,3 +247,12 @@ If these cannot be answered, classify the item `DISCOVERED`/`PARTIAL` and do not
 | ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | GH-PRIVACY-20261031 | VERIFIED | OFFICIAL | Removing sensitive data from a repository | https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository | GitHub | — | 2026-10-31 | docs/public-repository-evidence.md | Current-tree deletion and all-history purge are different; rotate exposed credentials and coordinate clones/PRs/forks. | HIGH | Provider procedure; not a claim every repository finding is a credential. |
+
+## 2026-10-31 — Native WordPress service-intake validation
+
+| ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| WP-NONCE-20261031 | VERIFIED | OFFICIAL | wp_nonce_field | https://developer.wordpress.org/reference/functions/wp_nonce_field/ | WordPress | — | 2026-10-31 | docs/wordpress-service-intake-validation.md | Echo/return behavior matters for shortcode form ownership. | HIGH | API mechanics, not a complete security guarantee. |
+| WP-SHORTCODE-20261031 | VERIFIED | OFFICIAL | add_shortcode | https://developer.wordpress.org/reference/functions/add_shortcode/ | WordPress | — | 2026-10-31 | docs/wordpress-service-intake-validation.md | Return callback output into the intended replacement location. | HIGH | No ranking/traffic claim. |
+| WP-CPT-20261031 | VERIFIED | OFFICIAL | register_post_type query_var | https://developer.wordpress.org/reference/functions/register_post_type/ | WordPress | — | 2026-10-31 | docs/wordpress-service-intake-validation.md | A public CPT query key can collide with a new intake parameter. | HIGH | Verify actual registered keys on each site. |
+| OBS-TN-INTAKE-20261031 | VERIFIED | MEASURED | Isolated native intake acceptance receipt | https://github.com/DashSaman/TehNet/blob/0fbf6e8216fa5a8dcba85d8551d4040e2dfe1d3b/qa/growth-2026-10-31/native-verification.json | TehNet repository | 2026-10-31 | 2026-10-31 | docs/wordpress-service-intake-validation.md | 24 browser/HTTP checks and backend persistence/cleanup invariants; new query collision fixed before publication. | HIGH | Isolated implementation evidence; no production/search/conversion experiment. |
