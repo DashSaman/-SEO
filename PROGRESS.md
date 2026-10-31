@@ -1,20 +1,24 @@
-## CURRENT — existing-page editorial delivery evidence, 2026-11-01
+## CURRENT — second existing-page delivery transferred, 2026-11-01
+
+Workstream `tehnet-routing-delivery-20261101`: synthesized OBS-TN-ROUTING-20261101 in the portfolio topic, ledger and dashboard. One static-routing revision addresses five C02 jobs; together with the prior case, two existing lessons improved, zero new articles/URLs/runtime replacements.9 valid-TLS public GETs and35 read-only browser checks passed after qualified integration/backup/drift gates.29 new native assertions plus27/37 previous-scope regressions and10 operator tests qualify WordPress release behavior, not RouterOS/failover or SEO gains. Source/lab limits remain visible. Baseline71% unchanged; security/noindex/commerce/MyTel gates and original final-validation backlog remain open. Next: bounded technical UX/SEO audit, one evidenced qualified fix and cited TarazNet comparison; do not redeploy lessons62/64 or rebuild the inventory. Changed: topic, SOURCES, dashboard and coordination; no raw/private operational evidence transferred.
+
+## HISTORICAL CHECKPOINT — existing-page editorial delivery evidence, 2026-11-01
 
 Workstream `tehnet-existing-editorial-20261101`: transferred OBS-TN-EDITORIAL-20261101 into the intent-portfolio synthesis/source ledger/dashboard. Five related candidate jobs became one qualified revision of an existing lesson, zero new URLs/articles/runtime replacements.9 real TLS GETs and35 read-only live-browser checks passed; source/lab limits remain explicit. Native WordPress tests are not RouterOS restore evidence or SEO gains. Previous portfolio/source counts remain dated inventory evidence; current deployment has its own immutable receipt. Baseline remains71%; original final-validation backlog and security/noindex/MyTel/payment gates stay open. Next: source/intent review and a separately qualified target scope for the existing routing lesson; do not redeploy lesson62. Changed: topic, source ledger, dashboard and coordination; no private raw evidence transferred.
 
-## CURRENT — cross-brand intent inventory transferred, 2026-11-01
+## HISTORICAL CHECKPOINT — cross-brand intent inventory transferred, 2026-11-01
 
 Workstream `tehnet-intent-portfolio-20261101`: synthesized OBS-TN-PORTFOLIO-20261101 in `docs/cross-brand-intent-portfolios.md`. The immutable TehNet receipt records100 candidate jobs/20 clusters/35 source rows,33 improvements at13 existing destinations and67 jobs at14 proposed groups; a public read-only validator reproduces20 consistency checks. These are not100 articles: zero new publications,93 market hypotheses and7 limited query clues. Specialist MyTel routes remain frozen; reciprocal-link proposals exist only in TehNet documents. Baseline remains71%, not recalculated. Next: research and qualify a useful improvement to the existing RouterOS-Winbox lesson, then transfer actual article acceptance; keep central baseline backlog and credential/history/Origin gates open. Changed: source ledger, topic, dashboard and coordination. No private raw evidence transferred.
 
-## CURRENT — bounded WordPress release acceptance transferred, 2026-11-01
+## HISTORICAL CHECKPOINT — bounded WordPress release acceptance transferred, 2026-11-01
 
 Workstream `tehnet-release-evidence-20261101`: added three immutable measured receipts and a release checklist; synthesized37 native migration assertions, independent file/content rollback and8 TLS/25 read-only public-browser checks after TehNet PR34/main ac506f1. A restored-directory ownership error was exposed by HTTP despite root CLI success; corrected only in the owned clone. Production noindex/closed commerce/protected state and MyTel runtime were preserved; no real form submission or ranking/citation outcome claimed. Source IDs: OBS-TN-MIGRATION-20261031, OBS-TN-REHEARSAL-20261101, OBS-TN-RELEASE-20261101. Updated source ledger/topic/checklist/dashboard/coordination. Baseline remains71%, not a recalculated completion. Next: TehNet intent portfolio and researched content; central original baseline backlog remains open. Historical credential/remote-history/Origin gates remain separate; private evidence is not transferred.
 
-## CURRENT — mandatory publication-guard enforcement, 2026-10-31
+## HISTORICAL CHECKPOINT — mandatory publication-guard enforcement, 2026-10-31
 
 The two public repositories now require their observed GitHub Actions privacy check on main, PR/up-to-date branch and administrator enforcement, with0 approving reviews and force/deletion disabled. API200 readback verified policy and unchanged main refs. A422 schema error was corrected after review/fresh drift checks; no permissions were bypassed. Private-repository settings remain UNKNOWN on403. See `docs/public-repository-evidence.md` and GH-PROTECTION-20261031. No history/Origin/credential closure or SEO growth is implied; baseline remains71%. Next: continue the existing baseline and TehNet's qualified release, keeping bounded audit results distinct.
 
-## CURRENT — scoped implementation transfer, 2026-10-31
+## HISTORICAL CHECKPOINT — scoped implementation transfer, 2026-10-31
 
 Workstream `tehnet-intake-validation-20261031`: completed source review/synthesis of WordPress nonce return behavior, shortcode output and CPT query-variable collisions; added `docs/wordpress-service-intake-validation.md` and four source rows. TehNet's immutable receipt separates24 native-browser checks and three synthetic private records from production/search results. All owned test records were cleaned and previous fingerprints matched. No private MyTel metrics, customer data or operational addresses were transferred.
 
