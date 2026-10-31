@@ -262,3 +262,11 @@ If these cannot be answered, classify the item `DISCOVERED`/`PARTIAL` and do not
 | ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | GH-PROTECTION-20261031 | VERIFIED | OFFICIAL | Branch protection API | https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection | GitHub | — | 2026-10-31 | docs/public-repository-evidence.md | Required checks/app binding, PR/admin enforcement and reviewer count are distinct settings. | HIGH | Read back actual configuration; no universal leak-prevention guarantee. |
+
+## 2026-11-01 — Bounded WordPress recovery and release
+
+| ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| OBS-TN-MIGRATION-20261031 | VERIFIED | MEASURED | Native content migration acceptance | https://github.com/DashSaman/TehNet/blob/2a44f1e62cb5829b66e61d91045c9803342e769a/qa/growth-2026-10-31/migration-verification.json | TehNet repository | 2026-10-31 | 2026-11-01 | docs/wordpress-service-intake-validation.md | 37 assertions, concurrent edit/revision protection, owned fixture cleanup. | HIGH | Site-specific transactional behavior; not all hooks/engines qualified. |
+| OBS-TN-REHEARSAL-20261101 | VERIFIED | MEASURED | Isolated six-file release and rollback | https://github.com/DashSaman/TehNet/blob/4c6e93864c337251074341ae0fdef510a8166fba/qa/growth-2026-10-31/release-rehearsal.json | TehNet repository | 2026-11-01 | 2026-11-01 | docs/wordpress-service-intake-validation.md | Root CLI concealed restored-directory ownership error; HTTP exposed it; repair and rollback passed. | HIGH | Clone-only correction; abrupt host loss/ambiguous COMMIT untested. |
+| OBS-TN-RELEASE-20261101 | VERIFIED | MEASURED | Qualified production acceptance | https://github.com/DashSaman/TehNet/blob/1caef30f5d3bf9ef62c74b6987d40ad7183e0fe8/qa/growth-2026-10-31/production-release.json | TehNet repository | 2026-11-01 | 2026-11-01 | docs/wordpress-service-intake-validation.md | 8 TLS GETs and25 public-browser checks; noindex/closed commerce/protected state retained. | HIGH | Functional release, not ranking/traffic/citation/conversion evidence; no real form submission. |
