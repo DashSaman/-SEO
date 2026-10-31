@@ -1,0 +1,16 @@
+
+# Publication privacy: local evidence is never public source.
+**/.env
+**/.env.*
+!**/.env.example
+**/.local/
+**/__pycache__/
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite3
+*.p12
+*.pfx
+*private-audit*
+
+node_modules/

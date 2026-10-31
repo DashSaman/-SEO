@@ -219,3 +219,5 @@ Actual rankings remain query-, market-, competition-, time- and engine-dependent
 ## خلاصه فارسی
 
 این Repository قرار نیست «ترفند تضمینی صفحه اول» بدهد. هدفش این است که انسان یا AI Agent بتواند برای یک سایت واقعی ابتدا امکان رقابت را بسنجد، مشکلات فنی را به‌ترتیب وابستگی پیدا کند، Intent و Page Type درست را انتخاب کند، محتوای متمایز و قابل‌اثبات بسازد، Authority/Entity/AI Search را اصولی مدیریت کند و همه تغییرات را با قبل/بعد و PASS/FAIL اندازه‌گیری کند. هر ادعا باید معلوم کند رسمی است، استاندارد است، اندازه‌گیری شده، پژوهشی است یا صرفاً practitioner/community evidence.
+
+Publication reference: [public repositories and operational evidence](docs/public-repository-evidence.md); [static dashboard](docs/index.html). Run `python tools/publication_guard.py` before publishing evidence.
