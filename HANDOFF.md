@@ -1,3 +1,7 @@
+## CURRENT — mandatory publication-guard enforcement, 2026-10-31
+
+The two public repositories now require their observed GitHub Actions privacy check on main, PR/up-to-date branch and administrator enforcement, with0 approving reviews and force/deletion disabled. API200 readback verified policy and unchanged main refs. A422 schema error was corrected after review/fresh drift checks; no permissions were bypassed. Private-repository settings remain UNKNOWN on403. See `docs/public-repository-evidence.md` and GH-PROTECTION-20261031. No history/Origin/credential closure or SEO growth is implied; baseline remains71%. Next: continue the existing baseline and TehNet's qualified release, keeping bounded audit results distinct.
+
 ## CURRENT — scoped implementation transfer, 2026-10-31
 
 Workstream `tehnet-intake-validation-20261031`: completed source review/synthesis of WordPress nonce return behavior, shortcode output and CPT query-variable collisions; added `docs/wordpress-service-intake-validation.md` and four source rows. TehNet's immutable receipt separates24 native-browser checks and three synthetic private records from production/search results. All owned test records were cleaned and previous fingerprints matched. No private MyTel metrics, customer data or operational addresses were transferred.
