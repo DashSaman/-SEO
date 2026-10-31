@@ -79,3 +79,7 @@ Never increase completion merely because URLs were skimmed. Credit work only whe
 ## Completion invariant
 
 Do not write `PROJECT STATUS: 100% COMPLETE` unless all requested files exist, every Final Validation checkbox passes, no Critical/High gap remains, `PROGRESS.md` and the HTML dashboard both show 100%, and `HANDOFF.md` records the final validated commit.
+
+## 2026-10-31 — Scoped publication hygiene workstream
+
+Added `docs/public-repository-evidence.md`, GH-PRIVACY-20261031 source synthesis, tracked-file publication guard/policy/tests and static dashboard navigation. Existing research workstreams remain active/queued as recorded above. Baseline remains71%; no recalculated global completion or ranking/AI-visibility gain is claimed. No private site data, metrics or operational IPs were transferred. Current-tree guard/test verification is separate from history/remote PR-cache purge. Next: review this branch, then continue prior open-source/SERP workstreams without overwriting their ownership.

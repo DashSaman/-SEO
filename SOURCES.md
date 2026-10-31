@@ -241,3 +241,9 @@ Before promoting a new community/practitioner statement into repository guidance
 6. Would the recommendation still make sense if the observed rankings changed tomorrow?
 
 If these cannot be answered, classify the item `DISCOVERED`/`PARTIAL` and do not present it as established SEO truth.
+
+## 2026-10-31 — Public repository evidence hygiene
+
+| ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| GH-PRIVACY-20261031 | VERIFIED | OFFICIAL | Removing sensitive data from a repository | https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository | GitHub | — | 2026-10-31 | docs/public-repository-evidence.md | Current-tree deletion and all-history purge are different; rotate exposed credentials and coordinate clones/PRs/forks. | HIGH | Provider procedure; not a claim every repository finding is a credential. |

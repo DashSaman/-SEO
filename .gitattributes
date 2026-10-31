@@ -1,0 +1,5 @@
+
+
+tools/publication_guard.py text eol=lf
+tests/test_publication_guard.py text eol=lf
+.publication-policy.json text eol=lf
