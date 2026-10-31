@@ -256,3 +256,9 @@ If these cannot be answered, classify the item `DISCOVERED`/`PARTIAL` and do not
 | WP-SHORTCODE-20261031 | VERIFIED | OFFICIAL | add_shortcode | https://developer.wordpress.org/reference/functions/add_shortcode/ | WordPress | — | 2026-10-31 | docs/wordpress-service-intake-validation.md | Return callback output into the intended replacement location. | HIGH | No ranking/traffic claim. |
 | WP-CPT-20261031 | VERIFIED | OFFICIAL | register_post_type query_var | https://developer.wordpress.org/reference/functions/register_post_type/ | WordPress | — | 2026-10-31 | docs/wordpress-service-intake-validation.md | A public CPT query key can collide with a new intake parameter. | HIGH | Verify actual registered keys on each site. |
 | OBS-TN-INTAKE-20261031 | VERIFIED | MEASURED | Isolated native intake acceptance receipt | https://github.com/DashSaman/TehNet/blob/0fbf6e8216fa5a8dcba85d8551d4040e2dfe1d3b/qa/growth-2026-10-31/native-verification.json | TehNet repository | 2026-10-31 | 2026-10-31 | docs/wordpress-service-intake-validation.md | 24 browser/HTTP checks and backend persistence/cleanup invariants; new query collision fixed before publication. | HIGH | Isolated implementation evidence; no production/search/conversion experiment. |
+
+## 2026-10-31 — Mandatory publication-check enforcement
+
+| ID | Status | Class | Title | URL | Provider | Source date | Reviewed | Relevant section | Key finding | Confidence | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| GH-PROTECTION-20261031 | VERIFIED | OFFICIAL | Branch protection API | https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection | GitHub | — | 2026-10-31 | docs/public-repository-evidence.md | Required checks/app binding, PR/admin enforcement and reviewer count are distinct settings. | HIGH | Read back actual configuration; no universal leak-prevention guarantee. |

@@ -20,3 +20,15 @@ Manual diff review in this case found a plaintext staged-account password in pro
 4. Validate JSON/source/test behavior and negative guard cases.
 5. Recheck remote refs, coordinate old clones and rehearse a history purge in a separate backed-up clone.
 6. After approval, verify remote branches/tags plus PR/cache/fork limitations; never equate a clean HEAD with complete removal.
+
+## Mandatory publication checks —2026-10-31
+
+**OBSERVED:** Actual API review found native secret scanning/push protection enabled on the two public repositories, while main had no protection and the accessible ruleset list was empty. A passing workflow alone was therefore not mandatory publication enforcement. The private repository's protection API returned403 and security fields were absent: its state remains UNKNOWN, not “disabled”; no subscription, visibility or policy change was attempted there.
+
+After verifying the successful `tracked-file-privacy` job and its actual GitHub Actions app, main protection was configured on the two public repositories. Readback200 confirmed: pull request required, that app-bound check required, branch up-to-date required, administrator enforcement on, force-push/deletion off. Required approving-review count is0 to avoid claiming independent review or locking a sole-owner workflow. Main commit IDs remained unchanged. Prior settings and a drift-guarded rollback procedure are private.
+
+The first PUT returned422 because both `contexts` and `checks` were supplied to a mutually exclusive schema. Full error was reviewed; fresh preflight confirmed no policy change, and the corrected checks-only request/readback succeeded. This was validation failure, not an authorization or automatic-approval rejection; no access control was bypassed.
+
+**FACT-OFFICIAL:** GitHub provides separate settings for required checks, their app, administrator enforcement and pull-request reviews. Use the actual observed check identity and reconcile existing policies before replacing them. [Official branch-protection API](https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection), reviewed2026-10-31.
+
+**LIMIT:** This makes the bounded guard mandatory in the configured workflow. It does not prove no leak, prevent an owner from later changing policy, purge retained history, rotate credentials or validate Origin protection. Known-value/manual/media audits remain separate. This configuration step changed no production infrastructure and rewrote no shared Git history.
