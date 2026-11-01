@@ -1,4 +1,10 @@
-## CURRENT — Gallery keyboard evidence and actual acceptance transferred,2026-11-01
+## CURRENT — Complete publication-file coverage and remaining history gates
+
+Guard correction merged in TehNet#60/MyTel#5/-SEO#19. Actual CI:12 privacy cases per repository,11PASS/1 Windows-only SKIP on Linux; all12 passed locally on Windows. Current full file read counts1515/52/68; the unchanged historical deep checkout now reads1513/1513. Sources, bounded failure chronology and reuse criteria are in `docs/public-repository-evidence.md#tracked-file-coverage-20261101` and the local tooling note. Dashboard remains18 destinations; no baseline71% or SEO/ranking change is implied.
+
+Fresh private clean-history snapshots preserve explicit current-main trees and known-value/path checks; normal later merges make refs stale. Shared history/PR/cache/fork purge and support submission remain NEEDS_APPROVAL; historical credential UNKNOWN/NOT_ROTATED; Origin UNDETERMINED. No force-push or MyTel production change. Continue with final sanitized overnight handoff and a private ref refresh after the last ordinary merge; do not replay prior live publishers or research portfolios.
+
+## HISTORICAL CHECKPOINT — Gallery keyboard evidence and actual acceptance transferred,2026-11-01
 
 Workstream `tehnet-gallery-keyboard-20261101`:existing technical-audit topic,two new source rows(WAI pattern/actual observation),dashboard/continuation. Actual PR58/source4af1ff42ba2d427c9e7d55751b611f0a6cd4a5d4:three files/zeroDB-content-product-media writes,fresh backup/checksum/drift,20TLS/25shared asset loads/two payload hashes and44 public-browser checks;stored image-price-inquiry fields retained. Native44/e4fbe5f before publication and updated-harness native44/70edb33 after publication are separate dated equal-payload evidence,both exactly restored.6PHP/13component/18native checker/Linux25PASS;four restored nonqualified attempts and layout/quote/random-section/journal/timing/wrapper diagnostics retained. No new photo/model/CAD/360/article/URL,full WCAG/screen-reader/all25 keyboard or measured SEO gain. Baseline71%,original validation backlog,MyTel/noindex/commerce/security gates unchanged. Next:private snapshot and local sanitized history/ref refresh after ordinary merges;no remote force-push/purge/rotation;08:00Tehran actual final report still pending.
 
