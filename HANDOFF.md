@@ -1,3 +1,9 @@
+## CURRENT — Corporate navigation and CAPTCHA evidence
+
+Scoped transfer from TehNet PR69: measured workflow/font/menu changes, canonical native request acceptance and actual Google key-creation blocker. Sources OBS-TN-CORPORATE-20261101 and two official Google v2 contracts are synthesized in `docs/wordpress-service-intake-validation.md#corporate-navigation-and-honest-captcha-acceptance`. The first production attempt rolled back on an incorrect robots assumption for an existing standalone utility; no later deployment is implied here. Keep fixture checks separate from provider activation and database menu order separate from normalized display order. No private account/key/runtime values transferred.
+
+Baseline71% and18 dashboard destinations unchanged; no ranking/conversion/parity claim. Next: record later qualified live acceptance when actually observed; Google activation remains blocked until eligible account/keys exist. Existing final-validation, MyTel, noindex/payment and security gates remain.
+
 ## CURRENT — Commercial service outcomes and canonical lead acceptance
 
 Workstream `tehnet-commercial-service-acceptance-20261101`: transferred the actual Home/Services catalog and existing-ticket request journey from TehNet PR64/65. Two real synthetic private records/reference-status/staff trace were verified in isolated staging; a qualified three-file/two-body release and public read-only checks established visible delivery. CI counts and topic inventories are explicitly insufficient for commercial parity. See `docs/wordpress-service-intake-validation.md#commercial-service-outcomes`, source IDs OBS-TN-COMMERCIAL-20261101/GGL-LINKS-20261101/WP-TRANSIENTS-20261101 and scoped GGL-CONTENT-003 re-review. Prior failed attempts, expiring receipt limits and owned-fixture cleanup are retained; no private data transferred.
