@@ -27,6 +27,25 @@ The accompanying eight-question tool exports a local **manual** report with `mea
 5. Keep unit, component, native, production and field-performance evidence separate. Verify protected records after cleanup; do not publish raw form tokens or customer data.
 6. Preserve intentional noindex and commerce gates. A functional route or truthful schema does not demonstrate indexing, AI citations, traffic or conversion uplift.
 
+## Commercial service outcomes
+
+Reviewed:2026-11-01. **OBSERVED — OBS-TN-COMMERCIAL-20261101:** An overnight technical acceptance run had not established a commercially useful service catalog or a direct request path. The subsequent change delivered seven browsable service categories at the existing Services owner, retained six nested service URLs and Home's Learn/Lab/Services/Shop identity, and added a short form to both existing pages. General specialist availability was explicitly owner-confirmed; vendor credentials, SLA, rates and deadlines were not inferred from that answer. Specialist PBX/IVR remained a contextual MyTel referral.
+
+The short form reused the existing private ticket entity/action and staff dashboard. In isolated native WordPress, two synthetic requests actually persisted with distinct references; desktop and375px/no-JS receipts showed reference/status, and authorized staff saw the same two records and service context. Native validation, spam/rate and unauthorized-reply checks passed; original posts/meta/users/files/runtimes were restored. The public release then changed three files and two existing bodies, with fresh backup/checksum/drift and qualified payload/tool/guard equivalence. Public GET/browser verification confirmed the visible catalog/form/CTA results without submitting a live request. [Immutable production receipt and limits](https://github.com/DashSaman/TehNet/blob/17088b26ebaa2071bc66dc25cbcba0250755de80/qa/commercial-2026-11-01/production-verification.json).
+
+**FACT-OFFICIAL — WP-TRANSIENTS-20261101:** WordPress transients have a maximum expiry and can disappear earlier; an expiring receipt must explain that boundary and fail without exposing a private conversation. [WordPress Transients API](https://developer.wordpress.org/apis/transients/). The observed implementation used an opaque token, no contact/thread disclosure, no-cache and no-referrer. Token entropy, authorization, access logging and cache behavior still require scoped review on another implementation; presence of a nonce is not authorization.
+
+**FACT-OFFICIAL — GGL-CONTENT-003 / GGL-LINKS-20261101:** Google's people-first questions support original useful synthesis and clear sourcing; crawlable links use actual href destinations with relevant descriptive text. [Helpful content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content), [link guidance](https://developers.google.com/search/docs/crawling-indexing/links-crawlable). **INFERENCE:** For a service business, a useful catalog should help visitors choose scope, understand deliverables and reach the appropriate existing workflow. A keyword-link wall, a large topic list or passing CI does not establish that customer outcome.
+
+Reusable acceptance should separate:
+
+- **Visible delivery:** before/after evidence at exact public owners, mobile/no-JS navigation, appropriate scope and direct CTA.
+- **Canonical request:** actual private persistence, actual reference/status and authorized staff traceability in isolated staging; reuse existing entities rather than adding a parallel CRM.
+- **Operational qualification:** precise backups, immutable payload, drift protection, restoration and public smoke. Earlier failed attempts remain disclosed; a QA staff dashboard auto-draft needed explicit owned-fixture cleanup rather than broad deletion.
+- **Business/search evidence:** actual consented projects, response SLA, leads, indexing and search outcomes are independent. Synthetic request IDs and browser counts are not conversion or competitive-parity measurements.
+
+The site's intentional noindex and closed physical-commerce gates remained; no production QA submission, payment or MyTel runtime write was performed. Issue63 stayed open for commercial depth, trust, researched content and measurement. This lesson updates acceptance criteria without changing the central71% research baseline or closing credential/history/Origin gates.
+
 ## Remaining scope
 
 The original intake receipt above did not prove production release or editor acceptance. Subsequent evidence is separately dated below. New article research, live intake outcomes and search effects remain outside these receipts. Other plugins/sites may register different query variables; the key above is an example to verify locally, not a globally reserved safe name. TehNet operational identifiers, private backups and MyTel metrics are deliberately absent. The central reference baseline remains71%.
