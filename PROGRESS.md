@@ -1,4 +1,10 @@
-## CURRENT —2026-11-04 server/branch service depth
+## CURRENT —2026-11-04 manual decision support and honest routing model
+
+Eight scoped official/measured rows are synthesized in the existing docs/wordpress-service-intake-validation.md#manual-decision-support-before-canonical-intake--reviewed2026-11-04. Actual native/staged TehNet tools separate manual evidence, unknown state, local reports, existing request navigation and a bounded educational routing model. Screenshots exposed/fixed the report-start bug; software acceptance is not customer network or SEO outcome evidence.
+
+PR81 remains CI-queued/unassigned at this checkpoint; cause UNKNOWN. PR83 is stacked/draft and requires actual qualified production of81. Neither tool is deployed. Retain distinct source/staging/production/outcome states and all noindex/payment/MyTel/security gates. Central baseline71% and original final-validation backlog unchanged; dashboard points to the updated existing reference,20 destinations unchanged. Next: verified CI/production receipts when available, actual full video/editorial coverage and consented customer evidence; do not bypass gates or replay accepted releases.
+
+## HISTORICAL CHECKPOINT —2026-11-04 server/branch service depth
 
 Four scoped official/measured rows are synthesized in the existing docs/competitor-service-evidence.md#server-and-branch-delivery-depth--reviewed2026-11-04. TehNet PR78 published two useful modules on one existing owner, with contextual MyTel responsibility and a separately verified read-only canonical request journey. Technical facts, fictional acceptance examples, software publication and actual customer outcomes are explicitly separate. No server/tunnel/recovery or customer outcome was measured. Source coverage is scoped, not a new competitor audit.
 
