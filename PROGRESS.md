@@ -1,26 +1,32 @@
-## CURRENT —2026-11-04 recorded-course attribution
+## CURRENT —2026-11-04 server/branch service depth
+
+Four scoped official/measured rows are synthesized in the existing docs/competitor-service-evidence.md#server-and-branch-delivery-depth--reviewed2026-11-04. TehNet PR78 published two useful modules on one existing owner, with contextual MyTel responsibility and a separately verified read-only canonical request journey. Technical facts, fictional acceptance examples, software publication and actual customer outcomes are explicitly separate. No server/tunnel/recovery or customer outcome was measured. Source coverage is scoped, not a new competitor audit.
+
+Central baseline71% unchanged; original final-validation backlog and all MyTel/noindex/payment/security gates remain. Dashboard links to the updated existing reference; no completion recalculation. Next: qualifying the relevant catalog-to-detail discovery and manual decision support, plus actual course-source/editorial review. Do not replay completed releases, count source/testing volume as parity, or turn a checkpoint explanation into proven recovery.
+
+## HISTORICAL CHECKPOINT —2026-11-04 recorded-course attribution
 
 The existing media reference now separates source availability, actual taught coverage, written supplements and staged/live release acceptance. Four scoped source rows (current Google video/schema, WordPress publication-hook code, actual TehNet PR76) are synthesized in `docs/media-seo.md#recorded-course-attribution-gate--reviewed2026-11-04`. Eight existing educational records were corrected and published from75178a1 after exact native qualification; source reviews remain incomplete, seven automatic transcripts were only sampled, and issues75/63 stay open. Local CI/content gates are not universal semantic or admin-save enforcement. No raw transcripts, account identities, operational snapshots or secret values transferred.
 
 Baseline71% unchanged. Dashboard now has20 actual listed destinations; older18 counts are historical/stale navigation bookkeeping, not a recalculated SEO result. MyTel read-only, intentional noindex/payment and all security/rotation/history/origin approval gates remain. Next: follow actual full audio/screen/editorial coverage and distinct commercial improvements; do not replay the completed eight-record release or claim ranking/AI citation/conversion/parity gains. Original central validation backlog remains open.
 
-## CURRENT — Corporate UI live acceptance recorded
+## HISTORICAL CHECKPOINT — Corporate UI live acceptance recorded
 
 The second TehNet corporate release is actually DEPLOYED_VERIFIED, source5306cf2/native-qualified5b615f9:36 read-only public browser checks,19 TLS GETs and exact file/data/runtime checks; zero production QA submissions. The first rolled-back attempt remains preserved. [Immutable receipt](https://github.com/DashSaman/TehNet/blob/103631cea1025346a3a6a8256f2cb8d82a2cd37a/qa/corporate-ui-2026-11-01/production-verification.json). Synthesis and OBS-TN-CORPORATE-20261101 now distinguish the two outcomes. Google CAPTCHA remains disabled/account-restricted. Baseline71%/18 destinations and all prior security/MyTel/noindex/payment gates unchanged; Issue63 remains open, with no parity or search/conversion claim. Next: eligible-account provider activation if authorized, remaining commercial evidence and original final-validation backlog; do not replay completed releases.
 
-## CURRENT — Corporate navigation and CAPTCHA evidence
+## HISTORICAL CHECKPOINT — Corporate navigation and CAPTCHA evidence
 
 Scoped transfer from TehNet PR69: measured workflow/font/menu changes, canonical native request acceptance and actual Google key-creation blocker. Sources OBS-TN-CORPORATE-20261101 and two official Google v2 contracts are synthesized in `docs/wordpress-service-intake-validation.md#corporate-navigation-and-honest-captcha-acceptance`. The first production attempt rolled back on an incorrect robots assumption for an existing standalone utility; no later deployment is implied here. Keep fixture checks separate from provider activation and database menu order separate from normalized display order. No private account/key/runtime values transferred.
 
 Baseline71% and18 dashboard destinations unchanged; no ranking/conversion/parity claim. Next: record later qualified live acceptance when actually observed; Google activation remains blocked until eligible account/keys exist. Existing final-validation, MyTel, noindex/payment and security gates remain.
 
-## CURRENT — Commercial service outcomes and canonical lead acceptance
+## HISTORICAL CHECKPOINT — Commercial service outcomes and canonical lead acceptance
 
 Workstream `tehnet-commercial-service-acceptance-20261101`: transferred the actual Home/Services catalog and existing-ticket request journey from TehNet PR64/65. Two real synthetic private records/reference-status/staff trace were verified in isolated staging; a qualified three-file/two-body release and public read-only checks established visible delivery. CI counts and topic inventories are explicitly insufficient for commercial parity. See `docs/wordpress-service-intake-validation.md#commercial-service-outcomes`, source IDs OBS-TN-COMMERCIAL-20261101/GGL-LINKS-20261101/WP-TRANSIENTS-20261101 and scoped GGL-CONTENT-003 re-review. Prior failed attempts, expiring receipt limits and owned-fixture cleanup are retained; no private data transferred.
 
 Baseline71% and18 dashboard destinations unchanged; this is a scoped implementation lesson, not completion recalculation or SEO/lead uplift. MyTel production READ_ONLY, intentional noindex/payment and credential UNKNOWN/NOT_ROTATED/history NEEDS_APPROVAL/Origin UNDETERMINED gates remain. Subsequent actual publication transferred: three existing-service upgrades (monitoring/Wi-Fi/firewall), native41/public41 per page, body-only releases and precise version/example limits. See docs/competitor-service-evidence.md#commercial-depth-after-confirmed-capacity and four additional source rows. GSC connection subscription-blocked; no metrics or indexability approval inferred. Next: remaining service depth, consented trust evidence and qualified measurement access; do not close TehNet Issue63 or replay completed releases. Original central final-validation backlog remains open.
 
-## CURRENT — Complete publication-file coverage and remaining history gates
+## HISTORICAL CHECKPOINT — Complete publication-file coverage and remaining history gates
 
 Guard correction merged in TehNet#60/MyTel#5/-SEO#19. Actual CI:12 privacy cases per repository,11PASS/1 Windows-only SKIP on Linux; all12 passed locally on Windows. Current full file read counts1515/52/68; the unchanged historical deep checkout now reads1513/1513. Sources, bounded failure chronology and reuse criteria are in `docs/public-repository-evidence.md#tracked-file-coverage-20261101` and the local tooling note. Dashboard remains18 destinations; no baseline71% or SEO/ranking change is implied.
 
