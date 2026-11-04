@@ -3,6 +3,8 @@
 **Reviewed:** 2026-08-26  
 **Primary sources:** current Google Search Central image/video documentation.
 
+**Scoped review2026-11-04:** the recorded-course attribution section below rechecks Google video guidance and transfers a bounded implementation; it does not refresh every image/media claim on this page.
+
 ## 1. Media SEO is retrieval + context + delivery
 
 Images and videos are not isolated ranking objects. Their visibility depends on:
@@ -152,6 +154,20 @@ When a video has meaningful sections, key-moment information can improve navigat
 ## 7. Video transcript
 
 A transcript can improve accessibility and make spoken information available as text. It should be accurate enough to be useful. Do not hide huge keyword-stuffed transcripts solely for bots.
+
+### Recorded-course attribution gate — reviewed2026-11-04
+
+**FACT-OFFICIAL:** [Google's current video guidance](https://developers.google.com/search/docs/appearance/video) calls for video metadata consistent with the actual video. [Video structured data](https://developers.google.com/search/docs/appearance/structured-data/video) describes eligible video content; an incidental video does not turn a written tutorial into a dedicated watch page. These requirements do not override an intentional noindex control.
+
+**Operational policy, not an additional Google requirement:** keep three separate records: source availability, verified teaching coverage, and independent written material. A syllabus, video title, generated transcript, or instructor's intended future lesson cannot alone establish what the recording actually teaches. Record the source ID, review method, real time range when established, reviewer, editorial disposition and relevant URL. Unknown coverage stays UNVERIFIED. Distinguish “no detailed lesson taught” from “no brief mention anywhere”; preserve contradictory evidence rather than flattening it.
+
+For an existing course, repair titles, introductions, lesson order, nearby links and metadata together. Keep valuable written examples, label them as independent material, and retain stable URLs/IDs. A supplement can remain at its existing historical URL with an accurate role label; moving it solely to improve a slug can create needless migration work. Publish timestamps and VideoObject/Clip claims only when supported. A repository input gate is not an admin-save guard or a complete semantic fact checker.
+
+**MEASURED case: TehNet PR76.** Eight existing records were corrected; Queue became a clearly independent supplement instead of episode6 teaching. Seven auto-caption exports and selected passages were examined; full audio/screen verification of all eight sources remains incomplete. The source matrix explicitly separates instructor-reported absence of a detailed Queue lesson from a brief caption reference. Native42 and browser536 checks validated the bounded content migration and rollback, not the underlying completeness of the course review. The published correction is visible at [the Queue supplement](https://tehnet.ir/learn/mikrotik/mtcna/queues-troubleshooting/) and [course archive](https://tehnet.ir/learn/mikrotik/mtcna/); [PR76](https://github.com/DashSaman/TehNet/pull/76) preserves implementation and staged before/after evidence. No ranking, traffic, AI citation, conversion or competitive-parity outcome was measured.
+
+An important WordPress boundary was observed: one target was a `post`, not a `page`. Its update invoked [the core ping/enclosure publication hook](https://developer.wordpress.org/reference/functions/_publish_post_hook/), adding metadata outside the allowed migration. The CLI process temporarily suppressed that hook and restored its original registration in finally; tests checked metadata, cron, repeat, intervening edits and exact rollback. Never widen a field-change guard merely to pass a migration. This is a scoped release lesson, not a recommendation to disable normal site ping behavior globally.
+
+Before declaring completion, distinguish: corrected attribution, full source review, repository/CI input enforcement, admin-edit enforcement, staged release qualification and visible production behavior. None substitutes for another. The [immutable public production receipt](https://github.com/DashSaman/TehNet/blob/a940e2cebbece5027dd3cb8c1daeb03089f5b206/docs/evidence/2026-11-04/production-verification.json) records separate live536 read-only assertions and zero submissions; this does not complete the eight-source review. TehNet's source-review issue and broader commercial issue remain open despite the published correction.
 
 ## 8. Embedded third-party video
 
