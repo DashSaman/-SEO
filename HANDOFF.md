@@ -1,4 +1,16 @@
-## CURRENT —2026-11-04 server/branch service depth
+## CURRENT —2026-11-04 both Lab tools live; source/recording evidence separate
+
+The prior manual-model staging checkpoint is followed by actual qualified TehNet PR81/83 publication and immutable PR84 receipts: independent triage live257, routing live213 and post-routing triage regression257, zero submissions. Three new measured rows distinguish live delivery and the later redacted caption-text pass from staging, actual audiovisual approval, new recordings and customer/SEO outcomes. Existing intake/media references and the same dashboard destinations were updated; do not replay accepted publishers.
+
+Central baseline71%,20 listed dashboard destinations and original final-validation backlog unchanged. MyTel read-only, intentional noindex/payment/CAPTCHA and rotation/history/origin approval gates remain. TehNet PR85 is now independently live-verified (native49/renderer7/site200 plus live200): one existing article/four real conceptual-model captures;9 new-recording scripts retain null actual timing/approval. The actual PR86 receipt and current Google image guidance are synthesized in the existing media reference. Full8-source audiovisual/editorial review, consented customer evidence and actual measurement remain open; no parity/AI-citation/lead/ranking claim.
+
+## HISTORICAL CHECKPOINT —2026-11-04 manual decision support and honest routing model
+
+Eight scoped official/measured rows are synthesized in the existing docs/wordpress-service-intake-validation.md#manual-decision-support-before-canonical-intake--reviewed2026-11-04. Actual native/staged TehNet tools separate manual evidence, unknown state, local reports, existing request navigation and a bounded educational routing model. Screenshots exposed/fixed the report-start bug; software acceptance is not customer network or SEO outcome evidence.
+
+PR81 remains CI-queued/unassigned at this checkpoint; cause UNKNOWN. PR83 is stacked/draft and requires actual qualified production of81. Neither tool is deployed. Retain distinct source/staging/production/outcome states and all noindex/payment/MyTel/security gates. Central baseline71% and original final-validation backlog unchanged; dashboard points to the updated existing reference,20 destinations unchanged. Next: verified CI/production receipts when available, actual full video/editorial coverage and consented customer evidence; do not bypass gates or replay accepted releases.
+
+## HISTORICAL CHECKPOINT —2026-11-04 server/branch service depth
 
 Four scoped official/measured rows are synthesized in the existing docs/competitor-service-evidence.md#server-and-branch-delivery-depth--reviewed2026-11-04. TehNet PR78 published two useful modules on one existing owner, with contextual MyTel responsibility and a separately verified read-only canonical request journey. Technical facts, fictional acceptance examples, software publication and actual customer outcomes are explicitly separate. No server/tunnel/recovery or customer outcome was measured. Source coverage is scoped, not a new competitor audit.
 
