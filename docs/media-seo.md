@@ -169,6 +169,22 @@ An important WordPress boundary was observed: one target was a `post`, not a `pa
 
 Before declaring completion, distinguish: corrected attribution, full source review, repository/CI input enforcement, admin-edit enforcement, staged release qualification and visible production behavior. None substitutes for another. The [immutable public production receipt](https://github.com/DashSaman/TehNet/blob/a940e2cebbece5027dd3cb8c1daeb03089f5b206/docs/evidence/2026-11-04/production-verification.json) records separate live536 read-only assertions and zero submissions; this does not complete the eight-source review. TehNet's source-review issue and broader commercial issue remain open despite the published correction.
 
+### Later redacted text review is still not audiovisual approval
+
+**OBSERVED — OBS-TN-CAPTION-TEXT-20261104:** All available displayable text in seven hash-pinned automatic caption exports was subsequently read with known private values and credential contexts redacted. Redacted passages were not reviewed; source5.5 still lacked an available export. All eight audiovisual sources remained UNVERIFIED, topic claims and editor approval remained empty, and no chapters/schema/video association was published from this text pass. Three read-only Descript searches found no matching ready transcript; no import, ASR or export was performed. [Immutable bounded review](https://github.com/DashSaman/TehNet/blob/4a060ea642cc282df0c39292ae087b8452e0767b/seo/MTCNA_CAPTION_REVIEW_2026-11-04.fa.md).
+
+**Reusable editorial distinction:** a production script's proposed narration, click highlights and target shot timing are a separate artifact from a transcript, observed teaching coverage or actual recorded duration. Missing real interface captures must stay pending; a conceptual teaching-model screenshot is not a fabricated router screenshot. This distinction is an editorial/evidence control, not a new Google ranking factor.
+
+### Original illustrated workflow and recording scripts —2026-11-04
+
+**FACT-OFFICIAL — GGL-IMAGE-WORKFLOW-20261104:** [Google's current image guidance](https://developers.google.com/search/docs/appearance/google-images), read2026-11-04, supports ordinary img/src, descriptive contextual alt/captions and images adjacent to the relevant text. A full-size link helps the user read small UI labels; it is not an indexing guarantee and does not override noindex.
+
+**OBSERVED — OBS-TN-ILLUSTRATED-LIVE-20261104:** TehNet improved one existing routing owner with four numbered image/option/result steps. Screenshots were captured from the actual browser teaching model; originals, annotation purpose and hashes were preserved. They were explicitly not WinBox captures or actual RouterOS output. Native49/renderer7/site200 and exact restoration preceded PR85 publication fromf1a6764, byte-equal to qualified795c4a1. A further independent live200 checked image bytes, mobile full-size click, real article-to-Lab navigation and the stated exercise results. Fresh backup/checksum/drift/rollback and all protected data/runtime/noindex/payment controls held, zero customer submissions. [Actual receipt and in-context images](https://github.com/DashSaman/TehNet/blob/1367ed96473986e80cf02fecb3e137b99b97b65c/docs/evidence/2026-11-04/illustrated-routing/production-verification.json).
+
+**Reusable implementation lessons:** validate the serialized article through real WordPress before multiplying it. Unsupported inline markup and image serialization were corrected to match the native sanitizer; its guard was not weakened. Nested image-parent creation required a scoped operator fix, journaling only directories actually created and removing only empty owned directories on rollback; a foreign file is preserved. Earlier nonqualified attempts and exact recovery remain separate evidence.
+
+**Editorial handoff:** nine per-recording production files specify tone, narration, screen actions, click highlighting and target shot times. Actual duration/rehearsal/editor approval remain null, and source5.5's proposed new Bridge topic is explicitly not a verified old-video topic. Real WinBox captures and all eight audiovisual source approvals remain open. A script, screenshot count, test count or published page does not establish filmed coverage, a real customer result, search uplift or competitor parity.
+
 ## 8. Embedded third-party video
 
 If YouTube/Vimeo/etc is embedded on your site:
