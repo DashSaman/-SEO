@@ -1,3 +1,7 @@
+## 2026-11-05 — actual WinBox staging lesson; not a live SEO result
+
+Google image/noindex guidance refreshed and synthesized in existing docs/media-seo.md; SOURCES contains three bounded evidence rows. TehNet PR88 has39 actual CHR/WinBox captures, native60/renderer16/site1590 and exact restoration. Production publication remains owner-approval gated; no parity/indexing/traffic/AI/customer result inferred. Desktop input withdrawal is preserved through an independent guest framebuffer. Existing71% research baseline and20 dashboard destinations unchanged. Next: contribute this documentation via PR, keep live deployment separate, continue full audiovisual and commercial evidence gaps without relabeling staging as production.
+
 ## CURRENT —2026-11-04 both Lab tools live; source/recording evidence separate
 
 The prior manual-model staging checkpoint is followed by actual qualified TehNet PR81/83 publication and immutable PR84 receipts: independent triage live257, routing live213 and post-routing triage regression257, zero submissions. Three new measured rows distinguish live delivery and the later redacted caption-text pass from staging, actual audiovisual approval, new recordings and customer/SEO outcomes. Existing intake/media references and the same dashboard destinations were updated; do not replay accepted publishers.

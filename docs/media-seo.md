@@ -185,6 +185,16 @@ Before declaring completion, distinguish: corrected attribution, full source rev
 
 **Editorial handoff:** nine per-recording production files specify tone, narration, screen actions, click highlighting and target shot times. Actual duration/rehearsal/editor approval remain null, and source5.5's proposed new Bridge topic is explicitly not a verified old-video topic. Real WinBox captures and all eight audiovisual source approvals remain open. A script, screenshot count, test count or published page does not establish filmed coverage, a real customer result, search uplift or competitor parity.
 
+### Actual tool capture and desktop independence —2026-11-05
+
+**FACT-OFFICIAL — GGL-IMAGE-NOINDEX-20261105:** Google's [image guidance](https://developers.google.com/search/docs/appearance/google-images) was refreshed2026-11-05: keep instructional screenshots in ordinary HTML img/src with relevant alt and nearby explanation. CSS callout decoration is not the indexed image. Google's [noindex guidance](https://developers.google.com/search/docs/crawling-indexing/block-indexing), read the same day, makes indexing control independent of image/content quality: an accessible page's noindex excludes it when Google crawls and processes that directive. Preserve an intentional launch gate; useful images are not permission to remove it.
+
+**OBSERVED — OBS-TN-WINBOX-STAGING-20261105:** Two existing TehNet article owners gained39 original captures from an actual isolated CHR7.25.1 / WinBox4.5 lab, with bold click labels, proportional CSS callouts and full-size original links. Native migration60/renderer16, browser1590 and exact staging restoration are documented in the [bounded receipt](https://github.com/DashSaman/TehNet/blob/2572709fa18a0d3f8982bad44ede4d4402b34087/docs/evidence/2026-11-05/winbox-core/native-staging.json). These are software acceptance assertions, not independent visitors, recordings or evidence of SEO gains. Production publication is pending owner approval in [PR88](https://github.com/DashSaman/TehNet/pull/88).
+
+**Reusable lessons:** keep original UI pixels/hash/version and label overlays as explanation. Distinguish a GUI form observed from its final action actually executed in CLI; distinguish a synthetic DHCP result from Internet/DNS/hardware acceptance. Test both target rows before writing either and refuse rollback over a newer editor change. Headless browser QA should actually open the full-size picture, verify the served bytes and test callout bounds/RTL/no-JS on mobile. When desktop control is withdrawn, move capture to a separate guest framebuffer; do not change host sleep/lock/display policy to keep the task running.
+
+**Limits:** source recordings still need complete audiovisual review; proposed scripts retain null actual timing/editor approval. Native/staging qualification does not mean deployment, competitive parity, indexing, traffic, conversion or an AI recommendation. This case is a bounded implementation observation; the central71% research baseline and20 dashboard destinations are unchanged.
+
 ## 8. Embedded third-party video
 
 If YouTube/Vimeo/etc is embedded on your site:
