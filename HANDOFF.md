@@ -229,3 +229,7 @@ Avoid parallel writes to `SOURCES.md`, `PROGRESS.md` or `HANDOFF.md`. Always re-
 ## 2026-10-31 — Scoped publication hygiene workstream
 
 Added `docs/public-repository-evidence.md`, GH-PRIVACY-20261031 source synthesis, tracked-file publication guard/policy/tests and static dashboard navigation. Existing research workstreams remain active/queued as recorded above. Baseline remains71%; no recalculated global completion or ranking/AI-visibility gain is claimed. No private site data, metrics or operational IPs were transferred. Current-tree guard/test verification is separate from history/remote PR-cache purge. Next: review this branch, then continue prior open-source/SERP workstreams without overwriting their ownership.
+
+## HANDOFF ADDITION 2026-11-05 — read docs/gsc-inspection-interpretation-pitfalls.md before any CNI/orphan diagnosis
+
+Single-snapshot CNI labels and the Referring-page field are not stable evidence on low-volume properties; the doc carries the OBSERVED evidence class, the verification recipe and the confidence-labeling rule. No client URLs included.

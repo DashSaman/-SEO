@@ -195,3 +195,7 @@ Do not write `PROJECT STATUS: 100% COMPLETE` unless all requested files exist, e
 ## 2026-10-31 — Scoped publication hygiene workstream
 
 Added `docs/public-repository-evidence.md`, GH-PRIVACY-20261031 source synthesis, tracked-file publication guard/policy/tests and static dashboard navigation. Existing research workstreams remain active/queued as recorded above. Baseline remains71%; no recalculated global completion or ranking/AI-visibility gain is claimed. No private site data, metrics or operational IPs were transferred. Current-tree guard/test verification is separate from history/remote PR-cache purge. Next: review this branch, then continue prior open-source/SERP workstreams without overwriting their ownership.
+
+## UPDATE 2026-11-05 — GSC inspection pitfalls (agent ZCode session, MyTel property as observation source)
+
+New doc: docs/gsc-inspection-interpretation-pitfalls.md — three OBSERVED-class cautions: (1) same-day CNI label instability (Crawled-NI vs Discovered-NI on one URL, hours apart), (2) Referring-page-None does not equal orphan (real in-body link from an indexed page verified in rendered HTML), (3) tiny query-page rows are INSUFFICIENT_DATA for easy-win claims; plus a reusable CNI root-cause CONFIRMED-vs-HYPOTHESIS recipe. Client-identifying URLs intentionally excluded. Sources unchanged (first-party observation). Next: revisit if Google publishes inspection-label semantics.
