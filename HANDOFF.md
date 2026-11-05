@@ -233,3 +233,7 @@ Added `docs/public-repository-evidence.md`, GH-PRIVACY-20261031 source synthesis
 ## HANDOFF ADDITION 2026-11-05 — read docs/gsc-inspection-interpretation-pitfalls.md before any CNI/orphan diagnosis
 
 Single-snapshot CNI labels and the Referring-page field are not stable evidence on low-volume properties; the doc carries the OBSERVED evidence class, the verification recipe and the confidence-labeling rule. No client URLs included.
+
+## HANDOFF ADDITION 2026-11-05 — zero-production render validation method
+
+See docs/zero-production-render-validation.md: inject draft fragments client-side in your own session for rendering/duplication/overflow checks before any authorized publication; server untouched. Draft branch: codex/gsc-inspection-pitfalls-20261105 carries this and the GSC pitfalls doc (main merge gated by protected-branch hook).

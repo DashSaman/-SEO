@@ -199,3 +199,7 @@ Added `docs/public-repository-evidence.md`, GH-PRIVACY-20261031 source synthesis
 ## UPDATE 2026-11-05 — GSC inspection pitfalls (agent ZCode session, MyTel property as observation source)
 
 New doc: docs/gsc-inspection-interpretation-pitfalls.md — three OBSERVED-class cautions: (1) same-day CNI label instability (Crawled-NI vs Discovered-NI on one URL, hours apart), (2) Referring-page-None does not equal orphan (real in-body link from an indexed page verified in rendered HTML), (3) tiny query-page rows are INSUFFICIENT_DATA for easy-win claims; plus a reusable CNI root-cause CONFIRMED-vs-HYPOTHESIS recipe. Client-identifying URLs intentionally excluded. Sources unchanged (first-party observation). Next: revisit if Google publishes inspection-label semantics.
+
+## UPDATE 2026-11-05 — zero-production render validation method
+
+Added docs/zero-production-render-validation.md: client-side DOM-injection technique for pre-validating content drafts on live pages (duplicate-text probes, H1 stability, scoped-class styling check, mobile overflow, link collection) with caveats on injection-point vs editorial position and Elementor storage compatibility. First-party OBSERVED on one property; no client identifiers included.
